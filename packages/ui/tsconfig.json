@@ -1,0 +1,18 @@
+{
+  // Отдельный конфиг, не наследует tsconfig.base.json — ui это Vue-пакет,
+  // ему нужны jsx: preserve и DOM либы, которых нет в базовом конфиге бекенда.
+  "compilerOptions": {
+    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    // preserve — не трогать JSX/TSX, Vue compiler сам его обработает
+    "jsx": "preserve",
+    "lib": ["ESNext", "DOM"],
+    "skipLibCheck": true,
+    "rootDir": "src",
+    // Компоненты импортируются напрямую из src/ через workspace:* — сборка не нужна
+    "noEmit": true
+  },
+  "include": ["src/**/*"]
+}

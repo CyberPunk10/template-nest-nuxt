@@ -1,0 +1,17 @@
+{
+  // Конфиг для сборки (nest build) — наследует tsconfig.json и переопределяет нужное.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // rootDir ../../  — корень монорепо, а не src/.
+    // Это позволяет импортировать @repo/shared из packages/.
+    // Побочный эффект: dist/ повторяет структуру монорепо:
+    //   dist/apps/backend/src/main.js  (а не dist/main.js)
+    // Поэтому в nest-cli.json прописан entryFile: "apps/backend/src/main",
+    // а в package.json start:prod указывает на dist/apps/backend/src/main.
+    "rootDir": "../../",
+    "outDir": "./dist",
+    // Явно отменяем noEmit: true из tsconfig.json — иначе сборка ничего не создаст
+    "noEmit": false
+  },
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+}

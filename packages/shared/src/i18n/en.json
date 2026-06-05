@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "notFound": "Not found",
+    "unauthorized": "Unauthorized",
+    "validation": "Validation failed"
+  }
+}

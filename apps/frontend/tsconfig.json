@@ -1,0 +1,16 @@
+{
+  // Nuxt генерирует реальные tsconfig'и в .nuxt/ при запуске nuxt prepare.
+  // Этот файл — только точка входа, которую видит IDE.
+  // Подробнее: https://nuxt.com/docs/guide/concepts/typescript
+  "files": [],
+  "references": [
+    // app/ — страницы, компоненты, composables
+    { "path": "./.nuxt/tsconfig.app.json" },
+    // server/ — API routes (nitro/h3)
+    { "path": "./.nuxt/tsconfig.server.json" },
+    // shared/ — код между app и server
+    { "path": "./.nuxt/tsconfig.shared.json" },
+    // nuxt.config.ts и node-окружение
+    { "path": "./.nuxt/tsconfig.node.json" }
+  ]
+}

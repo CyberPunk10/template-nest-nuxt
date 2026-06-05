@@ -1,0 +1,18 @@
+{
+  // Конфиг для проверки типов (IDE, lint, type-check) — НЕ для сборки.
+  // Для сборки используется tsconfig.build.json.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // NestJS требует commonjs — декораторы и DI не работают с ESM
+    "module": "commonjs",
+    "moduleResolution": "bundler",
+    "target": "ES2023",
+    // Декораторы NestJS (@Module, @Controller и т.д.) требуют эти два флага
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "types": ["jest", "node"],
+    // Не генерировать .js файлы при type-check — иначе артефакты засоряют src/
+    "noEmit": true
+  },
+  "include": ["src"]
+}

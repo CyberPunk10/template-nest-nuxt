@@ -1,0 +1,35 @@
+{
+  "name": "template-nest-nuxt",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=8",
+    "npm": "please-use-pnpm"
+  },
+  "description": "",
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "type-check": "pnpm -r type-check",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.1",
+    "husky": "^9.0.0",
+    "lint-staged": "^17.0.7",
+    "prettier": "^3.0.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.1"
+  },
+  "keywords": [
+    "nestjs",
+    "nuxt",
+    "template"
+  ],
+  "author": "CyberPunk10",
+  "license": "MIT"
+}

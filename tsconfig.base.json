@@ -1,0 +1,21 @@
+{
+  // Базовый конфиг для всего монорепо — только для проверки типов, не для сборки.
+  // Каждый пакет/приложение наследует его через "extends" и добавляет своё.
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2022",
+    "esModuleInterop": true,
+    // Не проверять типы в node_modules — ускоряет type-check и избегает чужих ошибок
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    // Генерировать .d.ts файлы — нужно для @repo/shared и @repo/ui
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    // Алиас @repo/shared → packages/shared/src/index.ts
+    // Путь указан от корня монорепо, где лежит этот файл
+    "paths": {
+      "@repo/shared": ["./packages/shared/src/index.ts"]
+    }
+  }
+}

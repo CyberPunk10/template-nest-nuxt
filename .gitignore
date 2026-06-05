@@ -1,0 +1,38 @@
+# Зависимости
+node_modules
+
+# Сборка
+dist
+.output
+.nuxt
+.nitro
+.data
+.cache
+
+# Окружение
+.env
+.env.local
+**/.env
+**/.env.local
+
+# Логи
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Редакторы
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+#claude
+.claude
+/docs

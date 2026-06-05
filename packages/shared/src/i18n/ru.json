@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "notFound": "Не найдено",
+    "unauthorized": "Не авторизован",
+    "validation": "Ошибка валидации"
+  }
+}
