@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { UiBadge } from '@repo/ui'
-
 const { get } = useApi()
 const { data: backendHealth, error: backendError } = await get<{ status: string }>('/health')
 const backendOnline = computed(() => backendHealth.value?.status === 'ok' && !backendError.value)
@@ -27,34 +25,63 @@ const backendOnline = computed(() => backendHealth.value?.status === 'ok' && !ba
 
     <div class="panel__section">
       <h2 class="panel__heading">Стек</h2>
-      <div class="stack">
-        <div class="stack__item">
-          <span class="stack__name">Node.js</span><UiBadge color="green">v24.13.0</UiBadge>
-        </div>
-        <div class="stack__item">
-          <span class="stack__name">pnpm</span><UiBadge color="green">8.15.5</UiBadge>
-        </div>
-        <div class="stack__item">
-          <span class="stack__name">NestJS</span><UiBadge color="green">11</UiBadge>
-        </div>
-        <div class="stack__item">
-          <span class="stack__name">Nuxt</span><UiBadge color="green">4.4.7</UiBadge>
-        </div>
-        <div class="stack__item">
-          <span class="stack__name">TypeScript</span><UiBadge color="green">6.0.3</UiBadge>
-        </div>
+      <div class="badges">
+        <span class="badge"
+          ><span class="badge__name">Node.js</span
+          ><span class="badge__version" style="background: #339933">24</span></span
+        >
+        <span class="badge"
+          ><span class="badge__name">pnpm</span
+          ><span class="badge__version" style="background: #f69220">11</span></span
+        >
+        <span class="badge"
+          ><span class="badge__name">NestJS</span
+          ><span class="badge__version" style="background: #e0234e">11</span></span
+        >
+        <span class="badge"
+          ><span class="badge__name">Nuxt</span
+          ><span class="badge__version" style="background: #00dc82; color: #003d24">4</span></span
+        >
+        <span class="badge"
+          ><span class="badge__name">TypeScript</span
+          ><span class="badge__version" style="background: #3178c6">6</span></span
+        >
+        <span class="badge"
+          ><span class="badge__name">Docker</span
+          ><span class="badge__version" style="background: #2496ed">✓</span></span
+        >
       </div>
     </div>
 
     <div class="panel__section">
       <h2 class="panel__heading">Команды</h2>
+      <p class="commands__label">Dev</p>
       <div class="commands">
         <div class="command">
-          <code class="command__cmd">pnpm dev</code><span class="command__desc">запустить всё</span>
+          <code class="command__cmd">pnpm dev</code
+          ><span class="command__desc">запустить приложения</span>
         </div>
+        <div class="command">
+          <code class="command__cmd">docker compose -f docker-compose.dev.yml up -d</code
+          ><span class="command__desc">инфраструктура</span>
+        </div>
+      </div>
+      <p class="commands__label">Prod</p>
+      <div class="commands">
         <div class="command">
           <code class="command__cmd">pnpm build</code><span class="command__desc">собрать всё</span>
         </div>
+        <div class="command">
+          <code class="command__cmd">docker compose up --build</code
+          ><span class="command__desc">все сервисы в Docker</span>
+        </div>
+        <div class="command">
+          <code class="command__cmd">docker compose down</code
+          ><span class="command__desc">остановить</span>
+        </div>
+      </div>
+      <p class="commands__label">Утилиты</p>
+      <div class="commands">
         <div class="command">
           <code class="command__cmd">pnpm lint</code
           ><span class="command__desc">проверить код</span>
@@ -155,24 +182,36 @@ a.service:hover {
   color: #888;
 }
 
-.stack {
+.badges {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 6px;
 }
 
-.stack__item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 10px;
+.badge {
+  display: inline-flex;
   border-radius: 6px;
-  background: #020420;
-  font-size: 13px;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 500;
 }
 
-.stack__name {
+.badge__name {
+  background: #1e293b;
   color: #94a3b8;
+  padding: 4px 8px;
+}
+
+.badge__version {
+  padding: 4px 8px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.commands__label {
+  font-size: 11px;
+  color: #475569;
+  margin: 0;
 }
 
 .commands {

@@ -11,7 +11,7 @@
 
 📖 [Архитектура](docs/architecture.md) · 🗄️ [База данных](docs/database.md)
 
----
+![Preview](docs/assets/preview.png)
 
 ## Варианты
 

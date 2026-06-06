@@ -24,7 +24,7 @@
 }
 
 .layout__sidebar {
-  width: 380px;
+  width: 400px;
   background: #0f172a;
   border-left: 1px solid #1e293b;
   overflow: auto;
