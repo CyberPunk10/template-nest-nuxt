@@ -15,8 +15,8 @@ export function useApi() {
     return $fetch<T>(`${apiBase}${path}`, { method: 'PUT', body })
   }
 
-  function del(path: string) {
-    return $fetch(`${apiBase}${path}`, { method: 'DELETE' })
+  function del<T = void>(path: string) {
+    return $fetch<T>(`${apiBase}${path}`, { method: 'DELETE' })
   }
 
   return { get, post, put, del }

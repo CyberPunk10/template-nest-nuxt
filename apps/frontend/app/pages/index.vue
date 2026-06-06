@@ -19,6 +19,8 @@ const editingId = ref<string | null>(null)
 const editForm = reactive({ name: '', email: '' })
 const editError = ref('')
 
+const removeError = ref('')
+
 function startEdit(user: User) {
   editingId.value = user.id
   editForm.name = user.name
@@ -59,8 +61,14 @@ async function createUser() {
 }
 
 async function removeUser(id: string) {
-  await del(`/users/${id}`)
-  await refresh()
+  removeError.value = ''
+  try {
+    await del(`/users/${id}`)
+    await refresh()
+  } catch (e: unknown) {
+    const data = (e as { data?: { message?: string[] } }).data
+    removeError.value = data?.message?.join(', ') ?? t('users.error')
+  }
 }
 </script>
 
@@ -137,6 +145,7 @@ async function removeUser(id: string) {
             </template>
           </div>
         </div>
+        <p v-if="removeError" class="form__error">{{ removeError }}</p>
       </UiCard>
     </div>
   </div>
