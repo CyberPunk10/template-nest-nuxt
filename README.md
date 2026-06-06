@@ -1,11 +1,15 @@
 # template-nest-nuxt
 
-Монорепо шаблон: **NestJS** (backend) + **Nuxt 4** (frontend).
+Переиспользуемый шаблон монорепозитория NestJS + Nuxt 4, завёрнутый в Docker
 
-## Документация
+![NestJS](https://img.shields.io/badge/NestJS-11-E0234E?style=flat-square&logo=nestjs&logoColor=white)
+![Nuxt](https://img.shields.io/badge/Nuxt-4-00DC82?style=flat-square&logo=nuxt&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-11-F69220?style=flat-square&logo=pnpm&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-24-339933?style=flat-square&logo=node.js&logoColor=white)
 
-- [Архитектура](docs/architecture.md) — устройство монорепо, tsconfig, Docker, пакеты
-- [База данных](docs/database.md) — PostgreSQL, Prisma, миграции, конфигурация (БД добавлена в отдельной ветке `postgres-prisma`)
+📖 [Архитектура](docs/architecture.md) · 🗄️ [База данных](docs/database.md)
 
 ---
 
@@ -26,16 +30,6 @@ git clone -b postgres-prisma https://github.com/CyberPunk10/template-nest-nuxt-d
 
 ---
 
-## Стек
-
-|            | Версия |
-| ---------- | ------ |
-| Node.js    | 24     |
-| pnpm       | 8      |
-| NestJS     | 11     |
-| Nuxt       | 4      |
-| TypeScript | 6      |
-
 ## Структура
 
 ```
@@ -49,19 +43,28 @@ template-nest-nuxt/
 └── ...конфиги монорепо
 ```
 
+---
+
 ## Что настроено
 
-- **pnpm workspaces** — монорепо с общими зависимостями
-- **TypeScript** — строгий режим, общий `tsconfig.base.json`, path alias `@repo/*`
-- **ESLint** — базовый конфиг в корне, приложения наследуют и расширяют
-- **Prettier** — единый форматтер для всего монорепо
+### Монорепо
+
+- **pnpm workspaces** — общие зависимости
+- **TypeScript strict** — строгий режим, path alias `@repo/*`
+- **ESLint + Prettier** — единый форматтер для всего монорепо
 - **Husky + lint-staged** — проверка изменённых файлов перед коммитом
+
+### Пакеты
+
 - **@repo/shared** — общие TypeScript типы (DTO) и i18n переводы (ru/en/th)
 - **@repo/ui** — библиотека Vue компонентов (`UiButton`, `UiBadge`, `UiCard`)
 - **Proxy** — Nuxt server route проксирует `/api/backend/*` → NestJS, без CORS в dev
 - **Users CRUD** — полный REST на бекенде (`GET/POST/PUT/DELETE /users`), UI на фронтенде
-- **i18n** — `@nuxtjs/i18n` с переключением языка, переводы из `@repo/shared`
-- **Docker** — multi-stage образы для backend и frontend, `docker compose` для запуска
+
+### Инфраструктура
+
+- **Docker** — multi-stage образы для backend и frontend
+- **docker compose** — dev и prod режимы
 
 ---
 
