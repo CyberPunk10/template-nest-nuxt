@@ -2,6 +2,23 @@
 
 Монорепо шаблон: **NestJS** (backend) + **Nuxt 4** (frontend).
 
+## Варианты
+
+| Ветка             | Описание                  |
+| ----------------- | ------------------------- |
+| `main`            | Базовый шаблон — без БД   |
+| `postgres-prisma` | + PostgreSQL + Prisma ORM |
+
+```bash
+# базовый вариант
+git clone https://github.com/CyberPunk10/template-nest-nuxt-docker.git
+
+# с PostgreSQL и Prisma
+git clone -b postgres-prisma https://github.com/CyberPunk10/template-nest-nuxt-docker.git
+```
+
+---
+
 ## Стек
 
 |            | Версия |
