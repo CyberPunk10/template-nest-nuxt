@@ -1,9 +1,9 @@
-# <img src="https://api.iconify.design/logos:nestjs.svg" height="28" align="center"/> template-nest-nuxt <img src="https://api.iconify.design/logos:nuxt-icon.svg" height="28" align="center"/>
+# template-nest-nuxt
 
 Переиспользуемый шаблон монорепозитория NestJS + Nuxt 4, завёрнутый в Docker
 
 ![NestJS](https://img.shields.io/badge/NestJS-11-E0234E?style=flat-square&logo=nestjs&logoColor=white)
-![Nuxt](https://img.shields.io/badge/Nuxt-4-00DC82?style=flat-square&logo=nuxt.js&logoColor=white)
+![Nuxt](https://img.shields.io/badge/Nuxt-4-00DC82?style=flat-square&logo=nuxt&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![pnpm](https://img.shields.io/badge/pnpm-8-F69220?style=flat-square&logo=pnpm&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)
