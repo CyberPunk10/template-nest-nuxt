@@ -60,18 +60,6 @@ const backendOnline = computed(() => backendHealth.value?.status === 'ok' && !ba
         <span class="service__name">Swagger UI</span>
         <code class="service__url">:3001/api/docs</code>
       </a>
-      <div class="service service--muted">
-        <span class="service__dot service__dot--static" style="background: #5a67d8" />
-        <span class="service__name">
-          Prisma Studio
-          <span class="service__badge">postgres-prisma</span>
-        </span>
-        <code class="service__url">динамический порт</code>
-      </div>
-      <div class="command command--hint">
-        <code class="command__cmd">cd apps/backend && pnpm prisma studio</code>
-        <span class="command__desc">порт указывается в терминале</span>
-      </div>
     </div>
 
     <div class="panel__section">
@@ -110,6 +98,13 @@ const backendOnline = computed(() => backendHealth.value?.status === 'ok' && !ba
         <div class="command">
           <code class="command__cmd">pnpm type-check</code
           ><span class="command__desc">проверить типы</span>
+        </div>
+      </div>
+      <p class="commands__label">postgres-prisma</p>
+      <div class="commands">
+        <div class="command">
+          <code class="command__cmd">cd apps/backend && pnpm prisma studio</code
+          ><span class="command__desc">Prisma Studio</span>
         </div>
       </div>
     </div>
