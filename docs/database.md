@@ -23,7 +23,7 @@ docker compose -f docker-compose.dev.yml up -d
 
 ```bash
 cd apps/backend
-npx prisma migrate dev
+pnpm prisma migrate dev
 ```
 
 ---
@@ -75,18 +75,23 @@ apps/backend/
 
 ### Основные команды
 
+Все команды выполняются из `apps/backend/`:
+
 ```bash
+cd apps/backend
+
 # создать и применить миграцию
-npx prisma migrate dev --name <название>
+pnpm prisma migrate dev --name <название>
 
 # применить миграции без создания новых (CI / production)
-npx prisma migrate deploy
+pnpm prisma migrate deploy
 
-# открыть Prisma Studio (GUI для данных)
-npx prisma studio
+# открыть Prisma Studio (GUI для просмотра и редактирования данных)
+pnpm prisma studio
+# → http://localhost:5555
 
 # перегенерировать клиент вручную
-npx prisma generate
+pnpm prisma generate
 ```
 
 ### Генерация клиента
