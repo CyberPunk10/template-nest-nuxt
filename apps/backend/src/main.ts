@@ -9,7 +9,11 @@ async function bootstrap() {
   const config = app.get(ConfigService)
   app.useGlobalFilters(new HttpExceptionFilter())
   app.useGlobalPipes(
-    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }),
+    new ValidationPipe({
+      whitelist: true, // удалять поля, которых нет в DTO
+      forbidNonWhitelisted: true, // 400 вместо тихого удаления лишних полей
+      transform: true, // приводить типы (string → number, plain → class)
+    }),
   )
   app.enableCors({
     origin: config.get<string>('CORS_ORIGIN', 'http://localhost:3000'),
