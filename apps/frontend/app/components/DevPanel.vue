@@ -7,23 +7,6 @@ const backendOnline = computed(() => backendHealth.value?.status === 'ok' && !ba
 <template>
   <div class="panel">
     <div class="panel__section">
-      <h2 class="panel__heading">Сервисы</h2>
-      <a class="service" href="http://localhost:3001/health" target="_blank">
-        <span
-          class="service__dot"
-          :class="backendOnline ? 'service__dot--online' : 'service__dot--offline'"
-        />
-        <span class="service__name">Backend (NestJS)</span>
-        <code class="service__url">:3001/health</code>
-      </a>
-      <a class="service" href="http://localhost:3000/api/health" target="_blank">
-        <span class="service__dot service__dot--online" />
-        <span class="service__name">Frontend (Nuxt)</span>
-        <code class="service__url">:3000/api/health</code>
-      </a>
-    </div>
-
-    <div class="panel__section">
       <h2 class="panel__heading">Стек</h2>
       <div class="badges">
         <span class="badge"
@@ -50,6 +33,44 @@ const backendOnline = computed(() => backendHealth.value?.status === 'ok' && !ba
           ><span class="badge__name">Docker</span
           ><span class="badge__version" style="background: #2496ed">✓</span></span
         >
+      </div>
+    </div>
+
+    <div class="panel__section">
+      <h2 class="panel__heading">Сервисы</h2>
+      <a class="service" href="http://localhost:3001/health" target="_blank">
+        <span
+          class="service__dot"
+          :class="backendOnline ? 'service__dot--online' : 'service__dot--offline'"
+        />
+        <span class="service__name">Backend (NestJS)</span>
+        <code class="service__url">:3001/health</code>
+      </a>
+      <a class="service" href="http://localhost:3000/api/health" target="_blank">
+        <span class="service__dot service__dot--online" />
+        <span class="service__name">Frontend (Nuxt)</span>
+        <code class="service__url">:3000/api/health</code>
+      </a>
+    </div>
+
+    <div class="panel__section">
+      <h2 class="panel__heading">Инструменты</h2>
+      <a class="service" href="http://localhost:3001/api/docs" target="_blank">
+        <span class="service__dot service__dot--static" style="background: #85ea2d" />
+        <span class="service__name">Swagger UI</span>
+        <code class="service__url">:3001/api/docs</code>
+      </a>
+      <a class="service service--muted" href="http://localhost:5555" target="_blank">
+        <span class="service__dot service__dot--static" style="background: #5a67d8" />
+        <span class="service__name">
+          Prisma Studio
+          <span class="service__badge">postgres-prisma</span>
+        </span>
+        <code class="service__url">:5555</code>
+      </a>
+      <div class="command command--hint">
+        <code class="command__cmd">cd apps/backend && pnpm prisma studio</code>
+        <span class="command__desc">запустить Studio</span>
       </div>
     </div>
 
@@ -206,6 +227,26 @@ a.service:hover {
   padding: 4px 8px;
   font-weight: 700;
   color: #fff;
+}
+
+.service--muted {
+  opacity: 0.6;
+}
+
+.service__badge {
+  font-size: 10px;
+  background: #1e293b;
+  color: #64748b;
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-left: 6px;
+  font-family: monospace;
+}
+
+.command--hint {
+  background: transparent;
+  border: 1px dashed #1e293b;
+  padding: 5px 10px;
 }
 
 .commands__label {
