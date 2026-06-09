@@ -2,9 +2,12 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  css: ['~/assets/css/reset.css'],
+
   modules: ['@nuxt/eslint', '@nuxt/icon', '@nuxtjs/i18n'],
 
   i18n: {
+    strategy: 'no_prefix',
     defaultLocale: 'ru',
     locales: [
       { code: 'ru', language: 'ru-RU' },

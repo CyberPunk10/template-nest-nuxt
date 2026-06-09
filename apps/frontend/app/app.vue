@@ -2,4 +2,5 @@
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <DevPanelDrawer />
 </template>

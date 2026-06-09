@@ -1,0 +1,82 @@
+{
+  "hero": {
+    "badge": "Open-source template",
+    "title": "NestJS + Nuxt 4",
+    "titleAccent": "Monorepo Template",
+    "subtitle": "Production-ready starting point for full-stack applications.\nDeploy in minutes, scale to production.",
+    "toDashboard": "Go to dashboard",
+    "login": "Sign in",
+    "github": "GitHub"
+  },
+  "quickstart": {
+    "title": "Quick Start",
+    "steps": {
+      "clone": "Clone the repository",
+      "install": "Install dependencies",
+      "run": "Start the applications",
+      "postgres": "Start PostgreSQL",
+      "migrate": "Apply migrations"
+    }
+  },
+  "principles": {
+    "title": "Principles",
+    "transparency": {
+      "title": "Transparency",
+      "desc": "No magic. Every decision is explained and obvious from the code."
+    },
+    "idiomatic": {
+      "title": "Idiomatic",
+      "desc": "Follow NestJS and Nuxt conventions, don't reinvent the wheel."
+    },
+    "production": {
+      "title": "Production-ready",
+      "desc": "Docker, env validation, error handling — from day one."
+    },
+    "monorepo": {
+      "title": "Monorepo",
+      "desc": "Shared package for types and i18n. Backend and frontend in one repo."
+    }
+  },
+  "branches": {
+    "title": "Variants",
+    "current": "current",
+    "basedOn": "based on",
+    "main": {
+      "label": "Base",
+      "desc": "Starting point without a database. Users CRUD is stored in-memory."
+    },
+    "postgresPrisma": {
+      "label": "PostgreSQL",
+      "desc": "Adds PostgreSQL and Prisma 7 on top of the base variant."
+    },
+    "auth": {
+      "label": "Auth",
+      "desc": "JWT authentication on top of postgres-prisma: email + password, httpOnly cookies, sessions in DB."
+    }
+  },
+  "stack": {
+    "title": "Stack"
+  },
+  "commands": {
+    "title": "Commands",
+    "groups": {
+      "dev": "Dev",
+      "prod": "Prod",
+      "utils": "Utilities",
+      "prisma": "Prisma"
+    },
+    "items": {
+      "pnpmDev": "start applications",
+      "dockerDev": "infrastructure",
+      "pnpmBuild": "build everything",
+      "dockerUp": "all services in Docker",
+      "dockerDown": "stop",
+      "pnpmLint": "lint code",
+      "pnpmTypeCheck": "type check",
+      "prismaStudio": "Prisma Studio"
+    }
+  },
+  "tree": {
+    "title": "Structure"
+  }
+}

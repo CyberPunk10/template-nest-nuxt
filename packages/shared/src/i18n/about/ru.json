@@ -1,0 +1,82 @@
+{
+  "hero": {
+    "badge": "Open-source template",
+    "title": "NestJS + Nuxt 4",
+    "titleAccent": "Monorepo Template",
+    "subtitle": "Production-ready стартовая точка для full-stack приложений.\nРазворачивается за минуты, масштабируется до продакшена.",
+    "toDashboard": "Перейти в кабинет",
+    "login": "Войти",
+    "github": "GitHub"
+  },
+  "quickstart": {
+    "title": "Быстрый старт",
+    "steps": {
+      "clone": "Клонировать репозиторий",
+      "install": "Установить зависимости",
+      "run": "Запустить приложения",
+      "postgres": "Поднять PostgreSQL",
+      "migrate": "Применить миграции"
+    }
+  },
+  "principles": {
+    "title": "Принципы",
+    "transparency": {
+      "title": "Прозрачность",
+      "desc": "Никакой магии. Каждое решение объяснено и очевидно из кода."
+    },
+    "idiomatic": {
+      "title": "Идиоматичность",
+      "desc": "Следуем соглашениям NestJS и Nuxt, не изобретаем велосипед."
+    },
+    "production": {
+      "title": "Готовность к prod",
+      "desc": "Docker, env-валидация, обработка ошибок — с первого дня."
+    },
+    "monorepo": {
+      "title": "Монорепо",
+      "desc": "Shared-пакет для типов и i18n. Backend и frontend в одном репо."
+    }
+  },
+  "branches": {
+    "title": "Варианты",
+    "current": "текущая",
+    "basedOn": "на основе",
+    "main": {
+      "label": "Базовый",
+      "desc": "Стартовая точка без БД. Users CRUD хранится in-memory."
+    },
+    "postgresPrisma": {
+      "label": "PostgreSQL",
+      "desc": "Подключает PostgreSQL и Prisma 7 поверх базового варианта."
+    },
+    "auth": {
+      "label": "Auth",
+      "desc": "JWT-аутентификация поверх postgres-prisma: email + пароль, httpOnly cookies, сессии в БД."
+    }
+  },
+  "stack": {
+    "title": "Стек"
+  },
+  "commands": {
+    "title": "Команды",
+    "groups": {
+      "dev": "Dev",
+      "prod": "Prod",
+      "utils": "Утилиты",
+      "prisma": "Prisma"
+    },
+    "items": {
+      "pnpmDev": "запустить приложения",
+      "dockerDev": "инфраструктура",
+      "pnpmBuild": "собрать всё",
+      "dockerUp": "все сервисы в Docker",
+      "dockerDown": "остановить",
+      "pnpmLint": "проверить код",
+      "pnpmTypeCheck": "проверить типы",
+      "prismaStudio": "Prisma Studio"
+    }
+  },
+  "tree": {
+    "title": "Структура"
+  }
+}

@@ -1,3 +1,19 @@
-export { default as ru } from './ru.json'
-export { default as en } from './en.json'
-export { default as th } from './th.json'
+import ruBase from './ru.json'
+import enBase from './en.json'
+import thBase from './th.json'
+import ruAbout from './about/ru.json'
+import enAbout from './about/en.json'
+import thAbout from './about/th.json'
+
+export const ru = {
+  ...ruBase,
+  about: ruAbout,
+}
+export const en = {
+  ...enBase,
+  about: enAbout,
+}
+export const th = {
+  ...thBase,
+  about: thAbout,
+}
