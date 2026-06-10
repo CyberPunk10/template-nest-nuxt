@@ -7,11 +7,17 @@ import { LocalAuthGuard } from './guards/local-auth.guard'
 import { Public } from './decorators/public.decorator'
 import { JwtPayload } from './strategies/jwt.strategy'
 import { User } from '../../generated/prisma/client'
+import { UsersService } from '../users/users.service'
+
+type SafeUser = Omit<User, 'passwordHash'>
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Public()
   @Post('register')
@@ -56,7 +62,8 @@ export class AuthController {
 
   @Get('me')
   @ApiOperation({ summary: 'Текущий пользователь' })
-  me(@Req() req: Request & { user: JwtPayload }) {
-    return req.user
+  async me(@Req() req: Request & { user: JwtPayload }): Promise<SafeUser> {
+    const { passwordHash: _, ...safe } = await this.usersService.findOne(req.user.sub)
+    return safe
   }
 }
