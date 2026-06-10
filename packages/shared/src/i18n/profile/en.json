@@ -1,0 +1,78 @@
+{
+  "demoBanner": "This is a template demo page — the edit form works, other sections are placeholders",
+  "role": "Admin",
+  "stats": {
+    "sessions": "Sessions",
+    "activeDays": "Active days",
+    "apiRequests": "API requests",
+    "devices": "Devices"
+  },
+  "info": {
+    "title": "Profile info",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "Email",
+    "position": "Position",
+    "organization": "Organization",
+    "save": "Save changes",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "errorFallback": "Save error"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "email": {
+      "name": "Email notifications",
+      "desc": "Important events by email"
+    },
+    "security": {
+      "name": "Security",
+      "desc": "New logins and devices"
+    },
+    "updates": {
+      "name": "Platform updates",
+      "desc": "New features and releases"
+    },
+    "digest": {
+      "name": "Weekly digest",
+      "desc": "Activity summary for the week"
+    }
+  },
+  "security": {
+    "title": "Security",
+    "password": {
+      "name": "Password",
+      "sub": "Last changed 30 days ago",
+      "action": "Change"
+    },
+    "twoFactor": {
+      "name": "Two-factor authentication",
+      "sub": "Not enabled",
+      "action": "Enable"
+    },
+    "apiKeys": {
+      "name": "API keys",
+      "sub": "2 active keys",
+      "action": "Manage"
+    }
+  },
+  "sessions": {
+    "title": "Active sessions",
+    "current": "Current",
+    "revoke": "Revoke"
+  },
+  "account": {
+    "userId": "User ID",
+    "registeredAt": "Registered at",
+    "registeredAtValue": "May 12, 2025",
+    "plan": "Plan",
+    "timezone": "Timezone"
+  },
+  "danger": {
+    "title": "Danger zone",
+    "deleteAccount": "Delete account",
+    "deleteDesc": "All data will be permanently deleted and cannot be recovered.",
+    "deleteAction": "Delete account"
+  }
+}
