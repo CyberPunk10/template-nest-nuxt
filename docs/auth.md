@@ -6,6 +6,10 @@
 
 Шаблон использует JWT-авторизацию через Passport.js с httpOnly cookies и сессиями в PostgreSQL.
 
+&nbsp;
+
+# <img src="https://nestjs.com/img/logo-small.svg" height="20" style="vertical-align:middle"> Бэкенд (NestJS)
+
 ## Как работает
 
 - **Регистрация:** `POST /auth/register` — создаёт пользователя, устанавливает оба cookie
@@ -106,12 +110,6 @@ health() {
 }
 ```
 
-На фронтенде добавить в `definePageMeta`:
-
-```typescript
-definePageMeta({ public: true })
-```
-
 ## Как работает `passthrough` в контроллере
 
 ```typescript
@@ -137,3 +135,7 @@ definePageMeta({ public: true })
 - [NestJS Custom Decorators](https://docs.nestjs.com/custom-decorators) — `SetMetadata`, как работает `@Public()`
 - [@nestjs/jwt](https://github.com/nestjs/jwt) — `JwtModule.registerAsync`, `JwtService.sign()`, `JwtModuleOptions`
 - [cookie-parser](https://www.npmjs.com/package/cookie-parser) — middleware для чтения cookies в Express/NestJS
+
+&nbsp;
+
+# <img src="https://nuxt.com/assets/design-kit/icon-green.svg" height="20" style="vertical-align:middle"> Фронтенд (Nuxt)

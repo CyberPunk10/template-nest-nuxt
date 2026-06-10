@@ -68,8 +68,9 @@ template-nest-nuxt/
 
 - **pnpm workspaces** — общие зависимости
 - **TypeScript strict** — строгий режим, path alias `@repo/*`
-- **ESLint + Prettier** — единый форматтер для всего монорепо
-- **Husky + lint-staged** — проверка изменённых файлов перед коммитом
+- **ESLint** — статический анализ кода (неиспользуемые переменные, потенциальные ошибки)
+- **Prettier** — автоформатирование кода; запуск: `pnpm prettier --write .`
+- **Husky + lint-staged** — перед каждым коммитом автоматически запускает ESLint и Prettier на изменённых файлах
 
 ### Пакеты
 
