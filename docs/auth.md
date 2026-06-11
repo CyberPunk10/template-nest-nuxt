@@ -66,7 +66,7 @@ Refresh (атакующий украл токен "A" и использует е
   → сессия ноутбука (f2) не затронута
 ```
 
-Записи `isUsed: true` очищаются по истечении `expiresAt` — они нужны только как ловушки, пока оригинальный токен мог бы быть жив.
+Записи `isUsed: true` нужны только как ловушки, пока оригинальный токен мог бы быть жив. Они удаляются автоматически cron-задачей при истечении `expiresAt` (см. [Очистка истёкших сессий](#очистка-истёкших-сессий)).
 
 **`familyId`** объединяет все ротации одного входа. Благодаря этому при компрометации инвалидируется только скомпрометированная цепочка, а не все устройства пользователя одновременно.
 
@@ -157,6 +157,26 @@ health() {
 
 По умолчанию если вы инжектите `@Res()`, NestJS передаёт управление ответом полностью вам — нужно вызывать `res.send()` вручную. `passthrough: true` говорит NestJS: "я инжектирую `res` только чтобы установить cookies, а сам ответ всё равно отправляй ты". Без этого `return` из метода контроллера ничего не отправит.
 
+## Очистка истёкших сессий
+
+При каждой ротации старая запись остаётся в таблице `Session` с `isUsed: true`. Если пользователь делает refresh раз в день на протяжении 7 дней — накапливается 7 записей на одну цепочку. Без очистки таблица растёт бесконечно.
+
+`SessionCleanupService` запускает cron-задачу каждую ночь в 03:00 и удаляет все записи, у которых `expiresAt < now`:
+
+```typescript
+@Cron(CronExpression.EVERY_DAY_AT_3AM)
+async cleanupExpiredSessions() {
+  await this.prisma.session.deleteMany({
+    where: { expiresAt: { lt: new Date() } },
+  })
+}
+```
+
+Это удаляет одновременно:
+
+- `isUsed: true` записи, чей срок истёк (ловушки больше не нужны — токен уже не предъявить)
+- Активные сессии с истёкшим `expiresAt` (пользователь не заходил 7+ дней)
+
 ## Rate limiting
 
 Приложение защищено от брутфорса через `@nestjs/throttler`:
@@ -200,6 +220,8 @@ ThrottlerModule.forRoot({
 - [NestJS Custom Decorators](https://docs.nestjs.com/custom-decorators) — `SetMetadata`, как работает `@Public()`
 - [@nestjs/jwt](https://github.com/nestjs/jwt) — `JwtModule.registerAsync`, `JwtService.sign()`, `JwtModuleOptions`
 - [cookie-parser](https://www.npmjs.com/package/cookie-parser) — middleware для чтения cookies в Express/NestJS
+- [@nestjs/throttler](https://docs.nestjs.com/security/rate-limiting) — rate limiting, `ThrottlerGuard`, `@Throttle()`, `getTracker`
+- [@nestjs/schedule](https://docs.nestjs.com/techniques/task-scheduling) — cron-задачи, `@Cron()`, `CronExpression`
 
 &nbsp;
 

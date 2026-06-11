@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
 import { ConfigModule } from '@nestjs/config'
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
+import { ScheduleModule } from '@nestjs/schedule'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { PrismaModule } from './modules/prisma/prisma.module'
@@ -17,6 +18,7 @@ import { envValidationSchema } from './config/env.validation'
     // За reverse proxy (nginx, Cloudflare) все запросы приходят с одного IP —
     // нужно настроить getTracker на чтение X-Forwarded-For (см. docs/auth.md).
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 100 }]),
+    ScheduleModule.forRoot(),
     PrismaModule,
     UsersModule,
     AuthModule,
