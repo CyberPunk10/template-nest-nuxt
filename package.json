@@ -1,5 +1,5 @@
 {
-  "name": "template-nest-nuxt",
+  "name": "template-nest-nuxt-docker",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -11,14 +11,17 @@
   },
   "description": "",
   "scripts": {
-    "dev": "pnpm --parallel -r dev",
+    "predev": "node scripts/predev.mjs",
+    "dev": "node scripts/dev.mjs",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "type-check": "pnpm -r type-check",
     "prepare": "husky"
   },
   "devDependencies": {
+    "@clack/prompts": "^1.5.1",
     "@eslint/js": "^10.0.1",
+    "concurrently": "^10.0.3",
     "eslint": "^10.4.1",
     "husky": "^9.0.0",
     "lint-staged": "^17.0.7",

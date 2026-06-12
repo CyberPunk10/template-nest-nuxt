@@ -19,7 +19,10 @@ services:
       - '3000:3000'
     environment:
       NUXT_PUBLIC_API_BASE: /api/backend
-      # Внутри Docker сервисы общаются по имени сервиса, а не localhost
+      NUXT_PUBLIC_APP_ENV: production
+      # Public backend URL visible to the browser
+      NUXT_PUBLIC_BACKEND_URL: http://localhost:3001
+      # Inside Docker, services communicate via service name, not localhost
       BACKEND_URL: http://backend:3001
     depends_on:
       - backend
@@ -34,3 +37,4 @@ networks:
     #   docker network connect template-nest-nuxt_app <container>
     # или через external: true в другом compose.
     name: template-nest-nuxt_app
+    external: true

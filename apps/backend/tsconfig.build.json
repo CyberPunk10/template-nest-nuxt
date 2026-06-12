@@ -5,7 +5,12 @@
     "rootDir": "./src",
     "outDir": "./dist",
     // Явно отменяем noEmit: true из tsconfig.json — иначе сборка ничего не создаст
-    "noEmit": false
+    "noEmit": false,
+    // Не очищать экран при перекомпиляции в watch-режиме
+    // (при параллеьном запуске pnpm dev из корня
+    // позвооляет видеть логи обоих приложений без очистки экрана,
+    // без этого первые логи nuxt с url-ами пропадают при старте бэкенда)
+    "preserveWatchOutput": true
   },
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }

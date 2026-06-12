@@ -14,6 +14,7 @@
       "clone": "Clone the repository",
       "install": "Install dependencies",
       "run": "Start the applications",
+      "network": "Create Docker network (first time only)",
       "postgres": "Start PostgreSQL",
       "migrate": "Apply migrations"
     }

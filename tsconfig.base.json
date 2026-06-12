@@ -8,15 +8,10 @@
     // Не проверять типы в node_modules — ускоряет type-check и избегает чужих ошибок
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    // Генерировать .d.ts файлы — нужно для @repo/shared и @repo/ui
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    // @repo/shared → скомпилированный ESM dist
-    // @repo/ui → source-only, Nuxt/Vite обрабатывает .vue и .ts напрямую
+    // Оба пакета указывают на src — Nuxt/Vite обрабатывает .ts напрямую без build-шага
     // Пути указаны от корня монорепо, где лежит этот файл
     "paths": {
-      "@repo/shared": ["./packages/shared/dist/index.d.ts"],
+      "@repo/shared": ["./packages/shared/src/index.ts"],
       "@repo/ui": ["./packages/ui/src/index.ts"]
     }
   }

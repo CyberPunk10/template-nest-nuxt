@@ -14,13 +14,16 @@ export default defineNuxtConfig({
       { code: 'en', language: 'en-US' },
       { code: 'th', language: 'th-TH' },
     ],
-    vueI18n: './i18n.config.ts',
   },
 
   runtimeConfig: {
     public: {
-      // Переопределяется через NUXT_PUBLIC_API_BASE в .env
+      // Переопределяется через NUXT_PUBLIC_API_BASE
       apiBase: '/api/backend',
+      // Переопределяется через NUXT_PUBLIC_BACKEND_URL
+      backendUrl: 'http://localhost:3001',
+      // Переопределяется через NUXT_PUBLIC_APP_ENV
+      appEnv: 'development',
     },
   },
 })

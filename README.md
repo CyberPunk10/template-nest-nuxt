@@ -35,13 +35,37 @@ git clone -b postgres-prisma https://github.com/CyberPunk10/template-nest-nuxt-d
 ```
 template-nest-nuxt/
 ├── apps/
-│   ├── backend/        ← NestJS API (:3001)
-│   └── frontend/       ← Nuxt 4 (:3000)
+│   ├── backend/        ← NestJS API (порт задаётся в .env)
+│   └── frontend/       ← Nuxt 4 (порт задаётся в .env)
 ├── packages/
 │   ├── shared/         ← @repo/shared — общие типы и i18n переводы
 │   └── ui/             ← @repo/ui — общие Vue компоненты
 └── ...конфиги монорепо
 ```
+
+---
+
+## Конфигурация окружения
+
+Каждое приложение читает **только свой** `.env`:
+
+| Файл                 | Назначение                  |
+| -------------------- | --------------------------- |
+| `apps/backend/.env`  | Локальная разработка NestJS |
+| `apps/frontend/.env` | Локальная разработка Nuxt   |
+
+Если `.env` отсутствует, он автоматически копируется из `.env.example` при первом `pnpm dev`.
+
+### Изменение портов
+
+При изменении портов обнови:
+
+1. `apps/backend/.env` — `PORT` (порт backend), `CORS_ORIGIN` (должен содержать порт frontend)
+2. `apps/frontend/.env` — `PORT` (порт frontend), `BACKEND_URL`, `NUXT_PUBLIC_BACKEND_URL` (оба должны содержать порт backend)
+
+Для Docker порты захардкожены в `docker-compose.yml` — менять там.
+
+> **Запуск из папки приложения:** `pnpm dev` из `apps/backend` или `apps/frontend` работает — каждое приложение читает свой `.env`. Предпочтительный способ — `pnpm dev` из корня монорепо.
 
 ---
 
@@ -86,6 +110,11 @@ pnpm install
 pnpm dev
 ```
 
+`pnpm dev` автоматически запускает `scripts/predev.mjs` (через npm `pre*` соглашение), который:
+
+- копирует `.env` из `.env.example` если файл отсутствует
+- проверяет порты и предлагает разрешить конфликт если они заняты
+
 - Frontend: http://localhost:3000
 - Backend: http://localhost:3001
 
@@ -112,9 +141,8 @@ cd apps/frontend && node .output/server/index.mjs
 
 ### Docker — оба сервиса
 
-Собрать образы и поднять всё одной командой:
-
 ```bash
+docker network create template-nest-nuxt_app  # только первый раз
 docker compose up --build
 ```
 
