@@ -1,5 +1,5 @@
 FROM node:24-alpine AS base
-RUN npm install -g pnpm@8.15.5
+RUN npm install -g pnpm@11.5.2
 
 FROM base AS builder
 WORKDIR /app
@@ -9,7 +9,6 @@ COPY packages/shared/package.json ./packages/shared/
 COPY packages/ui/package.json ./packages/ui/
 RUN pnpm install --frozen-lockfile
 COPY . .
-RUN pnpm --filter @repo/shared build
 RUN pnpm --filter @repo/frontend build
 
 # ---- production image ----
