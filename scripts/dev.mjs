@@ -6,6 +6,6 @@ concurrently(
     { command: 'pnpm --filter frontend dev', name: 'Nuxt' },
   ],
   {
-    prefixColors: ['#e0234e', '#fbbf24'],
+    prefixColors: ['#e0234e', '#ffca28'],
   },
 )
