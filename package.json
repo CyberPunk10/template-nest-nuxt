@@ -16,7 +16,8 @@
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "type-check": "pnpm -r type-check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "reinstall": "node scripts/reinstall.mjs"
   },
   "devDependencies": {
     "@clack/prompts": "^1.5.1",
