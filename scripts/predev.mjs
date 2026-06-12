@@ -95,6 +95,9 @@ async function checkPorts() {
 }
 
 async function main() {
+  // очистить экран перед запуском
+  process.stdout.write('\x1Bc')
+
   // Шаг 1: создать .env из .env.example если отсутствует
   copyEnvExample(BACKEND_ENV, BACKEND_ENV_EXAMPLE)
   copyEnvExample(FRONTEND_ENV, FRONTEND_ENV_EXAMPLE)

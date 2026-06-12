@@ -92,6 +92,10 @@ export const quickstarts: Quickstart[] = [
       },
       { labelKey: 'about.quickstart.steps.install', cmd: 'pnpm install' },
       {
+        labelKey: 'about.quickstart.steps.envCheck',
+        cmd: 'cp apps/backend/.env.example apps/backend/.env',
+      },
+      {
         labelKey: 'about.quickstart.steps.network',
         cmd: 'docker network create template-nest-nuxt_app',
       },
@@ -114,6 +118,10 @@ export const quickstarts: Quickstart[] = [
         cmd: 'git clone https://github.com/CyberPunk10/template-nest-nuxt-docker && git checkout auth',
       },
       { labelKey: 'about.quickstart.steps.install', cmd: 'pnpm install' },
+      {
+        labelKey: 'about.quickstart.steps.envCheck',
+        cmd: 'cp apps/backend/.env.example apps/backend/.env',
+      },
       {
         labelKey: 'about.quickstart.steps.network',
         cmd: 'docker network create template-nest-nuxt_app',
