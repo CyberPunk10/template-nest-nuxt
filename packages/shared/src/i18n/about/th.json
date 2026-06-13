@@ -14,6 +14,8 @@
       "clone": "โคลน repository",
       "install": "ติดตั้ง dependencies",
       "run": "เริ่มต้นแอปพลิเคชัน",
+      "envCheck": "ตรวจสอบ .env — การเปลี่ยน branch อาจต้องการตัวแปรใหม่",
+      "network": "สร้าง Docker network (ครั้งแรกเท่านั้น)",
       "postgres": "เริ่ม PostgreSQL",
       "migrate": "รัน migrations"
     }

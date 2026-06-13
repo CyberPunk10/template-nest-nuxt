@@ -24,3 +24,4 @@ volumes:
 networks:
   app:
     name: template-nest-nuxt_app
+    external: true
