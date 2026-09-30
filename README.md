@@ -32,7 +32,7 @@ git clone -b auth-session https://github.com/CyberPunk10/template-nest-nuxt.git 
 
 ### `postgres-prisma` — + PostgreSQL + Prisma
 
-Всё из `main`, плюс Prisma 7 + PostgreSQL 17, PrismaModule, миграции. БД живёт в общем `docker-compose.yml` и поднимается в обоих режимах: `pnpm dev` стартует только её, `pnpm docker:up` — весь стек.
+Всё из `auth-session`, плюс Prisma 7 + PostgreSQL 17, PrismaModule, миграции. БД живёт в общем `docker-compose.yml` и поднимается в обоих режимах: `pnpm dev` стартует только её, `pnpm docker:up` — весь стек.
 
 ```bash
 git clone -b postgres-prisma https://github.com/CyberPunk10/template-nest-nuxt.git my-app
