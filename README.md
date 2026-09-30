@@ -32,7 +32,7 @@ git clone -b auth-session https://github.com/CyberPunk10/template-nest-nuxt.git 
 
 ### `postgres-prisma` — + PostgreSQL + Prisma
 
-Всё из `main`, плюс Prisma 7 + PostgreSQL 17, PrismaModule, миграции, docker-compose с БД.
+Всё из `auth-session`, плюс Prisma 7 + PostgreSQL 17, PrismaModule, миграции, docker-compose с БД.
 
 ```bash
 git clone -b postgres-prisma https://github.com/CyberPunk10/template-nest-nuxt.git my-app
