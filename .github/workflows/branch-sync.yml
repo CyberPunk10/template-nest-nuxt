@@ -1,0 +1,78 @@
+name: Branch sync
+
+# Подтягивает наработки вверх по цепочке веток-вариантов:
+#
+#   main → auth-session → postgres-prisma
+#
+# Когда CI ветки прошёл, делает merge этой ветки в следующую и push. Push
+# запускает CI следующей ветки, и цепочка идёт дальше.
+#
+# При конфликте ничего не пушит и падает — придёт письмо «workflow failed».
+# Разрешить как обычно: git switch <ветка>, git pull, git merge <источник>,
+# поправить конфликт в IDE, commit, push.
+#
+# Push делается токеном BRANCH_SYNC_TOKEN (секрет репозитория): push
+# встроенным GITHUB_TOKEN не запустил бы CI следующей ветки.
+# Этот файл GitHub всегда берёт из main — менять его достаточно там.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    # Ветки, из которых есть куда вливать. Для остальных workflow не
+    # запускается вовсе.
+    branches: [main, auth-session]
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    # Только успешный CI после push в этот репозиторий: прогоны PR, упавшие
+    # прогоны и чужие форки пропускаются — токен с правом записи срабатывает
+    # только на свой код.
+    if: >-
+      github.event.workflow_run.conclusion == 'success'
+      && github.event.workflow_run.event == 'push'
+      && github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    # Два merge в одну ветку не идут наперегонки: второй ждёт первого.
+    concurrency:
+      group: branch-sync-${{ github.event.workflow_run.head_branch }}
+      cancel-in-progress: false
+    env:
+      SOURCE: ${{ github.event.workflow_run.head_branch }}
+      # В merge идёт ровно тот коммит, который проверил CI.
+      SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.BRANCH_SYNC_TOKEN }}
+          fetch-depth: 0
+
+      - name: Merge into the next branch
+        run: |
+          # Целевая ветка — следующая в цепочке после той, чей CI прошёл.
+          case "$SOURCE" in
+            main)         target=auth-session ;;
+            auth-session) target=postgres-prisma ;;
+            *)            echo "$SOURCE не входит в цепочку или последняя в ней"; exit 0 ;;
+          esac
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch "$target"
+
+          if git merge-base --is-ancestor "$SHA" HEAD; then
+            echo "$target уже содержит $SOURCE"
+            exit 0
+          fi
+
+          if git merge --no-ff --no-edit -m "Merge branch '$SOURCE' into $target" "$SHA"; then
+            git push origin "$target"
+          else
+            echo "Конфликт при слиянии $SOURCE → $target. Файлы:"
+            git diff --name-only --diff-filter=U
+            echo "Разрешите конфликт вручную: git switch $target && git pull && git merge $SOURCE"
+            exit 1
+          fi
