@@ -11,6 +11,26 @@
 
 [`predocker.mjs`](/th/guide/structure/scripts/predocker) ทำแบบเดียวกัน — ต่างกันแค่ list ของพอร์ต และเพิ่มการสร้าง Docker network
 
+## สิ่งที่แสดงผล
+
+แต่ละขั้นตอนจะพิมพ์ผลลัพธ์หนึ่งบรรทัด:
+
+```
+[predev.mjs] ✓ .env: created apps/backend/.env from .env.example
+[predev.mjs] ✓ ports: backend 3100 · frontend 3200 · docs 5173
+```
+
+ถ้าขั้นตอนไหนไม่สำเร็จ — จะมีบรรทัดที่มี ✗ พร้อมชื่อขั้นตอน และการเตรียมการจะหยุดตรงนั้น:
+
+```
+[predev.mjs] ✗ ports: PORT=abc in apps/backend/.env - not a valid port number (0-65535)
+```
+
+| ขั้นตอน   | สิ่งที่ต้องตรวจ                                 | ทำซ้ำแยก           |
+| ------- | ------------------------------------------ | --------------- |
+| `.env`  | มี `.env.example` อยู่ข้าง `.env` ที่ต้องการหรือไม่ | `pnpm env:copy` |
+| `ports` | ค่า `PORT` ใน `.env` ที่ระบุ                   | `pnpm predev`   |
+
 ## การใช้งาน
 
 รันเองอัตโนมัติ — ไม่ต้องเรียกแยก:

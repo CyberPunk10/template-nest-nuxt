@@ -11,6 +11,26 @@ The ports checked are the dev ones: `PORT` from `apps/backend/.env`, `apps/front
 
 [`predocker.mjs`](/en/guide/structure/scripts/predocker) does the same — differing only in the list of ports and in additionally setting up the Docker network.
 
+## What it prints
+
+Each step prints a line with its result:
+
+```
+[predev.mjs] ✓ .env: created apps/backend/.env from .env.example
+[predev.mjs] ✓ ports: backend 3100 · frontend 3200 · docs 5173
+```
+
+If a step fails — a line with ✗ and the step name, and preparation stops there:
+
+```
+[predev.mjs] ✗ ports: PORT=abc in apps/backend/.env - not a valid port number (0-65535)
+```
+
+| Step    | What to check                                 | Repeat on its own |
+| ------- | --------------------------------------------- | ----------------- |
+| `.env`  | that `.env.example` exists next to the `.env` | `pnpm env:copy`   |
+| `ports` | the `PORT` value in the named `.env`          | `pnpm predev`     |
+
 ## Usage
 
 It runs on its own — no need to call it separately:
