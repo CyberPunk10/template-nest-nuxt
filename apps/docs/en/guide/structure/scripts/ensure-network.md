@@ -1,6 +1,6 @@
 # ensure-network.mjs
 
-Exports a single function — `ensureNetwork()`. It reads `COMPOSE_NETWORK_NAME` from the root `.env` and creates the Docker network if it doesn't exist yet. Repeat calls do nothing and return `false`.
+Exports a single function — `ensureNetwork()`. It reads `COMPOSE_NETWORK_NAME` from the root `.env` and creates the Docker network if it doesn't exist yet. Repeat calls do nothing and return `created: false`.
 
 The variable is mandatory: without it the function throws:
 
@@ -18,7 +18,7 @@ There's no pnpm command of its own — it's called from [`predocker.mjs`](/en/gu
 ```js
 import { ensureNetwork } from './ensure-network.mjs'
 
-ensureNetwork()   // true — network created, false — it already existed
+const { name, created } = ensureNetwork()   // created: true — network created, false — it already existed
 ```
 
 The same by hand, if you need to bring the stack up with a plain `docker compose up`:

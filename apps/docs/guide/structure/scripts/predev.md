@@ -11,6 +11,26 @@
 
 Тем же занимается [`predocker.mjs`](/guide/structure/scripts/predocker) — разница только в списке портов и в том, что он дополнительно заводит Docker-сеть.
 
+## Что выводит
+
+Каждый шаг пишет строку о результате:
+
+```
+[predev.mjs] ✓ .env: created apps/backend/.env from .env.example
+[predev.mjs] ✓ ports: backend 3100 · frontend 3200 · docs 5173
+```
+
+Если шаг не выполнен — строка с ✗ и имя шага, дальше подготовка не идёт:
+
+```
+[predev.mjs] ✗ ports: PORT=abc in apps/backend/.env - not a valid port number (0-65535)
+```
+
+| Шаг     | Что проверить                                | Повторить отдельно |
+| ------- | -------------------------------------------- | ------------------ |
+| `.env`  | есть ли `.env.example` рядом с нужным `.env` | `pnpm env:copy`    |
+| `ports` | значение `PORT` в указанном `.env`           | `pnpm predev`      |
+
 ## Использование
 
 Запускается сам — отдельно вызывать не нужно:

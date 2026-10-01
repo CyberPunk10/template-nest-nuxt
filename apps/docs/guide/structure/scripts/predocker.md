@@ -16,6 +16,28 @@
 
 Аналог для локальной разработки — [`predev.mjs`](/guide/structure/scripts/predev).
 
+## Что выводит
+
+Каждый шаг пишет строку о результате:
+
+```
+[predocker.mjs] ✓ .env: files in place
+[predocker.mjs] ✓ ports: nginx 80
+[predocker.mjs] ✓ network: template-nest-nuxt_app created
+```
+
+Если шаг не выполнен — строка с ✗ и имя шага, дальше подготовка не идёт:
+
+```
+[predocker.mjs] ✗ network: Command failed: docker network create template-nest-nuxt_app
+```
+
+| Шаг       | Что проверить                                | Повторить отдельно                             |
+| --------- | -------------------------------------------- | ---------------------------------------------- |
+| `.env`    | есть ли `.env.example` рядом с нужным `.env` | `pnpm env:copy`                                |
+| `ports`   | значение `NGINX_HOST_PORT` в корневом `.env` | `pnpm predocker:up`                            |
+| `network` | запущен ли Docker                            | `docker network create template-nest-nuxt_app` |
+
 ## Использование
 
 Запускается сам — отдельно вызывать не нужно:
