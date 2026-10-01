@@ -6,6 +6,23 @@
 
 ก่อนรันครั้งแรก — [การเตรียมความพร้อม](/th/guide/getting-started/setup)
 
+## สรุปคำสั่ง
+
+| งาน                                      | คำสั่ง                                                   |
+| ---------------------------------------- | ----------------------------------------------------- |
+| รันครั้งแรก และรันหลังแก้โค้ด                   | `pnpm docker:up --build`                              |
+| รันโดยไม่ build ใหม่ — image ถูก build ไว้แล้ว | `pnpm docker:up`                                      |
+| รันแบบ background                         | `pnpm docker:up --build -d`                           |
+| ดูว่ามีอะไรรันอยู่และสถานะเป็นอย่างไร            | `docker compose ps`                                   |
+| ดู log ของ service แบบ real-time          | `docker compose logs -f backend`                      |
+| หยุด                                      | `Ctrl+C` หรือ `docker compose down` ถ้ารันแบบ background |
+
+flag ที่ใส่หลัง `pnpm docker:up` จะถูกส่งต่อให้ `docker compose up` ตามเดิม
+
+::: tip
+ถ้าไม่ใส่ `--build` compose จะใช้ image ที่ build ไว้แล้ว — โค้ดที่เพิ่งแก้จะไม่เข้าไปใน container ถ้าการแก้ไข "ไม่แสดงผล" ให้ build ใหม่ก่อน
+:::
+
 ## เริ่มรัน
 
 ```bash

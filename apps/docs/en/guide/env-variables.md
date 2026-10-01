@@ -70,11 +70,12 @@ Inside the network the applications still listen on ports, but they're addressed
 
 ### Summary
 
-| Variable | File | What it sets |
-| --- | --- | --- |
-| `PORT` | `apps/*/.env` | The process port under `pnpm dev` |
-| `*_INTERNAL_PORT` | `.env` (root) | The process port inside the container |
-| `POSTGRES_PORT` | `.env` (root) | Database host port — local access |
+| Variable          | File          | What it sets                              |
+| ----------------- | ------------- | ----------------------------------------- |
+| `PORT`            | `apps/*/.env` | The process port under `pnpm dev`         |
+| `*_INTERNAL_PORT` | `.env` (root) | The process port inside the container     |
+| `NGINX_HOST_PORT` | `.env` (root) | The only outward-facing port under Docker |
+| `POSTGRES_PORT`   | `.env` (root) | Database host port — local access         |
 
 The documentation has no `*_INTERNAL_PORT`: under Docker its static files sit inside the proxy image, so there's no separate process. In dev, VitePress runs its own server — hence `PORT=5173`.
 
@@ -104,12 +105,12 @@ The breakage is silent: the server responds **200**, the logs look fine, but in 
 
 ### What the value must match
 
-| Mode | Value | Matches |
-| --- | --- | --- |
-| `pnpm dev` | `http://localhost:3200` | `PORT` in `apps/frontend/.env` |
-| Docker | `http://localhost` | `NGINX_HOST_PORT` in the root `.env` |
+| Mode       | Value                   | Matches                            |
+| ---------- | ----------------------- | ---------------------------------- |
+| `pnpm dev` | `http://localhost:3200` | `PORT` in `apps/frontend/.env`     |
+| Docker     | `http://localhost`      | `PUBLIC_ORIGIN` in the root `.env` |
 
-Change the frontend port in dev — fix `CORS_ORIGIN` in `apps/backend/.env`. Change the proxy port — fix the value in `docker-compose.yml`.
+Change the frontend port in dev — fix `CORS_ORIGIN` in `apps/backend/.env`. Change the proxy port or deploy to a server — fix `PUBLIC_ORIGIN` in the root `.env` (on a server it's `https://<domain>`).
 
 ### Why there's no port under Docker
 

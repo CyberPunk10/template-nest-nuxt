@@ -6,6 +6,23 @@ These are production builds, there is no hot reload, a code change shows up only
 
 Before the first run — [Setup](/en/guide/getting-started/setup).
 
+## Cheat sheet
+
+| Task                                                | Command                                                   |
+| --------------------------------------------------- | --------------------------------------------------------- |
+| First start, and start after code changes           | `pnpm docker:up --build`                                  |
+| Start without rebuilding — images are already built | `pnpm docker:up`                                          |
+| Start in the background                             | `pnpm docker:up --build -d`                               |
+| What's running and in what state                    | `docker compose ps`                                       |
+| Follow a service's logs                             | `docker compose logs -f backend`                          |
+| Stop                                                | `Ctrl+C`, or `docker compose down` for a background start |
+
+Flags after `pnpm docker:up` are passed to `docker compose up` as is.
+
+::: tip
+Without `--build` compose uses the images it already has — fresh code changes won't get into the container. If changes "don't show up", rebuild first.
+:::
+
 ## Start
 
 ```bash

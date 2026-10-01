@@ -70,10 +70,11 @@ localhost/dev/docs/   → static ของเอกสาร
 
 ### สรุป
 
-| ตัวแปร | ไฟล์ | กำหนดอะไร |
-| --- | --- | --- |
-| `PORT` | `apps/*/.env` | พอร์ตของ process ตอน `pnpm dev` |
+| ตัวแปร             | ไฟล์           | กำหนดอะไร                        |
+| ----------------- | ------------- | ------------------------------- |
+| `PORT`            | `apps/*/.env` | พอร์ตของ process ตอน `pnpm dev`  |
 | `*_INTERNAL_PORT` | `.env` (root) | พอร์ตของ process ภายใน container |
+| `NGINX_HOST_PORT` | `.env` (root) | พอร์ตเดียวที่เปิดออกภายนอกใน Docker  |
 | `POSTGRES_PORT` | `.env` (root) | host port ของฐานข้อมูล — เข้าถึงจากเครื่อง |
 
 เอกสารไม่มี `*_INTERNAL_PORT`: ใน Docker ไฟล์ static ของมันอยู่ใน image ของ proxy อยู่แล้ว จึงไม่มี process แยก ส่วนใน dev นั้น VitePress รัน server ของตัวเอง — จึงมี `PORT=5173`
@@ -104,12 +105,12 @@ localhost/dev/docs/   → static ของเอกสาร
 
 ### ค่าต้องตรงกับอะไร
 
-| โหมด | ค่า | ตรงกับ |
-| --- | --- | --- |
-| `pnpm dev` | `http://localhost:3200` | `PORT` ใน `apps/frontend/.env` |
-| Docker | `http://localhost` | `NGINX_HOST_PORT` ใน `.env` ที่ root |
+| โหมด       | ค่า                      | ตรงกับ                            |
+| ---------- | ----------------------- | -------------------------------- |
+| `pnpm dev` | `http://localhost:3200` | `PORT` ใน `apps/frontend/.env`   |
+| Docker     | `http://localhost`      | `PUBLIC_ORIGIN` ใน `.env` ที่ root |
 
-เปลี่ยนพอร์ต frontend ใน dev — ต้องแก้ `CORS_ORIGIN` ใน `apps/backend/.env` ด้วย เปลี่ยนพอร์ต proxy — แก้ค่าใน `docker-compose.yml`
+เปลี่ยนพอร์ต frontend ใน dev — ต้องแก้ `CORS_ORIGIN` ใน `apps/backend/.env` ด้วย เปลี่ยนพอร์ต proxy หรือ deploy ขึ้นเซิร์ฟเวอร์ — แก้ `PUBLIC_ORIGIN` ใน `.env` ที่ root (บนเซิร์ฟเวอร์คือ `https://<โดเมน>`)
 
 ### ทำไมใน Docker ถึงไม่มีพอร์ต
 

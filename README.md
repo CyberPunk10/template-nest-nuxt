@@ -70,6 +70,17 @@ git clone -b postgres-prisma https://github.com/CyberPunk10/template-nest-nuxt.g
 - **`pnpm docker:up`** — обёртка над `docker compose --profile app up`: создаёт корневой `.env` из `.env.example`, проверяет занятость хост-портов, заводит Docker-сеть
 - **`pnpm db:up` / `pnpm db:down`** — управление контейнером БД отдельно от приложений; `up` ждёт healthcheck, `down` оставляет данные в volume
 
+**Запуск через Docker:**
+
+| Задача                                   | Команда                                               |
+| ---------------------------------------- | ----------------------------------------------------- |
+| Первый запуск и запуск после правок кода | `pnpm docker:up --build`                              |
+| Запуск в фоне                            | `pnpm docker:up --build -d`                           |
+| Статус и логи                            | `docker compose ps`, `docker compose logs -f backend` |
+| Остановить                               | `Ctrl+C` или `docker compose down`                    |
+
+Подробнее — [Запуск через Docker](apps/docs/guide/getting-started/run-docker.md).
+
 ## Документация
 
 Полная документация — VitePress в [`apps/docs`](apps/docs). Локально: `pnpm --filter @repo/docs dev`, в Docker раздаётся по `/dev/docs/`.

@@ -42,11 +42,11 @@ services:
         docs: service:docs-builder
     restart: unless-stopped
     ports:
-      - '${NGINX_HOST_PORT}:${NGINX_INTERNAL_PORT}'
+      - '${NGINX_HOST_PORT:?}:${NGINX_INTERNAL_PORT:?}'
     environment:
-      NGINX_INTERNAL_PORT: '${NGINX_INTERNAL_PORT}'
-      FRONTEND_INTERNAL_PORT: '${FRONTEND_INTERNAL_PORT}'
-      BACKEND_INTERNAL_PORT: '${BACKEND_INTERNAL_PORT}'
+      NGINX_INTERNAL_PORT: '${NGINX_INTERNAL_PORT:?}'
+      FRONTEND_INTERNAL_PORT: '${FRONTEND_INTERNAL_PORT:?}'
+      BACKEND_INTERNAL_PORT: '${BACKEND_INTERNAL_PORT:?}'
     depends_on:
       - frontend
       - backend
@@ -72,15 +72,16 @@ services:
       dockerfile: apps/backend/Dockerfile
     restart: unless-stopped
     expose:
-      - '${BACKEND_INTERNAL_PORT}'
+      - '${BACKEND_INTERNAL_PORT:?}'
     env_file: apps/backend/.env
     environment:
       NODE_ENV: production
       APP_ENV: production
-      PORT: '${BACKEND_INTERNAL_PORT}'
-      # Снаружи фронтенд приходит через прокси, а не со своего порта.
+      PORT: '${BACKEND_INTERNAL_PORT:?}'
+      # Снаружи фронтенд приходит через прокси, а не со своего порта, —
+      # поэтому origin это адрес сайта (PUBLIC_ORIGIN в корневом .env).
       # Порт 80 в origin не пишется — браузер его тоже опускает.
-      CORS_ORIGIN: http://localhost
+      CORS_ORIGIN: '${PUBLIC_ORIGIN:?}'
       # Подключение к БД переопределяется здесь, а не берётся из
       # apps/backend/.env: тот файл описывает локальный запуск (`pnpm dev`,
       # хост и проброшенный порт), а внутри Docker-сети Postgres доступен по
@@ -105,14 +106,14 @@ services:
       dockerfile: apps/frontend/Dockerfile
     restart: unless-stopped
     expose:
-      - '${FRONTEND_INTERNAL_PORT}'
+      - '${FRONTEND_INTERNAL_PORT:?}'
     env_file: apps/frontend/.env
     environment:
       NUXT_PUBLIC_APP_ENV: production
-      PORT: '${FRONTEND_INTERNAL_PORT}'
+      PORT: '${FRONTEND_INTERNAL_PORT:?}'
       # Внутри сети backend доступен только по имени сервиса, не по localhost.
       # Префикс NUXT_ обязателен — без него Nuxt переменную игнорирует.
-      NUXT_BACKEND_URL: http://backend:${BACKEND_INTERNAL_PORT}
+      NUXT_BACKEND_URL: http://backend:${BACKEND_INTERNAL_PORT:?}
       # Относительный путь: доки отдаёт тот же прокси, что и фронтенд.
       NUXT_PUBLIC_DOCS_URL: /dev/docs/
     depends_on:
@@ -132,5 +133,5 @@ networks:
     #   docker network connect $COMPOSE_NETWORK_NAME <container>
     # или через external: true в другом compose.
     # Сеть создаётся не Compose, а скриптами `pnpm db:up` / `pnpm docker:up`.
-    name: ${COMPOSE_NETWORK_NAME}
+    name: ${COMPOSE_NETWORK_NAME:?}
     external: true
