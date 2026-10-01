@@ -23,7 +23,7 @@ pnpm db:up
 
 ฐานข้อมูลถูกประกาศไว้ใน `docker-compose.yml` ไฟล์เดียวกันโดยไม่มี profile ส่วน service ของแอปอยู่ภายใต้ profile `app` ดังนั้น `docker compose up` จะแตะเฉพาะ postgres และถ้าต้องการ stack ทั้งหมดให้ใช้ `pnpm docker:up`
 
-รัน migration และ generate client:
+รัน migration:
 
 ```bash
 cd apps/backend
@@ -110,8 +110,15 @@ pnpm prisma generate
 
 ### การ generate client
 
-Prisma generate client ไว้ที่ `src/generated/prisma` — โฟลเดอร์นี้อยู่ใน `.gitignore`
-ใน Prisma 7 client **จะไม่ถูก generate อัตโนมัติ** ตอน `migrate dev` — ต้องรัน `prisma generate` เองหลังจากเปลี่ยน schema สามารถตั้งค่าให้รันอัตโนมัติได้ผ่าน `afterApply` ใน `prisma.config.ts`
+client คือผลลัพธ์ของการ build: Prisma สร้างมันจาก `schema.prisma` ไว้ที่ `src/generated/prisma` และไม่ได้อยู่ใน repository
+
+ปกติไม่ต้อง generate เอง: `postinstall` ใน `apps/backend/package.json` ทำให้ระหว่าง `pnpm install` client จึงมีขึ้นเองบน clone ใหม่, ใน CI และใน Docker image
+
+ต้องทำเอง — เมื่อ schema เปลี่ยน: หลังแก้ schema หรือหลัง `git pull` ตอนนั้น client จะไม่อัปเดตเอง: ใน Prisma 7 `migrate dev` ไม่ generate client และ `pnpm install` ที่ไม่มี dependency ใหม่จะข้าม `postinstall`
+
+```bash
+pnpm db:generate
+```
 
 generator ถูกตั้งเป็น CommonJS:
 

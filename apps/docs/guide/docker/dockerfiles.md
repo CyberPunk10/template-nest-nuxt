@@ -25,6 +25,8 @@ COPY манифесты  →  pnpm install --frozen-lockfile  →  COPY исхо
 
 Порядок не случаен: Docker кэширует послойно, поэтому при изменении исходников `install` берётся из кэша. Пересобирается он только когда меняется `package.json` или lockfile.
 
+Backend вместе с манифестами копирует `prisma/schema.prisma` и `prisma.config.ts`: клиент Prisma генерирует `postinstall` во время `install`. Поэтому у backend `install` пересобирается и при правке схемы.
+
 ## Что попадает в финальный образ
 
 **Backend** дополнительно запускает `pnpm deploy --prod /deploy` — копирует из `node_modules` только зависимости `@repo/backend`, без лишних пакетов монорепо. Runner получает чистый плоский `node_modules`:

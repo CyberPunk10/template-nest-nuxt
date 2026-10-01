@@ -6,11 +6,13 @@ WORKDIR /app
 COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
 COPY apps/backend/package.json ./apps/backend/
 COPY packages/shared/package.json ./packages/shared/
+# Клиент Prisma генерирует postinstall backend'а во время install, поэтому
+# схема и конфиг нужны до него. Клиент с хоста в образ не копируется
+# (src/generated в .dockerignore) — образ всегда строит свой.
+COPY apps/backend/prisma/schema.prisma ./apps/backend/prisma/
+COPY apps/backend/prisma.config.ts ./apps/backend/
 RUN pnpm install --frozen-lockfile
 COPY . .
-# Клиент генерируется в образе, а не копируется: src/generated исключён
-# в .dockerignore, чтобы артефакты хост-машины не попадали в сборку.
-RUN pnpm --filter @repo/backend exec prisma generate
 RUN pnpm --filter @repo/backend build
 RUN pnpm --filter @repo/backend deploy --prod --legacy /deploy
 

@@ -25,6 +25,8 @@ COPY manifest  →  pnpm install --frozen-lockfile  →  COPY source  →  build
 
 ลำดับนี้ไม่ได้บังเอิญ: Docker cache ทีละ layer ดังนั้นเมื่อ source เปลี่ยน `install` จะมาจาก cache มันจะรันใหม่ก็ต่อเมื่อ `package.json` หรือ lockfile เปลี่ยนเท่านั้น
 
+backend จะคัดลอก `prisma/schema.prisma` และ `prisma.config.ts` มาพร้อมกับ manifest: client ของ Prisma ถูก generate โดย `postinstall` ระหว่าง `install` ดังนั้นของ backend `install` จะรันใหม่เมื่อแก้ schema ด้วย
+
 ## อะไรอยู่ใน image สุดท้าย
 
 **Backend** รัน `pnpm deploy --prod /deploy` เพิ่ม — คัดลอกเฉพาะ dependency ของ `@repo/backend` ออกจาก `node_modules` โดยไม่เอา package อื่นของ monorepo มาด้วย runner จึงได้ `node_modules` ที่สะอาดและแบน:

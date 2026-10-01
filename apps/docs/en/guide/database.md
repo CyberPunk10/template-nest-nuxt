@@ -23,7 +23,7 @@ You rarely need the command on its own: `pnpm dev` brings the database up itself
 
 The database lives in the shared `docker-compose.yml` with no profile, while the application services sit behind the `app` profile. That way `docker compose up` only touches postgres, and the full stack comes up via `pnpm docker:up`.
 
-Apply migrations and generate the client:
+Apply migrations:
 
 ```bash
 cd apps/backend
@@ -110,8 +110,15 @@ pnpm prisma generate
 
 ### Client generation
 
-Prisma generates the client into `src/generated/prisma` — this folder is in `.gitignore`.
-In Prisma 7 the client is **not generated automatically** on `migrate dev` — you need to run `prisma generate` manually after schema changes. Auto-generation can be configured via `afterApply` in `prisma.config.ts`.
+The client is a build artifact: Prisma builds it from `schema.prisma` into `src/generated/prisma`, and it isn't in the repository.
+
+Usually there's no need to generate it by hand: `postinstall` in `apps/backend/package.json` does it during `pnpm install`. That's how the client appears on a fresh clone, in CI and in the Docker image.
+
+By hand — when the schema has changed: after editing it or after a `git pull`. The client won't update on its own then: in Prisma 7 `migrate dev` doesn't generate it, and `pnpm install` with no new dependencies skips `postinstall`.
+
+```bash
+pnpm db:generate
+```
 
 The generator is set to CommonJS:
 

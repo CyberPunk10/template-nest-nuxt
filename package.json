@@ -17,6 +17,7 @@
     "dev": "node scripts/dev.mjs",
     "db:up": "node scripts/db.mjs up",
     "db:down": "node scripts/db.mjs down",
+    "db:generate": "pnpm --filter @repo/backend exec prisma generate",
     "predocker:up": "node scripts/predocker.mjs",
     "docker:up": "docker compose --profile app up",
     "build": "pnpm -r build",

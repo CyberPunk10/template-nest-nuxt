@@ -23,7 +23,7 @@ pnpm db:up
 
 БД описана в общем `docker-compose.yml` без профиля, а сервисы приложения — под профилем `app`. Поэтому `docker compose up` поднимает только postgres, а полный стек поднимается через `pnpm docker:up`.
 
-Применить миграции и сгенерировать клиент:
+Применить миграции:
 
 ```bash
 cd apps/backend
@@ -110,8 +110,15 @@ pnpm prisma generate
 
 ### Генерация клиента
 
-Prisma генерирует клиент в `src/generated/prisma` — эта папка в `.gitignore`.
-В Prisma 7 клиент **не генерируется автоматически** при `migrate dev` — нужно запускать `prisma generate` вручную после изменений схемы. Автозапуск можно настроить через `afterApply` в `prisma.config.ts`.
+Клиент — артефакт сборки: Prisma строит его из `schema.prisma` в `src/generated/prisma`, в репозитории его нет.
+
+Обычно запускать генерацию вручную не нужно: её делает `postinstall` в `apps/backend/package.json` во время `pnpm install`. Так клиент появляется на свежем клоне, в CI и в Docker-образе.
+
+Вручную — когда схема изменилась: после её правки или после `git pull`. Сам клиент в этом случае не обновится: `migrate dev` в Prisma 7 его не генерирует, а `pnpm install` без новых зависимостей пропускает `postinstall`.
+
+```bash
+pnpm db:generate
+```
 
 Генератор настроен на CommonJS:
 
