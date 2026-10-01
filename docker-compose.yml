@@ -13,16 +13,19 @@ services:
     # Порт публикуется и в Docker-режиме: приложениям внутри сети он не нужен
     # (они ходят по имени сервиса), но с хоста к БД удобно подключаться
     # клиентом и запускать миграции/сиды через `pnpm --filter backend ...`.
+    # Только на 127.0.0.1: на сервере БД не должна быть видна из интернета.
+    # Docker пишет свои правила iptables в обход ufw, поэтому файрвол
+    # опубликованный на 0.0.0.0 порт не закрыл бы.
     ports:
-      - '${POSTGRES_PORT}:5432'
+      - '127.0.0.1:${POSTGRES_PORT:?}:5432'
     environment:
-      POSTGRES_USER: '${POSTGRES_USER}'
-      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
-      POSTGRES_DB: '${POSTGRES_DB}'
+      POSTGRES_USER: '${POSTGRES_USER:?}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:?}'
+      POSTGRES_DB: '${POSTGRES_DB:?}'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:?} -d ${POSTGRES_DB:?}']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -90,9 +93,9 @@ services:
       # не могли разойтись.
       POSTGRES_HOST: postgres
       POSTGRES_PORT: '5432'
-      POSTGRES_USER: '${POSTGRES_USER}'
-      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
-      POSTGRES_DB: '${POSTGRES_DB}'
+      POSTGRES_USER: '${POSTGRES_USER:?}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:?}'
+      POSTGRES_DB: '${POSTGRES_DB:?}'
     depends_on:
       postgres:
         condition: service_healthy

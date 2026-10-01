@@ -13,7 +13,7 @@
 | `POSTGRES_USER`          | `postgres`               | user ของฐานข้อมูล: ถูกสร้างตอน container initialise และ backend ใช้ตัวนี้เชื่อมต่อ                                                                                                                                                         |
 | `POSTGRES_PASSWORD`      | `postgres`               | password ของ user ตัวนั้น                                                                                                                                                                                                           |
 | `POSTGRES_DB`            | `template`               | ชื่อ database ที่จะถูกสร้าง                                                                                                                                                                                                            |
-| `POSTGRES_PORT`          | `5432`                   | host port ของ container ฐานข้อมูล เป็นพอร์ตเดียวของแอปที่เปิดออกภายนอกนอกจาก proxy — ใช้เชื่อมต่อฐานข้อมูลจาก host ตอน `pnpm dev`                                                                                                              |
+| `POSTGRES_PORT`          | `5432`                   | host port ของ container ฐานข้อมูล เป็นพอร์ตเดียวของแอปที่เปิดออกภายนอกนอกจาก proxy — ใช้เชื่อมต่อฐานข้อมูลจาก host ตอน `pnpm dev` เปิดเฉพาะที่ `127.0.0.1`: บนเซิร์ฟเวอร์ฐานข้อมูลจะไม่ถูกมองเห็นจากภายนอก |
 
 เอกสารไม่ได้ใช้พอร์ตของตัวเอง — static file ของมันถูก build เข้าไปใน image ของ reverse proxy โดยตรง
 
