@@ -69,6 +69,17 @@ git clone -b postgres-prisma https://github.com/CyberPunk10/template-nest-nuxt.g
 - **docker compose** — поднимает nginx, backend и frontend в общей сети; наружу публикуется только порт nginx, приложения доступны лишь через него
 - **`pnpm docker:up`** — обёртка над `docker compose up`: создаёт корневой `.env` из `.env.example`, проверяет занятость хост-портов
 
+**Запуск через Docker:**
+
+| Задача                                   | Команда                                               |
+| ---------------------------------------- | ----------------------------------------------------- |
+| Первый запуск и запуск после правок кода | `pnpm docker:up --build`                              |
+| Запуск в фоне                            | `pnpm docker:up --build -d`                           |
+| Статус и логи                            | `docker compose ps`, `docker compose logs -f backend` |
+| Остановить                               | `Ctrl+C` или `docker compose down`                    |
+
+Подробнее — [Запуск через Docker](apps/docs/guide/getting-started/run-docker.md).
+
 ## Документация
 
 Полная документация — VitePress в [`apps/docs`](apps/docs). Локально: `pnpm --filter @repo/docs dev`, в Docker раздаётся по `/dev/docs/`.

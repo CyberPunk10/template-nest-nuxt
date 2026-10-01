@@ -104,12 +104,12 @@ localhost/dev/docs/   → статика документации
 
 ### С чем должно совпадать
 
-| Режим      | Значение                | Совпадает с                         |
-| ---------- | ----------------------- | ----------------------------------- |
-| `pnpm dev` | `http://localhost:3200` | `PORT` в `apps/frontend/.env`       |
-| Docker     | `http://localhost`      | `NGINX_HOST_PORT` в корневом `.env` |
+| Режим      | Значение                | Совпадает с                       |
+| ---------- | ----------------------- | --------------------------------- |
+| `pnpm dev` | `http://localhost:3200` | `PORT` в `apps/frontend/.env`     |
+| Docker     | `http://localhost`      | `PUBLIC_ORIGIN` в корневом `.env` |
 
-Меняете порт фронтенда в dev — поправьте `CORS_ORIGIN` в `apps/backend/.env`. Меняете порт прокси — значение в `docker-compose.yml`.
+Меняете порт фронтенда в dev — поправьте `CORS_ORIGIN` в `apps/backend/.env`. Меняете порт прокси или разворачиваете на сервере — поправьте `PUBLIC_ORIGIN` в корневом `.env` (на сервере это `https://<домен>`).
 
 ### Почему в Docker без порта
 
