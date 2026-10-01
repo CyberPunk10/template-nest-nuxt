@@ -18,7 +18,7 @@ network  declared as external, but could not be found.
 ```js
 import { ensureNetwork } from './ensure-network.mjs'
 
-ensureNetwork()   // true — сеть создана, false — уже была
+const { name, created } = ensureNetwork()   // created: true — сеть создана, false — уже была
 ```
 
 Docker сеть можно создать вручную без этого скрипта:

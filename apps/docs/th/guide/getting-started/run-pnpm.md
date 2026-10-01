@@ -4,13 +4,27 @@
 
 ก่อนรันครั้งแรก — [การเตรียมความพร้อม](/th/guide/getting-started/setup)
 
+## สรุปคำสั่ง
+
+| งาน                                     | คำสั่ง                        |
+| --------------------------------------- | --------------------------- |
+| รันทั้งหมด                                | `pnpm dev`                  |
+| รัน application เดียว                     | `pnpm --filter backend dev` |
+| เตรียมการอย่างเดียว ไม่รัน                    | `pnpm predev`               |
+| สร้างไฟล์ `.env` ที่ขาด                      | `pnpm env:copy`             |
+| เขียนทับ `.env` ทั้งหมดจาก `.env.example`      | `pnpm env:copy:force`       |
+| ตรวจ production build                    | `pnpm build`                |
+| หยุด                                     | `Ctrl+C`                    |
+
 ## pnpm dev
 
 ```bash
 pnpm dev
 ```
 
-คำสั่งเดียวยกทั้งสาม application ขึ้นมา ก่อนเริ่ม [`predev.mjs`](/th/guide/structure/scripts/predev) จะทำงานก่อน: สร้างไฟล์ `.env` ที่ขาด และจัดการพอร์ตที่ชนกัน
+คำสั่งเดียวยกทั้งสาม application ขึ้นมา ก่อนเริ่ม [`predev.mjs`](/th/guide/structure/scripts/predev) จะทำงานก่อน: สร้างไฟล์ `.env` ที่ขาด และจัดการพอร์ตที่ชนกัน แต่ละขั้นตอนจะพิมพ์บรรทัดที่มี ✓ และถ้าการเตรียมการหยุด — จะมีบรรทัดที่มี ✗ พร้อมชื่อขั้นตอน สิ่งที่ต้องตรวจดูได้ใน[ตารางขั้นตอน](/th/guide/structure/scripts/predev#สิ่งที่แสดงผล)
+
+ถ้าไม่ใช้ `predev.mjs` ก็ทำแบบเดียวกันได้ด้วยมือ: คัดลอก `.env.example` เป็น `.env` ที่ root และในแต่ละ `apps/*` (`pnpm env:copy`) ปล่อยพอร์ตจาก `PORT` ใน `apps/*/.env` แล้วยกฐานข้อมูลขึ้นมา (`pnpm db:up`)
 
 | Service  | URL                               | เทคโนโลยี         |
 | -------- | --------------------------------- | ---------------- |

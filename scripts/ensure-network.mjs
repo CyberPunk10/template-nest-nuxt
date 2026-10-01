@@ -2,17 +2,15 @@
 // Этот модуль снимает ручной шаг `docker network create` перед первым запуском.
 
 import { execFileSync } from 'child_process'
+import { relative } from 'path'
 import { ROOT_ENV, parseEnv } from './copy-env.mjs'
-import { createLogger } from './log.mjs'
-
-const log = createLogger('ensure-network.mjs')
 
 function getNetworkName() {
   const key = 'COMPOSE_NETWORK_NAME'
   const value = parseEnv(ROOT_ENV)[key]
 
   if (!value) {
-    throw new Error(`${key} not set in ${ROOT_ENV} - check .env.example next to it`)
+    throw new Error(`${key} not set in ${relative(process.cwd(), ROOT_ENV)} - check .env.example next to it`)
   }
   return value
 }
@@ -33,15 +31,15 @@ function networkExists(name) {
   }
 }
 
-// Создаёт сеть, если её ещё нет. Возвращает true, если сеть была создана
+// Создаёт сеть, если её ещё нет. Возвращает имя сети и created: true,
+// если сеть создана сейчас
 export function ensureNetwork() {
   const name = getNetworkName()
-  if (networkExists(name)) return false
+  if (networkExists(name)) return { name, created: false }
   execFileSync(
     'docker',
     ['network', 'create', name],
     { stdio: ['ignore', 'ignore', 'inherit'] },
   )
-  log.log(`Created Docker network ${name}`)
-  return true
+  return { name, created: true }
 }

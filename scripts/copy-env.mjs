@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs'
-import { resolve, dirname } from 'path'
+import { resolve, dirname, relative } from 'path'
 import { fileURLToPath } from 'url'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
@@ -31,17 +31,26 @@ export function parseEnv(filePath) {
 }
 
 // Копирует .env.example → .env. Без force пропускает существующие .env.
+// Возвращает true, если файл записан.
 function copyEnvExample(envPath, examplePath, force) {
   if ((force || !existsSync(envPath)) && existsSync(examplePath)) {
     writeFileSync(envPath, readFileSync(examplePath, 'utf8'))
+    return true
   }
+  return false
 }
 
 // Создаёт .env из .env.example для всех приложений.
 // force=true перезаписывает уже существующие .env.
+// Возвращает пути записанных файлов относительно корня — чтобы вызывающий
+// скрипт мог сообщить, что именно создано.
 export function copyEnvFiles(force = false) {
-  copyEnvExample(ROOT_ENV, ROOT_ENV_EXAMPLE, force)
-  copyEnvExample(BACKEND_ENV, BACKEND_ENV_EXAMPLE, force)
-  copyEnvExample(FRONTEND_ENV, FRONTEND_ENV_EXAMPLE, force)
-  copyEnvExample(DOCS_ENV, DOCS_ENV_EXAMPLE, force)
+  return [
+    [ROOT_ENV, ROOT_ENV_EXAMPLE],
+    [BACKEND_ENV, BACKEND_ENV_EXAMPLE],
+    [FRONTEND_ENV, FRONTEND_ENV_EXAMPLE],
+    [DOCS_ENV, DOCS_ENV_EXAMPLE],
+  ]
+    .filter(([envPath, examplePath]) => copyEnvExample(envPath, examplePath, force))
+    .map(([envPath]) => relative(ROOT, envPath))
 }

@@ -14,6 +14,28 @@
 
 Тем же занимается [`predocker.mjs`](/guide/structure/scripts/predocker) — разница в списке портов и в том, что БД он не поднимает отдельно: её поднимает сам `docker compose` вместе с остальными сервисами.
 
+## Что выводит
+
+Каждый шаг пишет строку о результате:
+
+```
+[predev.mjs] ✓ .env: created apps/backend/.env from .env.example
+[predev.mjs] ✓ ports: backend 3100 · frontend 3200 · docs 5173
+[predev.mjs] ✓ db: postgres is up
+```
+
+Если шаг не выполнен — строка с ✗ и имя шага, дальше подготовка не идёт:
+
+```
+[predev.mjs] ✗ ports: PORT=abc in apps/backend/.env - not a valid port number (0-65535)
+```
+
+| Шаг     | Что проверить                                                | Повторить отдельно |
+| ------- | ------------------------------------------------------------ | ------------------ |
+| `.env`  | есть ли `.env.example` рядом с нужным `.env`                 | `pnpm env:copy`    |
+| `ports` | значение `PORT` в указанном `.env`                           | `pnpm predev`      |
+| `db`    | запущен ли Docker и заданы ли `POSTGRES_*` в корневом `.env` | `pnpm db:up`       |
+
 ## Использование
 
 Запускается сам — отдельно вызывать не нужно:

@@ -1,6 +1,6 @@
 # ensure-network.mjs
 
-export ฟังก์ชันเดียว — `ensureNetwork()` อ่าน `COMPOSE_NETWORK_NAME` จาก `.env` ที่ root แล้วสร้าง Docker network ถ้ายังไม่มี การเรียกซ้ำจะไม่ทำอะไรและคืนค่า `false`
+export ฟังก์ชันเดียว — `ensureNetwork()` อ่าน `COMPOSE_NETWORK_NAME` จาก `.env` ที่ root แล้วสร้าง Docker network ถ้ายังไม่มี การเรียกซ้ำจะไม่ทำอะไรและคืนค่า `created: false`
 
 ตัวแปรนี้จำเป็นต้องมี: ถ้าไม่มี ฟังก์ชันจะ throw error:
 
@@ -18,7 +18,7 @@ network  declared as external, but could not be found.
 ```js
 import { ensureNetwork } from './ensure-network.mjs'
 
-ensureNetwork()   // true — สร้าง network แล้ว, false — มีอยู่แล้ว
+const { name, created } = ensureNetwork()   // created: true — สร้าง network แล้ว, false — มีอยู่แล้ว
 ```
 
 ทำเองด้วยมือ ถ้าต้องการ start stack ด้วย `docker compose up` ตรงๆ:

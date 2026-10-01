@@ -5,23 +5,34 @@ import { createLogger } from './log.mjs'
 
 const log = createLogger('predocker.mjs')
 
+// Каждый шаг пишет строку о результате (✓), а при ошибке — какой шаг
+// не выполнен (✗): так по выводу `pnpm docker:up` видно, что произошло, и
+// понятно, какую часть повторить вручную.
+let step = ''
+
 async function main() {
   // Шаг 1: создать .env из .env.example если отсутствует
-  copyEnvFiles()
+  step = '.env'
+  const created = copyEnvFiles()
+  log.ok(created.length ? `.env: created ${created.join(', ')} from .env.example` : '.env: files in place')
 
   // Шаг 2: проверить хост-порты и разрешить конфликты.
   // Из всех сервисов проверяем только прокси: backend и frontend хост-портов
   // не занимают вовсе, а порт БД держит Docker — убить его через lsof нельзя,
   // и на уже поднятой БД проверка выдавала бы ложный конфликт.
-  await checkPorts([
+  step = 'ports'
+  const ports = await checkPorts([
     { name: 'nginx', envPath: ROOT_ENV, key: 'NGINX_HOST_PORT' },
   ])
+  log.ok(`ports: ${ports.map(p => `${p.name} ${p.port}`).join(' · ')}`)
 
   // Шаг 3: создать Docker-сеть, если её ещё нет
-  ensureNetwork()
+  step = 'network'
+  const network = ensureNetwork()
+  log.ok(`network: ${network.name} ${network.created ? 'created' : 'exists'}`)
 }
 
 main().catch((e) => {
-  log.error('failed:', e.message)
+  log.error(`${step}: ${e.message}`)
   process.exit(1)
 })

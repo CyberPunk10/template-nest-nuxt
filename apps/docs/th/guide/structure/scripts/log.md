@@ -7,15 +7,18 @@ import { createLogger } from './log.mjs'
 
 const log = createLogger('predev.mjs')
 
-log.log('Ports checked')          // [predev.mjs] Ports checked
-log.error('failed:', e.message)   // [predev.mjs] failed: ...
+log.ok('ports: backend 3100')      // [predev.mjs] ✓ ports: backend 3100
+log.error('ports: PORT=abc ...')   // [predev.mjs] ✗ ports: PORT=abc ...
+log.log('Ports checked')           // [predev.mjs] Ports checked
 ```
+
+`ok` ทำเครื่องหมายขั้นตอนที่สำเร็จ (✓) ส่วน `error` คือ error (✗) เครื่องหมายเหล่านี้มองเห็นได้แม้ไม่มีสี — ใน log ของ CI และเมื่อตั้ง `NO_COLOR`
 
 ## ทำไมต้องมี
 
 script เรียก `docker compose`, `pnpm install` และ `concurrently` ซึ่ง output ของคำสั่งเหล่านั้นออกมาที่ terminal เดียวกัน ถ้าไม่มีเครื่องหมายกำกับ บรรทัดของเราเองจะหายไปในกระแสรวมนั้น
 
-รูปแบบนี้ตั้งใจให้เหมือน prefix ของ `concurrently` (`[Nest]`, `[Nuxt]`) แต่ใช้สีของตัวเอง — สีม่วงแดงสำหรับข้อความทั่วไป สีแดงสำหรับ error ส่วนสีแดง เหลือง และฟ้าถูก `concurrently` ใช้ไปแล้ว ดู [dev.mjs](/th/guide/structure/scripts/dev)
+รูปแบบนี้ตั้งใจให้เหมือน prefix ของ `concurrently` (`[Nest]`, `[Nuxt]`) แต่ใช้สีของตัวเอง — สีม่วงแดงสำหรับข้อความทั่วไป สีแดงสำหรับ error เครื่องหมาย ✓ เป็นสีเขียว ส่วนสีแดง เหลือง และฟ้าถูก `concurrently` ใช้ไปแล้ว ดู [dev.mjs](/th/guide/structure/scripts/dev)
 
 ## เมื่อไหร่ที่ไม่มีสี
 

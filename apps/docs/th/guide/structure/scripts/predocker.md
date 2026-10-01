@@ -16,6 +16,28 @@
 
 ตัวคู่กันสำหรับ develop ในเครื่อง — [`predev.mjs`](/th/guide/structure/scripts/predev)
 
+## สิ่งที่แสดงผล
+
+แต่ละขั้นตอนจะพิมพ์ผลลัพธ์หนึ่งบรรทัด:
+
+```
+[predocker.mjs] ✓ .env: files in place
+[predocker.mjs] ✓ ports: nginx 80
+[predocker.mjs] ✓ network: template-nest-nuxt_app created
+```
+
+ถ้าขั้นตอนไหนไม่สำเร็จ — จะมีบรรทัดที่มี ✗ พร้อมชื่อขั้นตอน และการเตรียมการจะหยุดตรงนั้น:
+
+```
+[predocker.mjs] ✗ network: Command failed: docker network create template-nest-nuxt_app
+```
+
+| ขั้นตอน     | สิ่งที่ต้องตรวจ                                 | ทำซ้ำแยก                                          |
+| --------- | ------------------------------------------ | ---------------------------------------------- |
+| `.env`    | มี `.env.example` อยู่ข้าง `.env` ที่ต้องการหรือไม่ | `pnpm env:copy`                                |
+| `ports`   | ค่า `NGINX_HOST_PORT` ใน `.env` ที่ root      | `pnpm predocker:up`                            |
+| `network` | Docker ทำงานอยู่หรือไม่                         | `docker network create template-nest-nuxt_app` |
+
 ## การใช้งาน
 
 รันเองอัตโนมัติ — ไม่ต้องเรียกแยก:

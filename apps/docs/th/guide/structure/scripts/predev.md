@@ -14,6 +14,28 @@
 
 [`predocker.mjs`](/th/guide/structure/scripts/predocker) ทำแบบเดียวกัน — ต่างกันที่ list ของพอร์ต และไม่ได้ยกฐานข้อมูลแยก เพราะ `docker compose` ยกขึ้นมาพร้อม service อื่นอยู่แล้ว
 
+## สิ่งที่แสดงผล
+
+แต่ละขั้นตอนจะพิมพ์ผลลัพธ์หนึ่งบรรทัด:
+
+```
+[predev.mjs] ✓ .env: created apps/backend/.env from .env.example
+[predev.mjs] ✓ ports: backend 3100 · frontend 3200 · docs 5173
+[predev.mjs] ✓ db: postgres is up
+```
+
+ถ้าขั้นตอนไหนไม่สำเร็จ — จะมีบรรทัดที่มี ✗ พร้อมชื่อขั้นตอน และการเตรียมการจะหยุดตรงนั้น:
+
+```
+[predev.mjs] ✗ ports: PORT=abc in apps/backend/.env - not a valid port number (0-65535)
+```
+
+| ขั้นตอน   | สิ่งที่ต้องตรวจ                                                      | ทำซ้ำแยก           |
+| ------- | --------------------------------------------------------------- | --------------- |
+| `.env`  | มี `.env.example` อยู่ข้าง `.env` ที่ต้องการหรือไม่                      | `pnpm env:copy` |
+| `ports` | ค่า `PORT` ใน `.env` ที่ระบุ                                        | `pnpm predev`   |
+| `db`    | Docker ทำงานอยู่หรือไม่ และตั้ง `POSTGRES_*` ใน `.env` ที่ root แล้วหรือยัง | `pnpm db:up`    |
+
 ## การใช้งาน
 
 รันเองอัตโนมัติ — ไม่ต้องเรียกแยก:

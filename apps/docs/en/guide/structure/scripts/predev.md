@@ -14,6 +14,28 @@ The database port isn't on that list: the check can only kill processes on the h
 
 [`predocker.mjs`](/en/guide/structure/scripts/predocker) does the same — differing in the list of ports and in not starting the database separately: `docker compose` brings it up along with the other services.
 
+## What it prints
+
+Each step prints a line with its result:
+
+```
+[predev.mjs] ✓ .env: created apps/backend/.env from .env.example
+[predev.mjs] ✓ ports: backend 3100 · frontend 3200 · docs 5173
+[predev.mjs] ✓ db: postgres is up
+```
+
+If a step fails — a line with ✗ and the step name, and preparation stops there:
+
+```
+[predev.mjs] ✗ ports: PORT=abc in apps/backend/.env - not a valid port number (0-65535)
+```
+
+| Step    | What to check                                                      | Repeat on its own |
+| ------- | ------------------------------------------------------------------ | ----------------- |
+| `.env`  | that `.env.example` exists next to the `.env`                      | `pnpm env:copy`   |
+| `ports` | the `PORT` value in the named `.env`                               | `pnpm predev`     |
+| `db`    | that Docker is running and `POSTGRES_*` are set in the root `.env` | `pnpm db:up`      |
+
 ## Usage
 
 It runs on its own — no need to call it separately:

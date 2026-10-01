@@ -16,6 +16,28 @@ This only runs before `pnpm docker:up`, not before a direct `docker compose up`.
 
 The local-development counterpart — [`predev.mjs`](/en/guide/structure/scripts/predev).
 
+## What it prints
+
+Each step prints a line with its result:
+
+```
+[predocker.mjs] ✓ .env: files in place
+[predocker.mjs] ✓ ports: nginx 80
+[predocker.mjs] ✓ network: template-nest-nuxt_app created
+```
+
+If a step fails — a line with ✗ and the step name, and preparation stops there:
+
+```
+[predocker.mjs] ✗ network: Command failed: docker network create template-nest-nuxt_app
+```
+
+| Step      | What to check                                  | Repeat on its own                              |
+| --------- | ---------------------------------------------- | ---------------------------------------------- |
+| `.env`    | that `.env.example` exists next to the `.env`  | `pnpm env:copy`                                |
+| `ports`   | the `NGINX_HOST_PORT` value in the root `.env` | `pnpm predocker:up`                            |
+| `network` | that Docker is running                         | `docker network create template-nest-nuxt_app` |
+
 ## Usage
 
 It runs on its own — no need to call it separately:

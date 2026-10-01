@@ -4,10 +4,22 @@ CLI runner แบบบาง: อ่าน flag `--force` จาก argument �
 
 ```js
 import { copyEnvFiles } from './copy-env.mjs'
+import { createLogger } from './log.mjs'
 
+const log = createLogger('copy-env')
 const force = process.argv.includes('--force')
 
-copyEnvFiles(force)
+const written = copyEnvFiles(force)
+log.ok(written.length
+  ? `${force ? 'overwritten' : 'created'}: ${written.join(', ')}`
+  : 'all .env files already exist')
+```
+
+แจ้งว่าทำอะไรไป:
+
+```
+[copy-env] ✓ created: apps/backend/.env
+[copy-env] ✓ all .env files already exist
 ```
 
 จึงมี npm script สองตัว:

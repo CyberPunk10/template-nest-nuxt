@@ -4,13 +4,27 @@ The main development mode: applications run natively, each with its own hot relo
 
 Before the first run — [Setup](/en/guide/getting-started/setup).
 
+## Cheat sheet
+
+| Task                                     | Command                     |
+| ---------------------------------------- | --------------------------- |
+| Start everything                         | `pnpm dev`                  |
+| Start a single application               | `pnpm --filter backend dev` |
+| Preparation only, without starting       | `pnpm predev`               |
+| Create missing `.env` files              | `pnpm env:copy`             |
+| Overwrite all `.env` from `.env.example` | `pnpm env:copy:force`       |
+| Check the production build               | `pnpm build`                |
+| Stop                                     | `Ctrl+C`                    |
+
 ## pnpm dev
 
 ```bash
 pnpm dev
 ```
 
-One command brings up all three applications. Before it starts, [`predev.mjs`](/en/guide/structure/scripts/predev) runs: it creates missing `.env` files and resolves port conflicts.
+One command brings up all three applications. Before it starts, [`predev.mjs`](/en/guide/structure/scripts/predev) runs: it creates missing `.env` files and resolves port conflicts. Each step prints a line with ✓, and if preparation stops — a line with ✗ and the step name; what to check then is in the [step table](/en/guide/structure/scripts/predev#what-it-prints).
+
+Without `predev.mjs` the same is done by hand: copy `.env.example` to `.env` in the root and in each `apps/*` (`pnpm env:copy`), free the ports from `PORT` in `apps/*/.env`, and bring the database up (`pnpm db:up`).
 
 | Service  | URL                               | Technology       |
 | -------- | --------------------------------- | ---------------- |
