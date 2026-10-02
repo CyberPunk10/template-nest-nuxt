@@ -18,7 +18,7 @@
 | `POSTGRES_PASSWORD` | `postgres`  | Required, same source                                                                                              |
 | `POSTGRES_DB`       | `template`  | Required, same source                                                                                              |
 
-These values are duplicated in the root `.env` on purpose: that one is read by Compose, this one by Nest on the host. [Details](/en/guide/database).
+These values are duplicated in the root `.env` on purpose: that one is read by Compose, this one by Nest on the host. [Details](/en/guide/database/configuration#root-env).
 
 ## Authentication
 

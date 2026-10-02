@@ -21,6 +21,6 @@ The documentation takes no port of its own — its static files are built straig
 
 Ports — no: the applications run directly on the host, without containers, and read `PORT` from their own `apps/*/.env` — [more on the two modes](/en/guide/env-variables#ports).
 
-`POSTGRES_*` — yes: Postgres always runs in a container, and Compose reads these variables from here. The same values are duplicated in `apps/backend/.env` because Nest reads them itself outside Docker — [details](/en/guide/database).
+`POSTGRES_*` — yes: Postgres always runs in a container, and Compose reads these variables from here. The same values are duplicated in `apps/backend/.env` because Nest reads them itself outside Docker — [details](/en/guide/database/configuration#root-env).
 
 [ENV variables](/en/guide/env-variables#files).

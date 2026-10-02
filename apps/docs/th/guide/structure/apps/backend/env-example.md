@@ -18,7 +18,7 @@
 | `POSTGRES_PASSWORD` | `postgres`  | จำเป็น แหล่งเดียวกัน                                                                                |
 | `POSTGRES_DB`       | `template`  | จำเป็น แหล่งเดียวกัน                                                                                |
 
-ค่าเหล่านี้ถูกเขียนซ้ำใน `.env` ที่ root อย่างตั้งใจ: ไฟล์นั้น Compose อ่าน ส่วนไฟล์นี้ Nest บน host อ่าน [รายละเอียด](/th/guide/database)
+ค่าเหล่านี้ถูกเขียนซ้ำใน `.env` ที่ root อย่างตั้งใจ: ไฟล์นั้น Compose อ่าน ส่วนไฟล์นี้ Nest บน host อ่าน [รายละเอียด](/th/guide/database/configuration#env-ที่-root)
 
 ## การยืนยันตัวตน
 

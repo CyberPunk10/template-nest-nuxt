@@ -164,8 +164,17 @@ const config: LocaleEntry = {
               { text: 'Frontend', link: '/th/guide/auth/frontend' },
             ],
           },
-          { text: 'ฐานข้อมูล', link: '/th/guide/database' },
-          { text: 'Migration', link: '/th/guide/migrations' },
+          {
+            text: 'ฐานข้อมูล',
+            link: '/th/guide/database/',
+            collapsed: true,
+            items: [
+              { text: 'การตั้งค่า', link: '/th/guide/database/configuration' },
+              { text: 'Prisma: schema และ client', link: '/th/guide/database/prisma' },
+              { text: 'Migration', link: '/th/guide/database/migrations' },
+              { text: 'Error ของ Prisma', link: '/th/guide/database/errors' },
+            ],
+          },
         ],
       },
       {

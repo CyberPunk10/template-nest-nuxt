@@ -239,4 +239,4 @@ pnpm prisma migrate reset   # asks for confirmation
 pnpm prisma db seed         # seeding after a reset is run separately
 ```
 
-The seed creates the admin account — [details](/en/guide/database#seed-the-admin-account).
+The seed creates the admin account — [details](/en/guide/database/prisma#seed-the-admin-account).

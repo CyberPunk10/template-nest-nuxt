@@ -239,4 +239,4 @@ pnpm prisma migrate reset   # спросит подтверждение
 pnpm prisma db seed         # seed после сброса запускается отдельно
 ```
 
-Seed создаёт admin-аккаунт — [подробнее](/guide/database#seed-admin-аккаунт).
+Seed создаёт admin-аккаунт — [подробнее](/guide/database/prisma#seed-admin-аккаунт).

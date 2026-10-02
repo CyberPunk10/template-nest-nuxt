@@ -239,4 +239,4 @@ pnpm prisma migrate reset   # จะถามยืนยัน
 pnpm prisma db seed         # seed หลัง reset ต้องรันแยก
 ```
 
-seed สร้างบัญชี admin — [รายละเอียด](/th/guide/database#seed-admin-account)
+seed สร้างบัญชี admin — [รายละเอียด](/th/guide/database/prisma#seed-admin-account)

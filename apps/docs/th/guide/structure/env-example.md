@@ -21,6 +21,6 @@
 
 พอร์ต — ไม่ถูกใช้: แอปรันบน host โดยตรงโดยไม่ใช้ container และอ่าน `PORT` จาก `apps/*/.env` ของตัวเอง — [รายละเอียดของทั้งสองโหมด](/th/guide/env-variables#พอร์ต)
 
-`POSTGRES_*` — มีผล: Postgres รันใน container เสมอ และ Compose อ่านตัวแปรเหล่านี้จากที่นี่ ค่าชุดเดียวกันถูกเขียนซ้ำใน `apps/backend/.env` เพราะ Nest นอก Docker อ่านเองโดยตรง — [รายละเอียด](/th/guide/database)
+`POSTGRES_*` — มีผล: Postgres รันใน container เสมอ และ Compose อ่านตัวแปรเหล่านี้จากที่นี่ ค่าชุดเดียวกันถูกเขียนซ้ำใน `apps/backend/.env` เพราะ Nest นอก Docker อ่านเองโดยตรง — [รายละเอียด](/th/guide/database/configuration#env-ที่-root)
 
 [ตัวแปรสภาพแวดล้อม](/th/guide/env-variables#ไฟล์)

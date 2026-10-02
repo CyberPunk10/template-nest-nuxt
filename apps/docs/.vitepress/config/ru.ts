@@ -166,8 +166,17 @@ const config: LocaleEntry = {
               { text: 'Фронтенд', link: '/guide/auth/frontend' },
             ],
           },
-          { text: 'База данных', link: '/guide/database' },
-          { text: 'Миграции', link: '/guide/migrations' },
+          {
+            text: 'База данных',
+            link: '/guide/database/',
+            collapsed: true,
+            items: [
+              { text: 'Конфигурация', link: '/guide/database/configuration' },
+              { text: 'Prisma: схема и клиент', link: '/guide/database/prisma' },
+              { text: 'Миграции', link: '/guide/database/migrations' },
+              { text: 'Ошибки Prisma', link: '/guide/database/errors' },
+            ],
+          },
         ],
       },
       {
