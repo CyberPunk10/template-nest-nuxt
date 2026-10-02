@@ -7,7 +7,7 @@
 - `requirePort(envPath, key)` — читает обязательную переменную порта из `.env`, при отсутствии или некорректном значении бросает понятную ошибку с указанием файла
 - `checkPorts(services)` — проверяет список сервисов (`{ name, envPath, key }`), при конфликте показывает диалог с предложением убить занявшие процессы или прервать запуск
 
-[`predev.mjs`](/guide/structure/scripts/predev) и [`predocker.mjs`](/guide/structure/scripts/predocker) используют одну и ту же `checkPorts()`, передавая ей разный список сервисов.
+[`predev.mjs`](./predev) и [`predocker.mjs`](./predocker) используют одну и ту же `checkPorts()`, передавая ей разный список сервисов.
 
 ## Использование
 

@@ -25,7 +25,7 @@ docker run -d -p 3100:3100 \
 curl http://localhost:3100/health
 ```
 
-Или через встроенный [HEALTHCHECK](/guide/docker/dockerfiles#healthcheck) — Docker опрашивает его сам, достаточно посмотреть результат:
+Или через встроенный [HEALTHCHECK](../../../docker/dockerfiles#healthcheck) — Docker опрашивает его сам, достаточно посмотреть результат:
 
 ```bash
 docker inspect --format='{{json .State.Health}}' backend-preview

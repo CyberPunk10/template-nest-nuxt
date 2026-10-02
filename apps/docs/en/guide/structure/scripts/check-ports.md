@@ -7,7 +7,7 @@ A shared module with port-related utilities:
 - `requirePort(envPath, key)` — reads a required port variable from `.env`, throwing a clear error naming the file if it's missing or invalid
 - `checkPorts(services)` — checks a list of services (`{ name, envPath, key }`), and on conflict shows a dialog offering to kill the processes holding the ports or abort the run
 
-[`predev.mjs`](/en/guide/structure/scripts/predev) and [`predocker.mjs`](/en/guide/structure/scripts/predocker) both use the same `checkPorts()`, passing it a different list of services — none of the dialog or process-killing logic is duplicated between the two scripts.
+[`predev.mjs`](./predev) and [`predocker.mjs`](./predocker) both use the same `checkPorts()`, passing it a different list of services — none of the dialog or process-killing logic is duplicated between the two scripts.
 
 ## Usage
 

@@ -18,4 +18,4 @@ infra/nginx/
 
 Dockerfile копирует собранную статику VitePress из образа `docs-builder` и кладёт в `/srv/docs`. Отдельного контейнера с документацией нет — nginx отдаёт её с диска.
 
-Разбор маршрутов — [Reverse proxy](/guide/reverse-proxy), сборка образа — [infra/nginx](/guide/structure/infra/nginx/docker-image) в разделе Docker.
+Разбор маршрутов — [Reverse proxy](../../../reverse-proxy), сборка образа — [infra/nginx](./docker-image) в разделе Docker.

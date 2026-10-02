@@ -18,7 +18,7 @@ log.log('Ports checked')           // [predev.mjs] Ports checked
 
 script เรียก `docker compose`, `pnpm install` และ `concurrently` ซึ่ง output ของคำสั่งเหล่านั้นออกมาที่ terminal เดียวกัน ถ้าไม่มีเครื่องหมายกำกับ บรรทัดของเราเองจะหายไปในกระแสรวมนั้น
 
-รูปแบบนี้ตั้งใจให้เหมือน prefix ของ `concurrently` (`[Nest]`, `[Nuxt]`) แต่ใช้สีของตัวเอง — สีม่วงแดงสำหรับข้อความทั่วไป สีแดงสำหรับ error เครื่องหมาย ✓ เป็นสีเขียว ส่วนสีแดง เหลือง และฟ้าถูก `concurrently` ใช้ไปแล้ว ดู [dev.mjs](/th/guide/structure/scripts/dev)
+รูปแบบนี้ตั้งใจให้เหมือน prefix ของ `concurrently` (`[Nest]`, `[Nuxt]`) แต่ใช้สีของตัวเอง — สีม่วงแดงสำหรับข้อความทั่วไป สีแดงสำหรับ error เครื่องหมาย ✓ เป็นสีเขียว ส่วนสีแดง เหลือง และฟ้าถูก `concurrently` ใช้ไปแล้ว ดู [dev.mjs](./dev)
 
 ## เมื่อไหร่ที่ไม่มีสี
 

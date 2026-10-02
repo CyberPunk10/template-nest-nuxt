@@ -7,7 +7,7 @@ Module ที่ใช้ร่วมกัน เก็บ utility เกี่
 - `requirePort(envPath, key)` — อ่านตัวแปรพอร์ตที่จำเป็นจาก `.env` ถ้าไม่มีหรือค่าไม่ถูกต้องจะโยน error ที่บอกชัดเจนว่าไฟล์ไหน
 - `checkPorts(services)` — ตรวจสอบ list ของ service (`{ name, envPath, key }`) ถ้าชนกันจะแสดง dialog เสนอให้ kill process ที่ครองพอร์ตอยู่ หรือยกเลิกการรัน
 
-[`predev.mjs`](/th/guide/structure/scripts/predev) และ [`predocker.mjs`](/th/guide/structure/scripts/predocker) ใช้ `checkPorts()` ตัวเดียวกัน แค่ส่ง list ของ service ต่างกันไป — logic ของ dialog และการ kill process ไม่ถูกเขียนซ้ำระหว่างสองสคริปต์
+[`predev.mjs`](./predev) และ [`predocker.mjs`](./predocker) ใช้ `checkPorts()` ตัวเดียวกัน แค่ส่ง list ของ service ต่างกันไป — logic ของ dialog และการ kill process ไม่ถูกเขียนซ้ำระหว่างสองสคริปต์
 
 ## การใช้งาน
 

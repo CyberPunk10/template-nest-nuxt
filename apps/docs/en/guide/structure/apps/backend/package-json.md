@@ -15,4 +15,4 @@ The backend application's manifest. Its scripts work only inside their own works
 | `test:debug`                                    | `node --inspect-brk` | Tests under the debugger, single-threaded (`--runInBand`) |
 | `test:e2e`                                      | `jest --config ...`  | E2E tests, own config `test/jest-e2e.json`            |
 
-What lives where — [apps/backend](/en/guide/structure/apps/backend/).
+What lives where — [apps/backend](./).

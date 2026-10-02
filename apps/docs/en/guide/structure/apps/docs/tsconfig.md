@@ -20,7 +20,7 @@ Type checking for the VitePress theme: Vue components and `.vitepress/config.ts`
 
 ## target and lib
 
-The theme runs in a browser, so DOM types are required: `document`, `window`, `HTMLElement`. The [base config](/en/guide/structure/tsconfig-base) deliberately omits them — it isn't tied to an environment, and the backend runs somewhere else entirely.
+The theme runs in a browser, so DOM types are required: `document`, `window`, `HTMLElement`. The [base config](../../tsconfig-base) deliberately omits them — it isn't tied to an environment, and the backend runs somewhere else entirely.
 
 ## types: why vitepress/client
 

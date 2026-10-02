@@ -25,6 +25,6 @@ apps/docs/
 
 ## Dockerfile ที่ไม่ได้รันอะไร
 
-Image ของ `apps/docs` ไม่ได้ start process อะไรเลย: มันแค่ build static file ให้ image ของ nginx เอาไปใช้ ใน Compose จึงไม่มี container ของเอกสารแยกต่างหาก — ดู [Dockerfile](/th/guide/structure/apps/docs/docker-image)
+Image ของ `apps/docs` ไม่ได้ start process อะไรเลย: มันแค่ build static file ให้ image ของ nginx เอาไปใช้ ใน Compose จึงไม่มี container ของเอกสารแยกต่างหาก — ดู [Dockerfile](./docker-image)
 
-สคริปต์ของ application — [package.json](/th/guide/structure/apps/docs/package-json)
+สคริปต์ของ application — [package.json](./package-json)

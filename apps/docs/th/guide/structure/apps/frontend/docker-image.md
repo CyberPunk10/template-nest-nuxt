@@ -25,7 +25,7 @@ curl http://localhost:3200/api/health
 
 หรือเปิด: [http://localhost:3200](http://localhost:3200)
 
-อีกทางคือดูผลของ [HEALTHCHECK](/th/guide/docker/dockerfiles#healthcheck) ที่มีอยู่แล้ว — Docker เรียกเองเป็นระยะ:
+อีกทางคือดูผลของ [HEALTHCHECK](../../../docker/dockerfiles#healthcheck) ที่มีอยู่แล้ว — Docker เรียกเองเป็นระยะ:
 
 ```bash
 docker inspect --format='{{json .State.Health}}' frontend-preview
@@ -88,5 +88,5 @@ docker rmi frontend-preview backend-preview
 ```
 
 ::: tip
-งานประจำวันไม่ต้องทำแบบนี้ — [docker compose](/th/guide/structure/docker-compose) รันคู่เดียวกันได้ด้วยคำสั่งเดียว พร้อม network และที่อยู่ที่ตั้งค่าไว้แล้ว
+งานประจำวันไม่ต้องทำแบบนี้ — [docker compose](../../docker-compose) รันคู่เดียวกันได้ด้วยคำสั่งเดียว พร้อม network และที่อยู่ที่ตั้งค่าไว้แล้ว
 :::

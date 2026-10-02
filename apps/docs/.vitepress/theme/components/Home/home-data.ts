@@ -102,6 +102,9 @@ export const principles: Principle[] = [
 export interface StackLogo {
   id: string
   color: string
+  // Документация именно той версии, что стоит в шаблоне, если у технологии
+  // она версионируется: по умолчанию сайты показывают последнюю.
+  url: string
   optional?: true
 }
 
@@ -114,14 +117,14 @@ export interface StackLogo {
  * и раздаются nginx).
  */
 export const stackLogos: StackLogo[] = [
-  { id: 'nest', color: '#e0234e' },
-  { id: 'nuxt', color: '#00dc82' },
-  { id: 'vue', color: '#42b883' },
-  { id: 'typescript', color: '#3178c6' },
-  { id: 'docker', color: '#2496ed' },
-  { id: 'pnpm', color: '#f9ad00' },
-  { id: 'prisma', color: '#5a67d8', optional: true },
-  { id: 'postgres', color: '#4169e1', optional: true },
+  { id: 'nest', color: '#e0234e', url: 'https://docs.nestjs.com/' },
+  { id: 'nuxt', color: '#00dc82', url: 'https://nuxt.com/docs/4.x/getting-started/introduction' },
+  { id: 'vue', color: '#42b883', url: 'https://vuejs.org/guide/introduction' },
+  { id: 'typescript', color: '#3178c6', url: 'https://www.typescriptlang.org/docs/' },
+  { id: 'docker', color: '#2496ed', url: 'https://docs.docker.com/' },
+  { id: 'pnpm', color: '#f9ad00', url: 'https://pnpm.io/motivation' },
+  { id: 'prisma', color: '#5a67d8', url: 'https://www.prisma.io/docs/orm/v7', optional: true },
+  { id: 'postgres', color: '#4169e1', url: 'https://www.postgresql.org/docs/17/', optional: true },
 ]
 
 // ──────────────────────────  Авторизация  ──────────────────────────

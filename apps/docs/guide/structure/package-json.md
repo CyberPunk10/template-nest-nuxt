@@ -21,7 +21,7 @@
 
 Скрипты не пересекаются со скриптами приложений: корневые работают со всем монорепо, per-app — только внутри своего воркспейса и вызываются через фильтр (`pnpm --filter backend dev`) или транзитивно из корневых.
 
-За большинством команд стоят [Node-скрипты](/guide/structure/scripts/) из `scripts/`.
+За большинством команд стоят [Node-скрипты](./scripts/) из `scripts/`.
 
 ## Версии инструментов
 
@@ -34,4 +34,4 @@
 }
 ```
 
-`packageManager` фиксирует версию pnpm через Corepack, `engines` вместе с `engine-strict=true` в `.npmrc` не даёт поставить зависимости на неподходящей версии Node — [pnpm и Corepack](/guide/pnpm).
+`packageManager` фиксирует версию pnpm через Corepack, `engines` вместе с `engine-strict=true` в `.npmrc` не даёт поставить зависимости на неподходящей версии Node — [pnpm и Corepack](../pnpm).

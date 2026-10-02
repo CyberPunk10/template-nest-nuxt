@@ -48,7 +48,7 @@ Shared by all applications in the template:
 
 | Application                              | Stack             |
 | ---------------------------------------- | ----------------- |
-| [backend](/en/guide/testing/backend)     | Jest, Supertest   |
+| [backend](./backend)     | Jest, Supertest   |
 
 Frontend tests are not part of the template yet.
 

@@ -15,4 +15,4 @@
 | `test:debug`                       | `node --inspect-brk` | Тесты под отладчиком, в один поток (`--runInBand`)           |
 | `test:e2e`                         | `jest --config ...`  | E2E-тесты, свой конфиг `test/jest-e2e.json`                  |
 
-Что где лежит — [apps/backend](/guide/structure/apps/backend/).
+Что где лежит — [apps/backend](./).

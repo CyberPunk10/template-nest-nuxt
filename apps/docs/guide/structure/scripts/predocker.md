@@ -4,9 +4,9 @@
 
 Делает три вещи:
 
-1. **Копирует `.env.example` → `.env`** для всех четырёх файлов разом (корневой, `apps/backend`, `apps/frontend`, `apps/docs`) — через общую `copyEnvFiles()` из [`copy-env.mjs`](/guide/structure/scripts/copy-env).
-2. **Проверяет порт и разрешает конфликты** — через общую `checkPorts()` из [`check-ports.mjs`](/guide/structure/scripts/check-ports). При конфликте предлагает диалог: убить занявший процесс или прервать запуск.
-3. **Создаёт Docker-сеть**, если её ещё нет — через [`ensure-network.mjs`](/guide/structure/scripts/ensure-network). Имя берётся из `COMPOSE_NETWORK_NAME` в корневом `.env` — оттуда же его читает `docker-compose.yml`. Повторные запуски ничего не делают.
+1. **Копирует `.env.example` → `.env`** для всех четырёх файлов разом (корневой, `apps/backend`, `apps/frontend`, `apps/docs`) — через общую `copyEnvFiles()` из [`copy-env.mjs`](./copy-env).
+2. **Проверяет порт и разрешает конфликты** — через общую `checkPorts()` из [`check-ports.mjs`](./check-ports). При конфликте предлагает диалог: убить занявший процесс или прервать запуск.
+3. **Создаёт Docker-сеть**, если её ещё нет — через [`ensure-network.mjs`](./ensure-network). Имя берётся из `COMPOSE_NETWORK_NAME` в корневом `.env` — оттуда же его читает `docker-compose.yml`. Повторные запуски ничего не делают.
 
 Проверяется единственный хост-порт — `NGINX_HOST_PORT` из корневого `.env`: наружу публикуется только reverse proxy, остальные сервисы живут во внутренней сети и хост-портов не занимают.
 
@@ -14,7 +14,7 @@
 Это срабатывает только перед `pnpm docker:up`, не перед прямым `docker compose up`. Если вызвать `docker compose up` напрямую, минуя npm-обёртку, на свежем клоне без `.env` — команда откажется стартовать: у переменных портов в `docker-compose.yml` нет дефолтов (`no port specified` без корневого `.env`), а `env_file` для `apps/*/.env` обязателен по умолчанию (`env file ... not found`). Никакой явной проверки занятости портов тоже не будет — если хост-порт занят, будет обычная Docker-ошибка `address already in use`, без диалога с предложением освободить порт. Создать недостающие `.env` заранее, не запуская ничего: `pnpm env:copy`.
 :::
 
-Аналог для локальной разработки — [`predev.mjs`](/guide/structure/scripts/predev).
+Аналог для локальной разработки — [`predev.mjs`](./predev).
 
 ## Что выводит
 

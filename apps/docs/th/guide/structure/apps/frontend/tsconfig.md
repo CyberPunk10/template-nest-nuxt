@@ -31,7 +31,7 @@ Config เดียวใน repo ที่ไม่ extends ตัวพื้�
 
 `references` ผูก config ทั้งสี่เข้าเป็นโปรเจกต์เดียว — IDE จึงรู้ว่าจะใช้ตัวไหนกับไฟล์ที่เปิดอยู่ ส่วน `files: []` หมายความว่าตัวมันเองไม่ได้ตรวจอะไรเลย
 
-Config ที่ generate ออกมาก็ไม่ได้ extends อะไรเช่นกัน: Nuxt เขียนทุกออปชันไว้ครบ มีที่ตรงกับ [config พื้นฐาน](/th/guide/structure/tsconfig-base) อยู่ — `strict`, `moduleResolution: Bundler`, `noEmit` — แต่กำหนดแยกกัน มาจากค่า default ของ Nuxt เอง
+Config ที่ generate ออกมาก็ไม่ได้ extends อะไรเช่นกัน: Nuxt เขียนทุกออปชันไว้ครบ มีที่ตรงกับ [config พื้นฐาน](../../tsconfig-base) อยู่ — `strict`, `moduleResolution: Bundler`, `noEmit` — แต่กำหนดแยกกัน มาจากค่า default ของ Nuxt เอง
 
 เปลี่ยนได้ผ่าน `typescript.tsConfig` ใน `nuxt.config.ts` ซึ่งเทมเพลตไม่ได้กำหนดส่วนนี้ไว้ จึงใช้ค่า default
 

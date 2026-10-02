@@ -38,7 +38,7 @@ pnpm --version
 corepack enable
 ```
 
-หลังจากนั้น `pnpm` ในโปรเจกต์นี้จะเป็นเวอร์ชันที่ระบุใน `packageManager` ถ้ามี pnpm ตัวอื่นติดตั้งแบบ global อยู่แล้ว มันอาจดักการเรียกก่อน Corepack shim แล้วใช้เวอร์ชันอื่นแทน ตรวจสอบด้วย `pnpm --version` และถ้าไม่ตรงกับ `packageManager` ให้ดู [pnpm และ Corepack](/th/guide/pnpm)
+หลังจากนั้น `pnpm` ในโปรเจกต์นี้จะเป็นเวอร์ชันที่ระบุใน `packageManager` ถ้ามี pnpm ตัวอื่นติดตั้งแบบ global อยู่แล้ว มันอาจดักการเรียกก่อน Corepack shim แล้วใช้เวอร์ชันอื่นแทน ตรวจสอบด้วย `pnpm --version` และถ้าไม่ตรงกับ `packageManager` ให้ดู [pnpm และ Corepack](../pnpm)
 :::
 
 ## 3. Docker >= 23 + Docker Compose >= 2.33
@@ -50,7 +50,7 @@ docker --version
 docker compose version
 ```
 
-เวอร์ชันของ Compose สำคัญ: เวอร์ชันเก่ากว่านั้น build จะพังพร้อมข้อความ `failed to get build context docs` — [ทำไม](/th/guide/structure/apps/docs/docker-image)
+เวอร์ชันของ Compose สำคัญ: เวอร์ชันเก่ากว่านั้น build จะพังพร้อมข้อความ `failed to get build context docs` — [ทำไม](../structure/apps/docs/docker-image)
 
 เทมเพลตนี้ทดสอบบน Docker `27.5.1` และ Compose `v5.5.0`
 
@@ -74,7 +74,7 @@ curl -fsSL https://get.docker.com | sh
 docker network create template-nest-nuxt_app
 ```
 
-ถ้าไม่มี `docker compose up` แบบตรงๆ จะล้มเหลวด้วย `network ... declared as external, but could not be found` — [ทำไม network ถึงเป็น external](/th/guide/structure/docker-compose#network)
+ถ้าไม่มี `docker compose up` แบบตรงๆ จะล้มเหลวด้วย `network ... declared as external, but could not be found` — [ทำไม network ถึงเป็น external](../structure/docker-compose#network)
 
 ## 5. ไฟล์ `.env`
 
@@ -86,7 +86,7 @@ docker network create template-nest-nuxt_app
 pnpm env:copy
 ```
 
-ตัวแปรไหนอยู่ที่ไหนและเพราะอะไร — ดู [ตัวแปรสภาพแวดล้อม](/th/guide/env-variables)
+ตัวแปรไหนอยู่ที่ไหนและเพราะอะไร — ดู [ตัวแปรสภาพแวดล้อม](../env-variables)
 
 ::: tip
 ตอนสลับ branch ไฟล์ `.env` ในเครื่องจะไม่อัปเดตอัตโนมัติ — อาจขาดตัวแปรของ branch ใหม่ไป เทียบกับ `.env.example` แล้วเพิ่มตัวที่ขาดเข้าไป

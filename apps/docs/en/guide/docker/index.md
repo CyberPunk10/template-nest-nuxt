@@ -1,6 +1,6 @@
 # Docker
 
-The project has four independent [Dockerfiles](/en/guide/docker/dockerfiles) — one per application (`backend`, `frontend`, `docs`) plus the reverse proxy (`nginx`) — and a single [docker-compose.yml](/en/guide/structure/docker-compose) that assembles them into a stack.
+The project has four independent [Dockerfiles](./dockerfiles) — one per application (`backend`, `frontend`, `docs`) plus the reverse proxy (`nginx`) — and a single [docker-compose.yml](../structure/docker-compose) that assembles them into a stack.
 
 ## Single entry point
 
@@ -16,11 +16,11 @@ browser  →  nginx:80
                           └──  backend:3100   API via the BFF proxy
 ```
 
-How the routing works and what else the proxy does — see [Reverse proxy](/en/guide/reverse-proxy).
+How the routing works and what else the proxy does — see [Reverse proxy](../reverse-proxy).
 
 ## Where to start
 
-- [Dockerfiles](/en/guide/docker/dockerfiles) — how the images are built: stages, layers, versions
-- [docker compose](/en/guide/structure/docker-compose) — how to bring up the stack: variables, network, start and stop
+- [Dockerfiles](./dockerfiles) — how the images are built: stages, layers, versions
+- [docker compose](../structure/docker-compose) — how to bring up the stack: variables, network, start and stop
 
-If you just want to run the project — [Running with Docker](/en/guide/getting-started/run-docker).
+If you just want to run the project — [Running with Docker](../getting-started/run-docker).

@@ -18,6 +18,6 @@ The frontend knows both neighbours' addresses, and they in turn reference its ow
 - **`NUXT_BACKEND_URL`** must point at `PORT` from `apps/backend/.env` — otherwise SSR can't reach the API.
 - **`NUXT_PUBLIC_DOCS_URL`** must point at `PORT` from `apps/docs/.env`, together with the `/dev/docs/` path.
 
-Change a port and check both sides. [All the links](/en/guide/env-variables#linked-variables).
+Change a port and check both sides. [All the links](../../../env-variables#linked-variables).
 
-How to create a working `.env` — [ENV variables](/en/guide/env-variables#files).
+How to create a working `.env` — [ENV variables](../../../env-variables#files).

@@ -15,4 +15,4 @@ Manifest ของ application สคริปต์ทำงานเฉพา�
 | `test:debug`                                    | `node --inspect-brk` | รันเทสต์ภายใต้ debugger แบบ thread เดียว (`--runInBand`) |
 | `test:e2e`                                      | `jest --config ...`  | E2E test ใช้ config ของตัวเอง `test/jest-e2e.json` |
 
-อะไรอยู่ที่ไหน — [apps/backend](/th/guide/structure/apps/backend/)
+อะไรอยู่ที่ไหน — [apps/backend](./)

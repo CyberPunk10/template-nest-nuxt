@@ -25,7 +25,7 @@ curl http://localhost:3200/api/health
 
 Или откройте: [http://localhost:3200](http://localhost:3200)
 
-Ещё вариант — посмотреть результат встроенного [HEALTHCHECK](/guide/docker/dockerfiles#healthcheck), Docker опрашивает его сам:
+Ещё вариант — посмотреть результат встроенного [HEALTHCHECK](../../../docker/dockerfiles#healthcheck), Docker опрашивает его сам:
 
 ```bash
 docker inspect --format='{{json .State.Health}}' frontend-preview
@@ -88,5 +88,5 @@ docker rmi frontend-preview backend-preview
 ```
 
 ::: tip
-Для повседневной работы это делать не нужно — [docker compose](/guide/structure/docker-compose) поднимает ту же связку одной командой, с готовой сетью и адресами.
+Для повседневной работы это делать не нужно — [docker compose](../../docker-compose) поднимает ту же связку одной командой, с готовой сетью и адресами.
 :::

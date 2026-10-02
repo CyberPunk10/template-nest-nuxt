@@ -19,7 +19,7 @@ template-nest-nuxt/
 └── root configs          pnpm, TypeScript, ESLint
 ```
 
-How the packages depend on each other — see [Architecture](/en/guide/architecture).
+How the packages depend on each other — see [Architecture](../architecture).
 
 ## Configs
 
@@ -35,7 +35,7 @@ How the packages depend on each other — see [Architecture](/en/guide/architect
 | `.dockerignore`         | What **doesn't** go into the build context: `node_modules`, build output, `.env` (except `.example`). Directly affects image size and build speed |
 | `pnpm-lock.yaml`        | A single lockfile for the whole monorepo — a consequence of workspaces. Exact versions of every dependency, transitive ones included              |
 
-TypeScript configs layer by layer — [tsconfig.base.json](/en/guide/structure/tsconfig-base).
+TypeScript configs layer by layer — [tsconfig.base.json](./tsconfig-base).
 
 ## Where to put new things
 

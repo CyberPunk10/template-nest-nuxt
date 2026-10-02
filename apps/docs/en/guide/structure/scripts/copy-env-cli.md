@@ -29,4 +29,4 @@ pnpm env:copy          # node scripts/copy-env-cli.mjs
 pnpm env:copy:force    # node scripts/copy-env-cli.mjs --force
 ```
 
-It exists separately from [`copy-env.mjs`](/en/guide/structure/scripts/copy-env) so the module itself stays clean (no side effects on import) — all the side effect is concentrated in this file, which is only invoked from the npm scripts.
+It exists separately from [`copy-env.mjs`](./copy-env) so the module itself stays clean (no side effects on import) — all the side effect is concentrated in this file, which is only invoked from the npm scripts.

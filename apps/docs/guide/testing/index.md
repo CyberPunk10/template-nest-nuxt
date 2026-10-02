@@ -48,7 +48,7 @@ pnpm --filter @repo/backend test:watch     # любой скрипт этого 
 
 | Приложение                            | Стек                        |
 | ------------------------------------- | --------------------------- |
-| [backend](/guide/testing/backend)     | Jest, Supertest             |
+| [backend](./backend)     | Jest, Supertest             |
 
 Тесты фронтенда в шаблон пока не входят.
 

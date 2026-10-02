@@ -12,4 +12,4 @@ The frontend application's manifest. Its scripts work only inside their own work
 | `lint`        | `eslint . --fix` | Linter with auto-fix                                                          |
 | `type-check`  | `nuxt typecheck` | Type-checks via `vue-tsc`                                                     |
 
-What lives where — [apps/frontend](/en/guide/structure/apps/frontend/).
+What lives where — [apps/frontend](./).

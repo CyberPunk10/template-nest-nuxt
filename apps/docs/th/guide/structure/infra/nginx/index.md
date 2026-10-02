@@ -18,4 +18,4 @@ infra/nginx/
 
 Dockerfile คัดลอก static ที่ VitePress build แล้วจาก image `docs-builder` ไปไว้ที่ `/srv/docs` ไม่มี container ของเอกสารแยกต่างหาก — nginx เสิร์ฟจากดิสก์เลย
 
-รายละเอียด route — [Reverse proxy](/th/guide/reverse-proxy), การ build image — [Dockerfile](/th/guide/structure/infra/nginx/docker-image)
+รายละเอียด route — [Reverse proxy](../../../reverse-proxy), การ build image — [Dockerfile](./docker-image)

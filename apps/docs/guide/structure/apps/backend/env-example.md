@@ -6,7 +6,7 @@
 | `APP_ENV`         | `development`           | Прикладной режим (`development`/`production`/`prod_qa`/`test`). В Docker — `production`                                                                                                                   |
 | `SWAGGER_ENABLED` | не задан                | Показывать ли Swagger UI на `/api/docs`. Если не задан — включён везде, кроме `production`. Задаётся отдельно от `NODE_ENV`, чтобы можно было открыть Swagger в проде для диагностики или скрыть локально |
 | `PORT`            | `3100`                  | Порт backend при `pnpm dev`. В Docker переопределяется `BACKEND_INTERNAL_PORT` из корневого `.env`                                                                                                        |
-| `CORS_ORIGIN`     | `http://localhost:3200` | Origin фронтенда, с которого разрешены запросы. В Docker переопределяется на `http://localhost` — [подробнее](/guide/env-variables#cors-origin)                                                           |
+| `CORS_ORIGIN`     | `http://localhost:3200` | Origin фронтенда, с которого разрешены запросы. В Docker переопределяется на `http://localhost` — [подробнее](../../../env-variables#cors-origin)                                                           |
 
 ## Связи с другими файлами
 
@@ -15,6 +15,6 @@
 - **`CORS_ORIGIN`** должен совпадать с адресом фронтенда, то есть с `PORT` в `apps/frontend/.env`. Не совпал — браузер заблокирует запросы к API, при этом сервер ответит `200` и в логах всё будет чисто.
 - **`PORT`** — на него смотрит `NUXT_BACKEND_URL` в `apps/frontend/.env`: по этому адресу Nuxt ходит в API при серверном рендеринге.
 
-Меняете порт — проверьте обе стороны. [Все связки](/guide/env-variables#связанные-переменные).
+Меняете порт — проверьте обе стороны. [Все связки](../../../env-variables#связанные-переменные).
 
-[Переменные окружения](/guide/env-variables#фаилы).
+[Переменные окружения](../../../env-variables#фаилы).

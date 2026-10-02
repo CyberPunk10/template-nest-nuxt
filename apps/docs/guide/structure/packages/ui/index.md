@@ -17,10 +17,10 @@ packages/ui/
 
 Скомпилировать его обычным `tsc` и не получилось бы: `.vue`-файлы требуют `vue-tsc` и отдельного пайплайна. `tsconfig.json` здесь нужен лишь для `vue-tsc --noEmit` при проверке типов.
 
-Поэтому `main` указывает прямо на `src/index.ts` — так же, как у [shared](/guide/structure/packages/shared/). Отличается только проверка типов: здесь нужен `vue-tsc`, там достаточно `tsc`.
+Поэтому `main` указывает прямо на `src/index.ts` — так же, как у [shared](../shared/). Отличается только проверка типов: здесь нужен `vue-tsc`, там достаточно `tsc`.
 
 ## Своя настройка TypeScript
 
 Наследует `tsconfig.base.json`, но добавляет библиотеку `DOM` — в базовом конфиге её нет намеренно, он общий и для бэкенда.
 
-Манифест пакета — [package.json](/guide/structure/packages/ui/package-json).
+Манифест пакета — [package.json](./package-json).

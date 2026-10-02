@@ -25,7 +25,7 @@ curl http://localhost:3200/api/health
 
 Or open: [http://localhost:3200](http://localhost:3200)
 
-Another option is the built-in [HEALTHCHECK](/en/guide/docker/dockerfiles#healthcheck) — Docker polls it on its own:
+Another option is the built-in [HEALTHCHECK](../../../docker/dockerfiles#healthcheck) — Docker polls it on its own:
 
 ```bash
 docker inspect --format='{{json .State.Health}}' frontend-preview
@@ -88,5 +88,5 @@ docker rmi frontend-preview backend-preview
 ```
 
 ::: tip
-You don't need any of this for day-to-day work — [docker compose](/en/guide/structure/docker-compose) brings up the same pair with one command, with the network and addresses already set up.
+You don't need any of this for day-to-day work — [docker compose](../../docker-compose) brings up the same pair with one command, with the network and addresses already set up.
 :::

@@ -37,6 +37,6 @@ apps/frontend/
 
 `app/` is what reaches the browser (and gets rendered on the server during SSR). `server/` runs **only** on the server and never enters the client bundle.
 
-Every API call goes through `server/api/backend/`: the browser talks to its own origin and Nuxt forwards the request to NestJS. That's why the backend has no CORS trouble in dev and doesn't need to be published in Docker — see [Reverse proxy](/en/guide/reverse-proxy).
+Every API call goes through `server/api/backend/`: the browser talks to its own origin and Nuxt forwards the request to NestJS. That's why the backend has no CORS trouble in dev and doesn't need to be published in Docker — see [Reverse proxy](../../../reverse-proxy).
 
-Application scripts — [package.json](/en/guide/structure/apps/frontend/package-json).
+Application scripts — [package.json](./package-json).

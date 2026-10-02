@@ -37,6 +37,6 @@ apps/frontend/
 
 `app/` คือส่วนที่ไปถึง browser (และถูก render บน server ตอน SSR) ส่วน `server/` รัน **เฉพาะ** บน server และไม่เข้าไปอยู่ใน bundle ฝั่ง client
 
-ทุก request ที่ยิงไป API จะผ่าน `server/api/backend/`: browser คุยกับ origin ของตัวเอง แล้ว Nuxt forward ต่อไปยัง NestJS เพราะแบบนี้ backend จึงไม่มีปัญหา CORS ใน dev และไม่ต้องเปิดพอร์ตออกมาใน Docker — ดู [Reverse proxy](/th/guide/reverse-proxy)
+ทุก request ที่ยิงไป API จะผ่าน `server/api/backend/`: browser คุยกับ origin ของตัวเอง แล้ว Nuxt forward ต่อไปยัง NestJS เพราะแบบนี้ backend จึงไม่มีปัญหา CORS ใน dev และไม่ต้องเปิดพอร์ตออกมาใน Docker — ดู [Reverse proxy](../../../reverse-proxy)
 
-สคริปต์ของ application — [package.json](/th/guide/structure/apps/frontend/package-json)
+สคริปต์ของ application — [package.json](./package-json)

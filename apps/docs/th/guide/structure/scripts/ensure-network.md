@@ -9,11 +9,11 @@ WARN[0000] The "COMPOSE_NETWORK_NAME" variable is not set. Defaulting to a blank
 network  declared as external, but could not be found.
 ```
 
-เรียกจาก [`predocker.mjs`](/th/guide/structure/scripts/predocker) — ก่อน `pnpm docker:up`
+เรียกจาก [`predocker.mjs`](./predocker) — ก่อน `pnpm docker:up`
 
 ## การใช้งาน
 
-ไม่มีคำสั่ง pnpm ของตัวเอง — ถูกเรียกจาก [`predocker.mjs`](/th/guide/structure/scripts/predocker) จึงทำงานตอน `pnpm docker:up`:
+ไม่มีคำสั่ง pnpm ของตัวเอง — ถูกเรียกจาก [`predocker.mjs`](./predocker) จึงทำงานตอน `pnpm docker:up`:
 
 ```js
 import { ensureNetwork } from './ensure-network.mjs'
