@@ -1,17 +1,19 @@
 # db.mjs
 
-Управляет контейнером БД. Работает и как CLI (`pnpm db:up` / `pnpm db:down`), и как модуль — `dbUp()` вызывается из [`predev.mjs`](/guide/structure/scripts/predev).
+Управляет БД: контейнером, клиентом Prisma и миграциями. Работает и как CLI (`pnpm db:*`), и как модуль — функции вызываются из [`predev.mjs`](/guide/structure/scripts/predev).
 
 БД описана в общем `docker-compose.yml` без профиля, а сервисы приложения — под профилем `app`. Поэтому команда без профиля затрагивает только `postgres` — подробнее в [docker-compose.yml](/guide/structure/docker-compose#профили).
 
 ## Команды
 
-| Команда        | Что делает                                                            |
-| -------------- | --------------------------------------------------------------------- |
-| `pnpm db:up`   | Создаёт сеть при необходимости, поднимает `postgres` и ждёт healthcheck |
-| `pnpm db:down` | Останавливает `postgres`, данные остаются в volume                     |
+| Команда            | Что делает                                                              |
+| ------------------ | ----------------------------------------------------------------------- |
+| `pnpm db:up`       | Создаёт сеть при необходимости, поднимает `postgres` и ждёт healthcheck |
+| `pnpm db:down`     | Останавливает `postgres`, данные остаются в volume                      |
+| `pnpm db:generate` | Генерирует клиент Prisma из схемы (`prisma generate`)                   |
+| `pnpm db:migrate`  | Применяет миграции, которых ещё нет в БД (`prisma migrate deploy`)      |
 
-Отдельно `db:up` нужен редко: `pnpm dev` поднимает БД сам. Пригодится, когда приложения не нужны — например, чтобы применить миграции или подключиться клиентом.
+Отдельно эти команды нужны редко: `pnpm dev` выполняет их сам. Пригодятся, когда приложения уже запущены или не нужны — например, чтобы применить миграции после `git pull` или подключиться к БД клиентом.
 
 ## Ожидание готовности
 
@@ -34,7 +36,9 @@ docker compose down -v   # удалит базу вместе с данными
 ## Использование как модуля
 
 ```js
-import { dbUp } from './db.mjs'
+import { dbUp, dbGenerate, dbMigrate } from './db.mjs'
 
-dbUp()   // сеть + postgres + ожидание healthcheck
+dbUp()         // сеть + postgres + ожидание healthcheck
+dbGenerate()   // prisma generate в apps/backend
+dbMigrate()    // prisma migrate deploy в apps/backend
 ```

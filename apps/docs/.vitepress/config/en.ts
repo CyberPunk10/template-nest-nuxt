@@ -165,6 +165,7 @@ const config: LocaleEntry = {
             ],
           },
           { text: 'Database', link: '/en/guide/database' },
+          { text: 'Migrations', link: '/en/guide/migrations' },
         ],
       },
       {

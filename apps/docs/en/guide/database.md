@@ -23,11 +23,10 @@ You rarely need the command on its own: `pnpm dev` brings the database up itself
 
 The database lives in the shared `docker-compose.yml` with no profile, while the application services sit behind the `app` profile. That way `docker compose up` only touches postgres, and the full stack comes up via `pnpm docker:up`.
 
-Apply migrations:
+`pnpm dev` applies migrations before starting. To run them by hand, use the command below; the database must be up (`pnpm db:up`):
 
 ```bash
-cd apps/backend
-pnpm prisma migrate dev
+pnpm db:migrate
 ```
 
 ---
@@ -89,24 +88,16 @@ apps/backend/
 
 ### Core commands
 
-All commands are run from `apps/backend/`:
+`pnpm prisma ...` commands — from `apps/backend/`, `pnpm db:*` — from the root.
 
-```bash
-cd apps/backend
+| Task                             | Command                                 |
+| -------------------------------- | --------------------------------------- |
+| Create and apply a migration     | `pnpm prisma migrate dev --name <name>` |
+| Apply new migrations             | `pnpm db:migrate`                       |
+| Regenerate the client            | `pnpm db:generate`                      |
+| Prisma Studio (`localhost:5555`) | `pnpm prisma studio`                    |
 
-# create and apply a migration
-pnpm prisma migrate dev --name <name>
-
-# apply migrations without creating new ones (CI / production)
-pnpm prisma migrate deploy
-
-# open Prisma Studio (GUI for viewing and editing data)
-pnpm prisma studio
-# → http://localhost:5555
-
-# regenerate the client manually
-pnpm prisma generate
-```
+More on migrations — on the [Migrations](/en/guide/migrations) page.
 
 ### Client generation
 
@@ -114,7 +105,7 @@ The client is a build artifact: Prisma builds it from `schema.prisma` into `src/
 
 Usually there's no need to generate it by hand: `postinstall` in `apps/backend/package.json` does it during `pnpm install`. That's how the client appears on a fresh clone, in CI and in the Docker image.
 
-By hand — when the schema has changed: after editing it or after a `git pull`. The client won't update on its own then: in Prisma 7 `migrate dev` doesn't generate it, and `pnpm install` with no new dependencies skips `postinstall`.
+By hand — when the schema has changed: after editing it or after a `git pull`. The client won't update on its own then: `migrate dev` only changes the database and doesn't generate it, and `pnpm install` with no new dependencies skips `postinstall`.
 
 ```bash
 pnpm db:generate
@@ -167,51 +158,7 @@ Details (how it works, production notes) — in [Auth → Backend: Seed](./auth/
 
 ## Migrations
 
-The `prisma/migrations/` folder is committed to git — it is the history of database schema changes.
-Never edit migration files by hand.
-
-For production, use `prisma migrate deploy` — it applies only pending migrations, with no interactive prompts.
-
----
-
-## Resolving drift between the schema and the generated client
-
-### How the problem arises
-
-Prisma works with two independent artifacts:
-
-1. **Migration history** — the files in `prisma/migrations/`, committed to git.
-2. **Generated client** — the TypeScript code in `src/generated/prisma/`, not committed (in `.gitignore`).
-
-The client is generated from the actual state of the database at the moment of `prisma migrate dev`. If a migration has been applied to the database but its file is missing from `migrations/` — for example, it was created on another machine or in another branch and never made it into git — then the client will contain fields and models that do not exist in `schema.prisma`. The result: TypeScript errors on fields that aren't in the code.
-
-You can spot this situation in the `migrate dev` output:
-
-```
-Drift detected: Your database schema is not in sync with your migration history.
-The following migration(s) are applied to the database but missing from the local migrations directory: 20260607165435_add_auth
-```
-
-### Fix for the dev environment
-
-You need to reset the database to the state described by the current migration files and rebuild the client:
-
-```bash
-cd apps/backend
-
-# 1. Reset the database and re-apply migrations (all data will be lost)
-pnpm prisma migrate reset
-
-# 2. Regenerate the client from the current schema.prisma
-pnpm prisma generate
-```
-
-> `migrate reset` does not run `generate` automatically — the client must be rebuilt separately.
-> After this, the TypeScript errors on "nonexistent" fields will disappear.
-
-### When this approach doesn't work
-
-If the drift occurred in **production** or in an environment with data you cannot afford to lose, `migrate reset` is not acceptable. In that case you need to either restore the lost migration file from the git history of another branch or machine, or use `prisma migrate resolve` to manually reconcile the state.
+How migrations work, how to change the schema, and what to do if a migration fails or Prisma offers to reset the database — on a separate page, [Migrations](/en/guide/migrations).
 
 ---
 
@@ -221,11 +168,11 @@ Prisma normalizes PostgreSQL errors into its own codes via `PrismaClientKnownReq
 
 The most common codes:
 
-| Code    | Meaning                                                        | Typical response                     |
-| ------- | ------------------------------------------------------------- | ------------------------------------ |
-| `P2002` | Unique constraint violation (e.g. email already taken)        | `409 Conflict`                       |
-| `P2025` | Record not found on `update`, `delete`, `findUniqueOrThrow`   | `404 Not Found`                      |
-| `P2003` | Foreign key constraint violation                              | `409 Conflict` or `400 Bad Request`  |
+| Code    | Meaning                                                     | Typical response                    |
+| ------- | ----------------------------------------------------------- | ----------------------------------- |
+| `P2002` | Unique constraint violation (e.g. email already taken)      | `409 Conflict`                      |
+| `P2025` | Record not found on `update`, `delete`, `findUniqueOrThrow` | `404 Not Found`                     |
+| `P2003` | Foreign key constraint violation                            | `409 Conflict` or `400 Bad Request` |
 
 The idiomatic pattern is to go straight for `update`/`delete` and catch P2025, instead of a preliminary `findUniqueOrThrow`.
 

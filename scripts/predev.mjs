@@ -1,7 +1,7 @@
 import { BACKEND_ENV, FRONTEND_ENV, DOCS_ENV, copyEnvFiles } from './copy-env.mjs'
 import { checkPorts } from './check-ports.mjs'
 import { createLogger } from './log.mjs'
-import { dbUp } from './db.mjs'
+import { dbUp, dbGenerate, dbMigrate } from './db.mjs'
 
 const log = createLogger('predev.mjs')
 
@@ -32,6 +32,17 @@ async function main() {
   step = 'db'
   dbUp()
   log.ok('db: postgres is up')
+
+  // Шаг 4: сгенерировать клиент Prisma — схема могла измениться после
+  // `pnpm install`, а со старым клиентом backend не увидит её изменений.
+  step = 'client'
+  dbGenerate()
+  log.ok('client: generated from schema.prisma')
+
+  // Шаг 5: применить новые миграции — например, пришедшие с `git pull`.
+  step = 'migrations'
+  dbMigrate()
+  log.ok('migrations: database is up to date')
 }
 
 main().catch((e) => {

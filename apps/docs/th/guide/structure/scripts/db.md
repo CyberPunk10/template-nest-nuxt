@@ -1,17 +1,19 @@
 # db.mjs
 
-จัดการ container ฐานข้อมูล ใช้ได้ทั้งเป็น CLI (`pnpm db:up` / `pnpm db:down`) และเป็น module — `dbUp()` ถูกเรียกจาก [`predev.mjs`](/th/guide/structure/scripts/predev)
+จัดการฐานข้อมูล: container, client ของ Prisma และ migration ใช้ได้ทั้งเป็น CLI (`pnpm db:*`) และเป็น module — ฟังก์ชันถูกเรียกจาก [`predev.mjs`](/th/guide/structure/scripts/predev)
 
 ฐานข้อมูลถูกประกาศไว้ใน `docker-compose.yml` ไฟล์เดียวกันโดยไม่มี profile ส่วน service ของแอปอยู่ภายใต้ profile `app` ด้วยเหตุนี้คำสั่งที่ไม่ระบุ profile จึงแตะเฉพาะ `postgres` — รายละเอียดใน [docker-compose.yml](/th/guide/structure/docker-compose#profile)
 
 ## คำสั่ง
 
-| คำสั่ง         | ทำอะไร                                                             |
-| -------------- | ------------------------------------------------------------------ |
-| `pnpm db:up`   | สร้าง network ถ้าจำเป็น, ยก `postgres` ขึ้นมา และรอ healthcheck      |
-| `pnpm db:down` | หยุด `postgres` ข้อมูลยังอยู่ใน volume                              |
+| คำสั่ง                | ทำอะไร                                                     |
+| ------------------ | --------------------------------------------------------- |
+| `pnpm db:up`       | สร้าง network ถ้าจำเป็น, ยก `postgres` ขึ้นมา และรอ healthcheck |
+| `pnpm db:down`     | หยุด `postgres` ข้อมูลยังอยู่ใน volume                          |
+| `pnpm db:generate` | generate client ของ Prisma จาก schema (`prisma generate`) |
+| `pnpm db:migrate`  | รัน migration ที่ยังไม่มีใน DB (`prisma migrate deploy`)        |
 
-โดยทั่วไปไม่ค่อยต้องใช้ `db:up` เดี่ยว ๆ เพราะ `pnpm dev` ยกฐานข้อมูลขึ้นมาให้เอง จะมีประโยชน์ตอนที่ไม่ต้องการรันแอป — เช่น เพื่อรัน migration หรือเชื่อมต่อด้วย client
+โดยทั่วไปไม่ค่อยต้องใช้คำสั่งเหล่านี้เดี่ยว ๆ เพราะ `pnpm dev` รันให้เอง จะมีประโยชน์ตอนที่แอปรันอยู่แล้วหรือไม่ต้องการรันแอป — เช่น เพื่อรัน migration หลัง `git pull` หรือเชื่อมต่อฐานข้อมูลด้วย client
 
 ## การรอให้พร้อมใช้งาน
 
@@ -34,7 +36,9 @@ docker compose down -v   # ลบฐานข้อมูลพร้อมข�
 ## การใช้เป็น module
 
 ```js
-import { dbUp } from './db.mjs'
+import { dbUp, dbGenerate, dbMigrate } from './db.mjs'
 
-dbUp()   // network + postgres + รอ healthcheck
+dbUp()         // network + postgres + รอ healthcheck
+dbGenerate()   // prisma generate ใน apps/backend
+dbMigrate()    // prisma migrate deploy ใน apps/backend
 ```

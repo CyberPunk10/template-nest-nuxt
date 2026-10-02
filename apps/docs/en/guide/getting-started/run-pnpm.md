@@ -24,7 +24,7 @@ pnpm dev
 
 One command brings up all three applications. Before it starts, [`predev.mjs`](/en/guide/structure/scripts/predev) runs: it creates missing `.env` files and resolves port conflicts. Each step prints a line with ✓, and if preparation stops — a line with ✗ and the step name; what to check then is in the [step table](/en/guide/structure/scripts/predev#what-it-prints).
 
-Without `predev.mjs` the same is done by hand: copy `.env.example` to `.env` in the root and in each `apps/*` (`pnpm env:copy`), free the ports from `PORT` in `apps/*/.env`, and bring the database up (`pnpm db:up`).
+Without `predev.mjs` the same is done by hand: copy `.env.example` to `.env` in the root and in each `apps/*` (`pnpm env:copy`), free the ports from `PORT` in `apps/*/.env`, bring the database up (`pnpm db:up`), generate the Prisma client (`pnpm db:generate`) and apply migrations (`pnpm db:migrate`).
 
 | Service  | URL                               | Technology       |
 | -------- | --------------------------------- | ---------------- |

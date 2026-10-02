@@ -165,6 +165,7 @@ const config: LocaleEntry = {
             ],
           },
           { text: 'ฐานข้อมูล', link: '/th/guide/database' },
+          { text: 'Migration', link: '/th/guide/migrations' },
         ],
       },
       {

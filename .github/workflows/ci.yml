@@ -52,7 +52,7 @@ jobs:
 
       # БД для тестов — тем же скриптом, что и при разработке.
       - run: pnpm db:up
-      - run: pnpm --filter @repo/backend exec prisma migrate deploy
+      - run: pnpm db:migrate
 
       - run: pnpm test
       - run: pnpm test:e2e

@@ -23,11 +23,10 @@ pnpm db:up
 
 ฐานข้อมูลถูกประกาศไว้ใน `docker-compose.yml` ไฟล์เดียวกันโดยไม่มี profile ส่วน service ของแอปอยู่ภายใต้ profile `app` ดังนั้น `docker compose up` จะแตะเฉพาะ postgres และถ้าต้องการ stack ทั้งหมดให้ใช้ `pnpm docker:up`
 
-รัน migration:
+`pnpm dev` รัน migration ให้ก่อนเริ่ม ถ้าจะรันเอง ใช้คำสั่งด้านล่าง โดยฐานข้อมูลต้องรันอยู่ (`pnpm db:up`):
 
 ```bash
-cd apps/backend
-pnpm prisma migrate dev
+pnpm db:migrate
 ```
 
 ---
@@ -89,24 +88,16 @@ apps/backend/
 
 ### คำสั่งหลัก
 
-คำสั่งทั้งหมดรันจาก `apps/backend/`:
+คำสั่ง `pnpm prisma ...` — จาก `apps/backend/` ส่วน `pnpm db:*` — จาก root
 
-```bash
-cd apps/backend
+| งาน                              | คำสั่ง                                   |
+| -------------------------------- | ------------------------------------- |
+| สร้างและรัน migration              | `pnpm prisma migrate dev --name <ชื่อ>` |
+| รัน migration ใหม่                 | `pnpm db:migrate`                     |
+| generate client ใหม่              | `pnpm db:generate`                    |
+| Prisma Studio (`localhost:5555`) | `pnpm prisma studio`                  |
 
-# สร้างและรัน migration
-pnpm prisma migrate dev --name <ชื่อ>
-
-# รัน migration โดยไม่สร้างใหม่ (CI / production)
-pnpm prisma migrate deploy
-
-# เปิด Prisma Studio (GUI สำหรับดูและแก้ไขข้อมูล)
-pnpm prisma studio
-# → http://localhost:5555
-
-# generate client ใหม่ด้วยตนเอง
-pnpm prisma generate
-```
+รายละเอียดเรื่อง migration — ในหน้า [Migration](/th/guide/migrations)
 
 ### การ generate client
 
@@ -114,7 +105,7 @@ client คือผลลัพธ์ของการ build: Prisma สร้�
 
 ปกติไม่ต้อง generate เอง: `postinstall` ใน `apps/backend/package.json` ทำให้ระหว่าง `pnpm install` client จึงมีขึ้นเองบน clone ใหม่, ใน CI และใน Docker image
 
-ต้องทำเอง — เมื่อ schema เปลี่ยน: หลังแก้ schema หรือหลัง `git pull` ตอนนั้น client จะไม่อัปเดตเอง: ใน Prisma 7 `migrate dev` ไม่ generate client และ `pnpm install` ที่ไม่มี dependency ใหม่จะข้าม `postinstall`
+ต้องทำเอง — เมื่อ schema เปลี่ยน: หลังแก้ schema หรือหลัง `git pull` ตอนนั้น client จะไม่อัปเดตเอง: `migrate dev` เปลี่ยนแค่ฐานข้อมูล ไม่ generate client และ `pnpm install` ที่ไม่มี dependency ใหม่จะข้าม `postinstall`
 
 ```bash
 pnpm db:generate
@@ -167,51 +158,7 @@ script นี้ idempotent (upsert ตาม email) และอ่านข้
 
 ## Migration
 
-โฟลเดอร์ `prisma/migrations/` จะถูก commit เข้า git — นี่คือประวัติการเปลี่ยนแปลง schema ของ DB
-ห้ามแก้ไขไฟล์ migration ด้วยมือเด็ดขาด
-
-สำหรับ production ให้ใช้ `prisma migrate deploy` — จะรันเฉพาะ migration ที่ pending อยู่โดยไม่มีคำถามแบบ interactive
-
----
-
-## การแก้ปัญหาความไม่ตรงกันระหว่าง schema กับ client ที่ generate ไว้
-
-### ปัญหาเกิดขึ้นได้อย่างไร
-
-Prisma ทำงานกับ artifact สองอย่างที่เป็นอิสระต่อกัน:
-
-1. **ประวัติ migration** — ไฟล์ใน `prisma/migrations/` ที่ commit เข้า git
-2. **client ที่ generate ไว้** — โค้ด TypeScript ใน `src/generated/prisma/` ที่ไม่ได้ commit (อยู่ใน `.gitignore`)
-
-client ถูก generate จากสถานะจริงของ DB ณ ตอนที่รัน `prisma migrate dev` ถ้าใน DB มีการรัน migration ที่ไฟล์ของมันไม่อยู่ใน `migrations/` — เช่น ถูกสร้างบนเครื่องอื่นหรือใน branch อื่นแล้วไม่ได้เข้า git — client จะมี field และโมเดลที่ไม่มีอยู่ใน `schema.prisma` ผลลัพธ์คือ: เกิด TypeScript error กับ field ที่ไม่มีในโค้ด
-
-สัญญาณของสถานการณ์นี้ในผลลัพธ์ของ `migrate dev`:
-
-```
-Drift detected: Your database schema is not in sync with your migration history.
-The following migration(s) are applied to the database but missing from the local migrations directory: 20260607165435_add_auth
-```
-
-### วิธีแก้สำหรับสภาพแวดล้อม dev
-
-ต้อง reset DB กลับไปยังสถานะที่อธิบายไว้ในไฟล์ migration ปัจจุบัน แล้ว build client ใหม่:
-
-```bash
-cd apps/backend
-
-# 1. reset DB และรัน migration ใหม่ทั้งหมด (ข้อมูลทั้งหมดจะถูกลบ)
-pnpm prisma migrate reset
-
-# 2. generate client ใหม่จาก schema.prisma ปัจจุบัน
-pnpm prisma generate
-```
-
-> `migrate reset` จะไม่รัน `generate` ให้อัตโนมัติ — ต้อง build client แยกเอง
-> หลังจากนั้น TypeScript error กับ field ที่ "ไม่มีอยู่" จะหายไป
-
-### เมื่อวิธีนี้ใช้ไม่ได้
-
-ถ้าความไม่ตรงกันเกิดขึ้นใน **production** หรือในสภาพแวดล้อมที่มีข้อมูลซึ่งสูญเสียไม่ได้ — `migrate reset` ใช้ไม่ได้ ในกรณีนี้ต้องเลือกอย่างใดอย่างหนึ่ง คือกู้ไฟล์ migration ที่หายไปกลับมาจากประวัติ git ของ branch อื่นหรือเครื่องอื่น หรือใช้ `prisma migrate resolve` เพื่อประสานสถานะด้วยตนเอง
+migration ทำงานอย่างไร วิธีเปลี่ยน schema และควรทำอย่างไรเมื่อ migration ล้มเหลวหรือ Prisma เสนอให้ reset ฐานข้อมูล — อยู่ในหน้าแยก [Migration](/th/guide/migrations)
 
 ---
 
@@ -221,11 +168,11 @@ Prisma แปลง error ของ PostgreSQL ให้เป็น code ขอ
 
 Code ที่พบบ่อยที่สุด:
 
-| Code    | ความหมาย                                                        | การตอบสนองทั่วไป                      |
-| ------- | ------------------------------------------------------------- | ------------------------------------ |
-| `P2002` | ละเมิด unique constraint (เช่น email ถูกใช้ไปแล้ว)              | `409 Conflict`                       |
-| `P2025` | ไม่พบ record ตอน `update`, `delete`, `findUniqueOrThrow`       | `404 Not Found`                      |
-| `P2003` | ละเมิด foreign key constraint                                 | `409 Conflict` หรือ `400 Bad Request` |
+| Code    | ความหมาย                                                | การตอบสนองทั่วไป                       |
+| ------- | ------------------------------------------------------- | ------------------------------------ |
+| `P2002` | ละเมิด unique constraint (เช่น email ถูกใช้ไปแล้ว)           | `409 Conflict`                       |
+| `P2025` | ไม่พบ record ตอน `update`, `delete`, `findUniqueOrThrow` | `404 Not Found`                      |
+| `P2003` | ละเมิด foreign key constraint                            | `409 Conflict` หรือ `400 Bad Request` |
 
 Pattern ที่ถูกต้องตามหลัก idiomatic คือ ทำ `update`/`delete` ไปเลยแล้วดักจับ P2025 แทนที่จะทำ `findUniqueOrThrow` ก่อนล่วงหน้า
 

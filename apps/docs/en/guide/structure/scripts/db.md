@@ -1,17 +1,19 @@
 # db.mjs
 
-Manages the database container. Works both as a CLI (`pnpm db:up` / `pnpm db:down`) and as a module — `dbUp()` is called from [`predev.mjs`](/en/guide/structure/scripts/predev).
+Manages the database: the container, the Prisma client and migrations. Works both as a CLI (`pnpm db:*`) and as a module — its functions are called from [`predev.mjs`](/en/guide/structure/scripts/predev).
 
 The database lives in the shared `docker-compose.yml` with no profile, while the application services sit behind the `app` profile. That's why a command without a profile only touches `postgres` — more in [docker-compose.yml](/en/guide/structure/docker-compose#profiles).
 
 ## Commands
 
-| Command        | What it does                                                              |
-| -------------- | ------------------------------------------------------------------------- |
-| `pnpm db:up`   | Creates the network if needed, starts `postgres` and waits for healthcheck |
-| `pnpm db:down` | Stops `postgres`; the data stays in its volume                            |
+| Command            | What it does                                                               |
+| ------------------ | -------------------------------------------------------------------------- |
+| `pnpm db:up`       | Creates the network if needed, starts `postgres` and waits for healthcheck |
+| `pnpm db:down`     | Stops `postgres`; the data stays in its volume                             |
+| `pnpm db:generate` | Generates the Prisma client from the schema (`prisma generate`)            |
+| `pnpm db:migrate`  | Applies migrations the database doesn't have yet (`prisma migrate deploy`) |
 
-You rarely need `db:up` on its own: `pnpm dev` brings the database up itself. It helps when the applications aren't needed — to apply migrations, say, or to connect with a client.
+You rarely need these commands on their own: `pnpm dev` runs them itself. They help when the applications are already running or aren't needed — to apply migrations after a `git pull`, say, or to connect to the database with a client.
 
 ## Waiting for readiness
 
@@ -34,7 +36,9 @@ docker compose down -v   # drops the database along with its data
 ## Using it as a module
 
 ```js
-import { dbUp } from './db.mjs'
+import { dbUp, dbGenerate, dbMigrate } from './db.mjs'
 
-dbUp()   // network + postgres + waiting for healthcheck
+dbUp()         // network + postgres + waiting for healthcheck
+dbGenerate()   // prisma generate in apps/backend
+dbMigrate()    // prisma migrate deploy in apps/backend
 ```
