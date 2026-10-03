@@ -41,6 +41,13 @@ The backend and frontend take no host ports of their own: they aren't reachable 
 
 ::: warning
 A plain `docker compose up`, bypassing `pnpm docker:up`, works too, but without the prep: without the root `.env` it refuses to start (`no port specified`), without `apps/*/.env` it also refuses (`env file ... not found`). If the port is taken, you get a plain Docker `address already in use` error, with no dialog.
+
+It won't start without the Docker network either: `network ... declared as external, but could not be found` — [why the network is external](../structure/docker-compose#network). To prepare everything ahead of time:
+
+```bash
+pnpm env:copy
+docker network create template-nest-nuxt_app
+```
 :::
 
 ## Stopping

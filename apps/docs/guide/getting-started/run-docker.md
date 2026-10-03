@@ -41,6 +41,13 @@ Backend и frontend своих хост-портов не занимают: сн
 
 ::: warning
 Прямой `docker compose up`, минуя `pnpm docker:up`, тоже работает, но без подготовки: без корневого `.env` откажется стартовать (`no port specified`), без `apps/*/.env` — тоже (`env file ... not found`). При занятом порте выдаст обычную Docker-ошибку `address already in use`, без диалога.
+
+Без Docker-сети тоже не стартует: `network ... declared as external, but could not be found` — [почему сеть внешняя](../structure/docker-compose#сеть). Подготовить всё заранее:
+
+```bash
+pnpm env:copy
+docker network create template-nest-nuxt_app
+```
 :::
 
 ## Остановка

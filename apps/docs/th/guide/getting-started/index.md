@@ -2,14 +2,22 @@
 
 ## เริ่มแบบเร็ว
 
-ต้องมี [Node.js >= 24 และ pnpm](./setup) — ที่เหลือ script จัดการให้:
+ต้องมี [Node.js >= 24 และ pnpm](./setup):
 
 ```bash
-git clone git@github.com:CyberPunk10/template-nest-nuxt.git
-cd template-nest-nuxt
+npx create-nest-nuxt my-app
+cd my-app
 pnpm install
 pnpm dev
 ```
+
+`create-nest-nuxt` จะถามสองคำถามระหว่างทาง:
+
+1. **ภาษา** — อังกฤษ รัสเซีย หรือไทย เอกสารภายในโปรเจกต์ (`apps/docs`) จะเป็นภาษานี้
+2. **รูปแบบของเทมเพลต:**
+   - `main` — แบบเล็กที่สุด: คุณทำระบบยืนยันตัวตนและฐานข้อมูลเอง
+   - `auth-session` — มีระบบยืนยันตัวตนพร้อมใช้ ฐานข้อมูลต่อเอง
+   - `postgres-prisma` — มีระบบยืนยันตัวตนและฐานข้อมูลพร้อมใช้ (PostgreSQL + Prisma)
 
 เปิดที่ [http://localhost:3200](http://localhost:3200) ส่วนที่เหลือในหน้านี้เป็นเรื่องว่าโหมดนี้ต่างจาก Docker อย่างไร และต้องตั้งค่าอะไรถ้ามีอะไรไม่ทำงาน
 

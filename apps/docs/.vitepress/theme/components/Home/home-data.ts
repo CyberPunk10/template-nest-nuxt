@@ -1,12 +1,6 @@
 // Имя папки проекта в примерах быстрого старта
 const projectDir = 'my-app'
 
-// Проект создаёт генератор create-nest-nuxt; --variant выбирает вариант
-// сразу, без вопроса в терминале.
-function createCmd(variant: string) {
-  return `npx create-nest-nuxt ${projectDir} --variant ${variant}`
-}
-
 export interface Branch {
   id: string // ключ в home.branches (main | auth | postgresPrisma)
   name: string
@@ -15,11 +9,6 @@ export interface Branch {
 export interface QuickstartStep {
   id: string // ключ в home.quickstart.steps
   cmd: string
-}
-
-export interface Quickstart {
-  branch: string
-  steps: QuickstartStep[]
 }
 
 export interface Principle {
@@ -42,31 +31,10 @@ export const branches: Branch[] = [
   },
 ]
 
-export const quickstarts: Quickstart[] = [
-  {
-    branch: 'main',
-    steps: [
-      { id: 'create', cmd: createCmd('main') },
-      { id: 'install', cmd: `cd ${projectDir} && pnpm install` },
-      { id: 'run', cmd: 'pnpm dev' },
-    ],
-  },
-  {
-    branch: 'auth-session',
-    steps: [
-      { id: 'create', cmd: createCmd('auth-session') },
-      { id: 'install', cmd: `cd ${projectDir} && pnpm install` },
-      { id: 'run', cmd: 'pnpm dev' },
-    ],
-  },
-  {
-    branch: 'postgres-prisma',
-    steps: [
-      { id: 'create', cmd: createCmd('postgres-prisma') },
-      { id: 'install', cmd: `cd ${projectDir} && pnpm install` },
-      { id: 'run', cmd: 'pnpm dev' },
-    ],
-  },
+export const quickstartSteps: QuickstartStep[] = [
+  { id: 'create', cmd: `npx create-nest-nuxt ${projectDir}` },
+  { id: 'install', cmd: `cd ${projectDir} && pnpm install` },
+  { id: 'run', cmd: 'pnpm dev' },
 ]
 
 export const principles: Principle[] = [

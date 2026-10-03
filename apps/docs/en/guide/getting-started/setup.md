@@ -15,7 +15,7 @@ The version is pinned in `.nvmrc` and in `engines` of the root `package.json`. `
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
 ```
 
-Then, in the repository root (where `.nvmrc` lives):
+Then, in the project root (where `.nvmrc` lives):
 
 ```bash
 nvm install 24
@@ -31,10 +31,11 @@ Details — [nvm-sh/nvm](https://github.com/nvm-sh/nvm).
 pnpm --version
 ```
 
-The pnpm version is pinned in `packageManager` of the root `package.json` — the recommended way to get it is [Corepack](https://nodejs.org/api/corepack.html), built into Node.js.
+The pnpm version is pinned in `packageManager` of the root `package.json` — the recommended way to get it is [Corepack](https://nodejs.org/api/corepack.html). It is built into Node.js 24; from Node.js 25 on it is installed separately.
 
 ::: details How to install (Corepack)
 ```bash
+npm install -g corepack   # Node.js 25+ only: Corepack isn't bundled there
 corepack enable
 ```
 
@@ -64,19 +65,7 @@ curl -fsSL https://get.docker.com | sh
 ```
 :::
 
-## 4. Docker network
-
-Also Docker-only. When you start with `pnpm docker:up` it is created automatically — no separate step needed.
-
-If you run `docker compose` directly, create it once yourself:
-
-```bash
-docker network create template-nest-nuxt_app
-```
-
-Without it, a plain `docker compose up` fails with `network ... declared as external, but could not be found` — [why the network is external](../structure/docker-compose#network).
-
-## 5. `.env` files
+## 4. `.env` files
 
 You don't have to copy `.env.example` → `.env` by hand: on the first run the wrapper script does it (`pnpm dev` → `predev.mjs`, `pnpm docker:up` → `predocker.mjs`). Both create **all** missing `.env` files — root, `apps/backend`, `apps/frontend`, `apps/docs`.
 
@@ -87,7 +76,3 @@ pnpm env:copy
 ```
 
 Which variables live where and why — see [ENV variables](../env-variables).
-
-::: tip
-When switching branches, the local `.env` doesn't update automatically — it may be missing variables introduced by the new branch. Compare it against `.env.example` and add whatever's missing.
-:::

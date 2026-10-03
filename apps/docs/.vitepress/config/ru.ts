@@ -172,6 +172,12 @@ const config: LocaleEntry = {
           { text: 'pnpm и Corepack', link: '/guide/pnpm' },
         ],
       },
+      {
+        text: 'Для мейнтейнера',
+        items: [
+          { text: 'Ветки шаблона', link: '/guide/maintainer/' },
+        ],
+      },
     ],
     docFooter: {
       prev: 'Предыдущая страница',

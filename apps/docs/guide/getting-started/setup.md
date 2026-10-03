@@ -15,7 +15,7 @@ node -v
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
 ```
 
-Затем в корне репозитория (там лежит `.nvmrc`):
+Затем в корне проекта (там лежит `.nvmrc`):
 
 ```bash
 nvm install 24
@@ -31,10 +31,11 @@ nvm use 24
 pnpm --version
 ```
 
-Версия pnpm закреплена в `packageManager` корневого `package.json` — рекомендуемый способ её получить — [Corepack](https://nodejs.org/api/corepack.html), встроенный в Node.js.
+Версия pnpm закреплена в `packageManager` корневого `package.json` — рекомендуемый способ её получить — [Corepack](https://nodejs.org/api/corepack.html). В Node.js 24 он встроен, начиная с Node.js 25 его ставят отдельно.
 
 ::: details Как установить (Corepack)
 ```bash
+npm install -g corepack   # только Node.js 25+: там Corepack не встроен
 corepack enable
 ```
 
@@ -64,19 +65,7 @@ curl -fsSL https://get.docker.com | sh
 ```
 :::
 
-## 4. Docker-сеть
-
-Тоже только для Docker-режима. При запуске через `pnpm docker:up` создаётся автоматически — отдельный шаг не требуется.
-
-Если запускаете `docker compose` напрямую, создайте её один раз сами:
-
-```bash
-docker network create template-nest-nuxt_app
-```
-
-Без неё прямой `docker compose up` упадёт с ошибкой `network ... declared as external, but could not be found` — [почему сеть внешняя](../structure/docker-compose#сеть).
-
-## 5. `.env`-файлы
+## 4. `.env`-файлы
 
 Копировать `.env.example` → `.env` вручную не обязательно: при первом запуске это делает скрипт-обёртка (`pnpm dev` → `predev.mjs`, `pnpm docker:up` → `predocker.mjs`). Оба создают **все** недостающие `.env` — корневой, `apps/backend`, `apps/frontend`, `apps/docs`.
 
@@ -87,7 +76,3 @@ pnpm env:copy
 ```
 
 Какие переменные где и почему — см. [ENV-переменные](../env-variables).
-
-::: tip
-При переключении веток локальный `.env` не обновляется автоматически — в нём могут отсутствовать переменные новой ветки. Сверьте с `.env.example` и добавьте недостающие.
-:::
