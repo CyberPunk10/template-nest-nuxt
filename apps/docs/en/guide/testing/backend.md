@@ -29,20 +29,23 @@ Test names in this template are written in Russian, so `-t` takes a Russian subs
 
 Flags are written without the `--` separator: pnpm already forwards arguments it does not recognise to the script, whereas an explicit `--` is passed along literally and Jest reads it as a file path.
 
-## Two test suites
+## Three test suites
 
 The suites are separated by location and by configuration.
 
-|                | Unit tests                       | E2E tests                            |
-| -------------- | -------------------------------- | ------------------------------------ |
-| Location       | `src/**/*.spec.ts`               | `test/*.e2e-spec.ts`                 |
-| Configuration  | the `jest` section of `package.json` | `test/jest-e2e.json`             |
-| What they load | a single class with stubs        | the whole application via `AppModule` |
-| Transport      | a direct method call             | HTTP through Supertest               |
+|                | Unit tests                       | E2E tests                             | E2E rate limiting                  |
+| -------------- | -------------------------------- | ------------------------------------- | ---------------------------------- |
+| Command        | `pnpm test`                      | `pnpm test:e2e`                       | `pnpm test:e2e:throttle`           |
+| Location       | `src/**/*.spec.ts`               | `test/default/*.e2e-spec.ts`          | `test/throttle/*.e2e-spec.ts`      |
+| Configuration  | the `jest` section of `package.json` | `test/jest-e2e.json`              | `test/jest-e2e-throttle.json`      |
+| What they load | a single class with stubs        | the whole application via `AppModule` | the application with the throttler on |
+| Transport      | a direct method call             | HTTP through Supertest                | HTTP through Supertest             |
 
 The file layout is shared across the repository ([Conventions](./#conventions)): `tasks.service.ts` → `tasks.service.spec.ts` next to it, e2e in `test/`.
 
-What is specific to Jest here is that the suites need **two separate configs** rather than one with two projects: their `rootDir` differs — the unit suite looks into `src`, e2e into the package root so it can see both `test/` and `src/`. Hence the different `testRegex` values too: otherwise each suite would pick up the other's files.
+What is specific to Jest here is that the suites need **separate configs** rather than one with several projects: their `rootDir` differs — the unit suite looks into `src`, e2e into the package root so it can see both `test/` and `src/`. Hence the different file-matching rules too (`testRegex` for the unit suite, `testMatch` for e2e): otherwise each suite would pick up the other's files.
+
+The rate limiting tests are a third suite because of the environment. In the ordinary tests the throttler is disabled (`APP_ENV=test`), or accumulated counters would break neighbouring checks. The `429` test needs it enabled, so its `setupFiles` sets `APP_ENV=production` and lowers `THROTTLE_LIMIT` to `12` — a limit reachable in seconds. This can't share a config with the other e2e tests: the settings are applied before modules load and affect the whole run.
 
 ## Unit tests
 
@@ -97,23 +100,26 @@ The application must be closed in `afterAll`/`afterEach`: without `app.close()` 
 
 ### The application's configuration is not duplicated in tests
 
-Global pipes and filters are listed once — in `src/setup-app.ts`, which both `main.ts` and the e2e tests call:
+Global middleware, pipes and filters are listed once — in `src/setup-app.ts`, which both `main.ts` and every e2e test call:
 
 ```ts
 export function setupApp(app: INestApplication): INestApplication {
+  app.use(cookieParser())
   app.useGlobalFilters(new HttpExceptionFilter())
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))
   return app
 }
 ```
 
+`JwtStrategy` reads the token from `req.cookies` — without `cookieParser` every protected route answers `401`, even when the request does carry the cookies.
+
 `Test.createTestingModule` assembles modules only — everything attached in `main.ts` in production is absent from the test application. Copy-pasting that list into the test would leave e2e checking an application configured differently from production, and the two would drift apart at the first edit: drop `forbidNonWhitelisted` from `main.ts` and the tests stay green, because the setting is still there in their own copy. A shared function makes that drift impossible.
 
-CORS and Swagger are not part of `setupApp`: they depend on `ConfigService` and have no bearing on the endpoint behaviour under test.
+CORS, Swagger and `listen` are not part of `setupApp`: they have no bearing on the endpoint behaviour under test. CORS keys off the `Origin` header, which supertest never sends, Swagger mounts a separate route, and `listen` opens a port — in tests the application lives in memory.
 
 ### State between tests
 
-`TasksModule` keeps tasks in memory, so in `tasks.e2e-spec.ts` the application is started afresh in `beforeEach` — that way every test begins with an empty list and does not depend on its neighbours. This costs about a second per file; once the state lives in a database, it will be cheaper to start the application once in `beforeAll` and clean the data between tests.
+`auth.e2e-spec.ts` starts the application once in `beforeAll` and isolation comes from the data: `beforeEach` calls `cleanupTestData()` and removes the test users. That is markedly cheaper than recreating the application for every test.
 
 `app.e2e-spec.ts` has no state at all, so it uses `beforeAll` and starts the application once.
 
@@ -135,17 +141,19 @@ process.env.CORS_ORIGIN ??= 'http://localhost:3200'
 
 Currently in the template:
 
-- **`tasks.service.spec.ts`** — in-memory CRUD: `id` and timestamp generation, partial updates, `NotFoundException` for an unknown `id`
+- **`tasks.service.spec.ts`** — in-memory CRUD: `id` and timestamp generation, filtering by owner, partial updates that leave other fields intact, `NotFoundException` for an unknown `id` and `ForbiddenException` for someone else's task
+- **`users.service.spec.ts`** — user CRUD: `NotFoundException` for an unknown `id`, `ConflictException` on a duplicate email — both on create and on update
 - **`app.controller.spec.ts`** — `/health` and `/dev/config`, including how `publicUrl` differs between dev and production
 - **`http-exception.filter.spec.ts`** — normalising errors into a single JSON shape, and the fact that the text of an unexpected exception does not leak to the client
-- **`tasks.e2e-spec.ts`** — status codes and DTO validation over HTTP: `201`/`204`, `400` for an invalid body and a non-UUID in the path, `404` for a missing task
+- **`auth.e2e-spec.ts`** — the full cycle: registration, login, refresh with token rotation, logout, reuse detection, access to protected routes
 - **`app.e2e-spec.ts`** — `/`, `/health`, `/dev/config` and `404` for an unknown route
+- **`throttle.e2e-spec.ts`** — `429` once the request limit is exceeded (a separate suite, see above)
 
 ## Adding tests
 
 For a new module:
 
 1. A unit test for the service — `src/modules/<name>/<name>.service.spec.ts`. Check the business logic: what is returned, which exceptions are thrown, what changes in the state
-2. An e2e test for the controller — `test/<name>.e2e-spec.ts`. Check the HTTP contract: status codes, body shape, validation. Start the application through `setupApp` — otherwise validation and the exception filter are not in place, and the test will lock in status codes the live server does not return
+2. An e2e test for the controller — `test/default/<name>.e2e-spec.ts`. Check the HTTP contract: status codes, body shape, validation. Start the application through `setupApp` — otherwise validation and the exception filter are not in place, and the test will lock in status codes the live server does not return
 
 A separate unit test for a controller is usually redundant: if the controller only delegates to a service, there is nothing to check in isolation — its whole point (routes, pipes, status codes) is visible only at the e2e level.

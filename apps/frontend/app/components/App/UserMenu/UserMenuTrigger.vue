@@ -5,9 +5,12 @@ withDefaults(defineProps<{
   name?: string
   email?: string
   open: boolean
+  isAdmin?: boolean
 }>(), { context: 'sidebar' })
 
 defineEmits<{ click: [] }>()
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -18,7 +21,10 @@ defineEmits<{ click: [] }>()
   >
     <div class="user-menu__avatar">{{ avatar }}</div>
     <div class="user-menu__info">
-      <span class="user-menu__name">{{ name }}</span>
+      <span class="user-menu__name-row">
+        <span class="user-menu__name">{{ name }}</span>
+        <span v-if="isAdmin" class="user-menu__admin-badge">{{ t('db.roles.admin') }}</span>
+      </span>
       <span class="user-menu__email">{{ email }}</span>
     </div>
     <Icon
@@ -82,6 +88,13 @@ defineEmits<{ click: [] }>()
     transition: opacity var(--app-sidebar-transition);
   }
 
+  &__name-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
   &__name {
     font-size: var(--text-sm);
     color: var(--text-primary);
@@ -89,6 +102,17 @@ defineEmits<{ click: [] }>()
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  &__admin-badge {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--status-warning);
+    background: var(--status-warning-subtle);
+    border-radius: 20px;
+    padding: 0 6px;
   }
 
   &__email {

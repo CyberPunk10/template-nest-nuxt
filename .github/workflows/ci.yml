@@ -73,6 +73,9 @@ jobs:
             echo "ok $url"
           done
 
+      # Отдельные тесты для throttle.
+      - run: pnpm --filter @repo/backend test:e2e:throttle
+
   # Образы собираются здесь, а не на сервере: сборке нужно около 3.5 ГБ
   # памяти, а работающему стеку — меньше гигабайта. Сервер только
   # скачивает готовое.
@@ -124,7 +127,7 @@ jobs:
   docker-smoke:
     needs: images
     if: github.event_name == 'push'
-    name: "Docker smoke: prod stack boots & healthy"
+    name: 'Docker smoke: prod stack boots & healthy'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -172,7 +175,7 @@ jobs:
         run: |
           port="$(grep '^NGINX_HOST_PORT=' .env | cut -d= -f2-)"
           base="http://localhost:$port"
-          for path in / /api/backend/health /dev/docs/; do
+          for path in / /login /api/backend/health /dev/docs/; do
             curl -fsS -o /dev/null --retry 20 --retry-delay 2 --retry-all-errors "$base$path"
             echo "ok $base$path"
           done

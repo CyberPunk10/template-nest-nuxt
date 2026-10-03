@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { ApiExcludeController } from '@nestjs/swagger'
 import type { DevConfigResponse, HealthResponse } from '@repo/shared'
 import { AppService } from './app.service'
+import { Public } from './modules/auth/decorators/public.decorator'
 
 @ApiExcludeController()
 @Controller()
@@ -12,17 +13,20 @@ export class AppController {
     private readonly config: ConfigService,
   ) {}
 
+  @Public()
   @Get()
   getHello(): string {
     return this.appService.getHello()
   }
 
   // Docker и оркестраторы проверяют этот endpoint чтобы знать что сервис готов
+  @Public()
   @Get('health')
   health(): HealthResponse {
     return { status: 'ok' }
   }
 
+  @Public()
   @Get('dev/config')
   devConfig(): DevConfigResponse {
     return {

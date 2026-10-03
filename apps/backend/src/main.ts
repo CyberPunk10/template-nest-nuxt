@@ -14,8 +14,13 @@ async function bootstrap() {
   // подделать его снаружи нельзя: nginx дописывает настоящий адрес в конец.
   app.set('trust proxy', 'loopback, linklocal, uniquelocal')
   const config = app.get(ConfigService)
+
   setupApp(app)
-  app.enableCors({ origin: config.get<string>('CORS_ORIGIN') })
+
+  app.enableCors({
+    origin: config.get<string>('CORS_ORIGIN'),
+    credentials: true,
+  })
 
   if (config.get<boolean>('SWAGGER_ENABLED')) {
     const document = SwaggerModule.createDocument(

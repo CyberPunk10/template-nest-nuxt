@@ -1,7 +1,11 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const { user } = useAuth()
 
-const form = reactive({ name: 'John Doe', email: 'john@example.com' })
+const form = reactive({
+  name: user.value?.name ?? '',
+  email: user.value?.email ?? '',
+})
 </script>
 
 <template>

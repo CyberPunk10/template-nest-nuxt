@@ -4,7 +4,7 @@ import { UiCard, UiButton } from '@repo/ui'
 interface Task {
   id: string
   title: string
-  description?: string
+  description: string | null
   createdAt: string
   updatedAt: string
 }
