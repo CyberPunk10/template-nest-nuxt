@@ -57,8 +57,9 @@ pnpm dev
 ### Инфраструктура
 
 - **Docker** — multi-stage образы для backend и frontend, reverse proxy как единая точка входа; документация собирается в статику и раздаётся им же
-- **docker compose** — поднимает nginx, backend и frontend в общей сети; наружу публикуется только порт nginx, приложения доступны лишь через него
-- **`pnpm docker:up`** — обёртка над `docker compose up`: создаёт корневой `.env` из `.env.example`, проверяет занятость хост-портов
+- **docker compose** — один файл на оба режима: сервисы приложения под профилем `app`, БД без профиля. `pnpm dev` поднимает только Postgres, `pnpm docker:up` — nginx, backend, frontend и БД в общей сети; наружу публикуется порт nginx и порт БД для локальных подключений
+- **`pnpm docker:up`** — обёртка над `docker compose --profile app up`: создаёт корневой `.env` из `.env.example`, проверяет занятость хост-портов, заводит Docker-сеть
+- **`pnpm db:up` / `pnpm db:down`** — управление контейнером БД отдельно от приложений; `up` ждёт healthcheck, `down` оставляет данные в volume
 
 **Запуск через Docker:**
 

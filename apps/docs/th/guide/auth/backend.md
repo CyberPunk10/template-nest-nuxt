@@ -7,7 +7,7 @@
 - **Cookies:** `access_token` (JWT, 15 นาที) และ `refresh_token` (7 วัน) — ทั้งคู่เป็น httpOnly เข้าถึงจาก JS ไม่ได้
 - **Route ที่ป้องกันไว้:** `JwtAuthGuard` แบบ global ตรวจสอบ `access_token` ในทุก request
 - **Refresh:** เมื่อ access token หมดอายุ frontend จะเรียก `POST /auth/refresh` อัตโนมัติ refresh token จะถูก rotate ทุกครั้งที่มีการ refresh
-- **Session:** refresh token แต่ละตัวถูกเก็บไว้ใน memory ของ process (`SessionsStore`) เป็น HMAC hash ทุกครั้งที่ refresh token record เดิมจะถูกทำเครื่องหมาย `isUsed: true` แล้วสร้าง record ใหม่ขึ้นมา การ logout จะลบ session ที่ active อยู่ออกจาก store
+- **Session:** refresh token แต่ละตัวถูกเก็บในตาราง `Session` เป็น HMAC hash ทุกครั้งที่ refresh token record เดิมจะถูกทำเครื่องหมาย `isUsed: true` แล้วสร้าง record ใหม่ขึ้นมา การ logout จะลบ session ที่ active อยู่ออกจาก DB
 - **Reuse detection:** ถ้า refresh token ที่ถูกใช้ไปแล้วถูกนำมาแสดงซ้ำอีกครั้ง — เป็นสัญญาณว่า token ถูกขโมย session ทั้งหมดในตระกูลเดียวกัน (`familyId`) จะถูก invalidate
 
 ### Flag ของ cookie
@@ -30,13 +30,13 @@ token ทั้งสองตัวถูกตั้งด้วย flag ช�
 
 อายุของ token มาจาก `JWT_EXPIRES_IN` และ `REFRESH_TOKEN_EXPIRES_DAYS` — [ตัวแปรของ backend](../structure/apps/backend/env-example)
 
-### ทำไมต้องเก็บ session ไว้
+### ทำไมต้องเก็บ session ไว้ใน DB
 
 JWT ไม่สามารถ invalidate ก่อนหมดอายุได้ — นี่คือคุณสมบัติพื้นฐานของมาตรฐาน ถ้าผู้ใช้ logout ออกไปหรือเปลี่ยนรหัสผ่าน access token ก็ยังคง valid อยู่ได้จนถึง 15 นาที
 
-การเก็บ refresh token ไว้ฝั่งเซิร์ฟเวอร์แก้ปัญหานี้: เมื่อ logout หรือเปลี่ยนรหัสผ่าน session จะถูกลบออกจาก store และไม่สามารถขอ access token ใหม่ได้อีก ด้วยวิธีนี้เวลา "รอด" สูงสุดของ token ที่ถูก compromise จะถูกจำกัดไว้ที่อายุของ access token (15 นาที)
+refresh token ใน DB แก้ปัญหานี้: เมื่อ logout หรือเปลี่ยนรหัสผ่าน session จะถูกลบออกจาก DB และไม่สามารถขอ access token ใหม่ได้อีก ด้วยวิธีนี้เวลา "รอด" สูงสุดของ token ที่ถูก compromise จะถูกจำกัดไว้ที่อายุของ access token (15 นาที)
 
-ความสามารถเพิ่มเติมที่ `SessionsStore` มอบให้:
+ความสามารถเพิ่มเติมที่ตาราง `Session` มอบให้:
 
 - **ออกจากระบบจากทุกอุปกรณ์** — ลบ session ทั้งหมดของผู้ใช้
 - **รายการ session ที่ active** — แสดงให้ผู้ใช้เห็นว่าเข้าสู่ระบบอยู่ที่ไหนบ้าง (browser, IP, เวลา)
@@ -46,7 +46,7 @@ JWT ไม่สามารถ invalidate ก่อนหมดอายุไ�
 
 ทุกครั้งที่เรียก `POST /auth/refresh` จะเกิด **การ rotate**: refresh token เดิมถูกปิดใช้งาน แล้วออกตัวใหม่ให้ นี่คือมาตรฐาน RFC 9700 (OAuth 2.0 Security BCP)
 
-**record ของ `SessionsStore` สำหรับผู้ใช้คนเดียวมีหน้าตาอย่างไร:**
+**ตาราง `Session` ของผู้ใช้คนเดียวมีหน้าตาอย่างไร:**
 
 ```
 | เหตุการณ์               | familyId | hash             | isUsed                       |
@@ -76,15 +76,15 @@ Refresh (ผู้โจมตีขโมย token "A" แล้วนำมา
   → session ของโน้ตบุ๊ก (f2) ไม่ได้รับผลกระทบ
 ```
 
-record ที่มี `isUsed: true` จำเป็นแค่ในฐานะกับดักเท่านั้น ตราบใดที่ token ต้นฉบับยังอาจมีชีวิตอยู่ได้ Cron job จะลบทุก record ที่ `expiresAt < now` — ทั้งกับดัก `isUsed: true` และ session ที่ active ของผู้ใช้ที่ไม่ได้เข้ามานาน (ดู [การล้าง session ที่หมดอายุ](#การล้าง-session-ที่หมดอายุ)) record ทั้งหมดนี้อยู่ใน memory ของ process เท่านั้น — สาย `familyId` จะไม่รอดข้ามการ restart ของ backend
+record ที่มี `isUsed: true` จำเป็นแค่ในฐานะกับดักเท่านั้น ตราบใดที่ token ต้นฉบับยังอาจมีชีวิตอยู่ได้ Cron job จะลบทุก record ที่ `expiresAt < now` — ทั้งกับดัก `isUsed: true` และ session ที่ active ของผู้ใช้ที่ไม่ได้เข้ามานาน (ดู [การล้าง session ที่หมดอายุ](#การล้าง-session-ที่หมดอายุ))
 
 **`familyId`** รวมทุกการ rotate ของการเข้าสู่ระบบครั้งเดียวกันเข้าไว้ด้วยกัน ด้วยเหตุนี้เมื่อเกิดการ compromise จะมีเฉพาะสายที่ถูก compromise เท่านั้นที่ถูก invalidate ไม่ใช่ทุกอุปกรณ์ของผู้ใช้พร้อมกัน
 
 ### ทำไมใช้ HMAC ไม่ใช่ bcrypt สำหรับ refresh token
 
-bcrypt ไม่ deterministic — ให้ hash ต่างกันทุกครั้ง จึงไม่สามารถค้นหา session จาก hash โดยตรงได้ ต้องไล่ตรวจ session ทั้งหมดใน store ทีละตัว — เป็นการเปรียบเทียบแบบ O(n)
+bcrypt ไม่ deterministic — ให้ hash ต่างกันทุกครั้ง จึงไม่สามารถค้นหา session ใน DB จาก hash โดยตรงได้ ต้องโหลด session ทั้งหมดออกมาแล้วไล่ตรวจทีละตัว — เป็นการ query แบบ O(n)
 
-HMAC เป็น deterministic: token หนึ่งตัว + secret หนึ่งตัว = ได้ hash เดียวกันเสมอ ทำให้ค้นหา session ได้จากค่า `refreshTokenHash` โดยตรง (ดู `SessionsStore.findByRefreshTokenHash`)
+HMAC เป็น deterministic: token หนึ่งตัว + secret หนึ่งตัว = ได้ hash เดียวกันเสมอ ทำให้ค้นหา session ได้ในการ query ครั้งเดียว: `WHERE refreshTokenHash = hmac(token, secret)`
 
 ข้อแลกเปลี่ยน: ถ้า `REFRESH_TOKEN_SECRET` รั่วไหล — refresh token ทั้งหมดมีโอกาสถูก compromise พร้อมกัน วิธีบรรเทา (Mitigation): เก็บ secret ไว้ในที่จัดเก็บที่ปลอดภัย (Vault, AWS Secrets Manager) และ rotate มันเป็นระยะ
 
@@ -255,18 +255,16 @@ pnpm test:e2e:throttle  # throttle-test (throttler เปิด)
 
 ### Roles (บทบาท)
 
-ผู้ใช้แต่ละคนมี role (`Role.Admin` หรือ `Role.User`) ซึ่งถูกฝังไว้ใน payload ของ JWT ตอน login และเข้าถึงได้ผ่าน `req.user.role` (ดู `JwtStrategy`)
+ผู้ใช้แต่ละคนมี role (`Role.admin` หรือ `Role.user` — Prisma enum ที่ generate มาจาก `schema.prisma`) ซึ่งถูกฝังไว้ใน payload ของ JWT ตอน login และเข้าถึงได้ผ่าน `req.user.role` (ดู `JwtStrategy`) โดยค่าเริ่มต้น (`@default(user)` ใน schema) ผู้ใช้ใหม่ที่สร้างผ่าน `POST /auth/register` จะได้ `Role.user` เสมอ — การลงทะเบียนปกติไม่สร้าง admin ได้เลย
 
-**Starter แบบไม่มี DB/ไม่มี seed:** ผู้ใช้คนแรกที่ลงทะเบียนสำเร็จจะได้ `Role.Admin` โดยอัตโนมัติ (ดู `UsersService.create`) — ทำแบบนี้เพื่อให้ demo endpoint (`GET /users`, `GET /tasks/all`) ใช้งานได้ทันทีโดยไม่ต้องมีขั้นตอน seed แยก
-
-> **สำคัญสำหรับ production:** นี่คือ dev convenience ไม่ใช่ bootstrap ที่ปลอดภัย กฎนี้ใช้กับ *ใครก็ตาม* ที่ `POST /auth/register` สำเร็จเป็นคนแรก ไม่ใช่เจ้าของระบบโดยเฉพาะ — ถ้าที่เก็บข้อมูลว่างเปล่า (เช่น หลัง reset หรือก่อน deploy ครั้งแรก) สิทธิ์ admin จะตกเป็นของใครก็ตามที่ลงทะเบียนก่อน ก่อนใช้งานจริงควรแทนที่ด้วยการ seed admin อย่างชัดเจน (ผ่าน environment variable, migration หรือคำสั่ง CLI แยก) แทนการพึ่งลำดับการลงทะเบียน
+วิธีเดียวที่จะได้ admin account คือผ่าน seed (ดู [Seed: สร้าง admin account](#seed-สร้าง-admin-account) ด้านล่าง)
 
 ### `RolesGuard` และ `@Roles()`
 
 `RolesGuard` ถูก register เป็น global guard ผ่าน `APP_GUARD` **ต่อจาก** `JwtAuthGuard` — เพื่อให้แน่ใจว่า `req.user` ถูกกำหนดค่าแล้วก่อนที่จะตรวจสอบ role guard นี้อ่าน metadata `@Roles()` ผ่าน `Reflector` ถ้าไม่มี decorator นี้ — จะปล่อยผ่านโดยไม่ตรวจสอบ role
 
 ```typescript
-@Roles(Role.Admin)
+@Roles(Role.admin)
 @Get()
 findAll(): Promise<SafeUser[]> {
   return this.usersService.findAll()
@@ -283,41 +281,67 @@ findAll(): Promise<SafeUser[]> {
 - **`GET /users/:id`** ใช้การตรวจสอบที่ผ่อนปรนกว่าคือ `assertSelfOrAdmin` — เข้าถึงได้ทั้งเจ้าของ profile **หรือ** `admin` คนไหนก็ได้ (เช่น เพื่อ support/moderation) ความไม่สมมาตรนี้ตั้งใจทำ: การอ่านข้อมูลของคนอื่นมีความเสี่ยงต่ำ ในขณะที่การเขียนลง profile ของคนอื่นผ่าน self-service route เป็นความเสี่ยงที่ไม่ควรให้แบบ implicit ถ้าต้องการให้ admin เขียนข้อมูลของผู้ใช้คนอื่นได้เต็มรูปแบบ ต้องทำเป็น feature แยกต่างหาก (เช่น endpoint สำหรับ admin โดยเฉพาะที่มี audit trail ของตัวเอง) ไม่ใช่การขยาย `assertSelf`
 - **`TasksController`** (`PUT/DELETE /tasks/:id`): `TasksService.findOne(id, userId)` ตรวจว่า task เป็นของผู้ใช้คนปัจจุบันจริง และ throw `ForbiddenException` ถ้าไม่ตรงกัน `GET /tasks/all` (เฉพาะ `admin`) เป็นทางเดียวที่จะเห็น task ของผู้ใช้ทุกคน
 
-## Seed: การสร้างบัญชี admin
+## Seed: สร้าง admin account
 
-การสมัครปกติ (`POST /auth/register`) จะให้ role `user` เสมอ — `UsersService.create()` ส่ง `Role.User` ไว้ตายตัว ถ้าไม่มีขั้นตอนแยก ระบบก็จะไม่มี `admin` เลยสักคน และ route ที่อยู่หลัง `@Roles(Role.Admin)` (`GET /users`, `GET /tasks/all`) ก็จะเข้าถึงไม่ได้
+### ทำไมต้องมี
 
-`UsersSeedService` มีไว้แก้เรื่องนี้ ต่างจาก branch ที่มีฐานข้อมูลซึ่ง seed เป็นคำสั่งแยก ที่นี่ storage เป็น in-memory และถูกสร้างใหม่ทุกครั้งที่ start — admin จึงถูกสร้างใน `onModuleInit` คือตอนที่แอปเริ่มทำงาน:
+การลงทะเบียนปกติ (`POST /auth/register`) จะสร้างผู้ใช้ด้วย role `user` เสมอ — นี่คือสิ่งที่ Prisma schema รับประกัน (`role Role @default(user)`) ไม่ใช่การตรวจสอบใน code ดังนั้นจึงไม่มีทางถูกข้ามด้วยความผิดพลาดใน business logic ได้ หมายความว่าถ้าไม่มีขั้นตอนแยก ระบบจะไม่มี `admin` เลยแม้แต่คนเดียว และ route อย่าง `GET /users` กับ `GET /tasks/all` (ที่ guard ไว้ด้วย `@Roles(Role.admin)`) จะเข้าถึงไม่ได้เลยสำหรับทุกคน
+
+seed (`prisma/seed.ts`) มีไว้เพื่อแก้ปัญหานี้โดยเฉพาะ: สร้าง admin account หนึ่งบัญชีนอก flow ปกติของผู้ใช้ เป็นส่วนหนึ่งของการเตรียม environment ไม่ใช่ตอนที่แอปกำลังรันอยู่
+
+### ทำงานอย่างไร
+
+`prisma/seed.ts` เป็น Node script ธรรมดาที่เชื่อมต่อ database ตรง (ใช้ `PrismaPg` adapter ตัวเดียวกับ `PrismaService`) และทำ upsert-by-fact:
 
 ```typescript
-const email = this.config.get<string>('ADMIN_EMAIL')
-const password = this.config.get<string>('ADMIN_PASSWORD')
-if (!email || !password) return          // ไม่ได้กำหนด — ข้ามไป
+const existing = await prisma.user.findUnique({ where: { email } })
+if (existing) return // มีอยู่แล้ว — ไม่ทำอะไร
 
-if (await this.usersService.findByEmail(normalizedEmail)) return   // มีอยู่แล้ว
+await prisma.user.create({
+  data: { name: 'Admin', email, passwordHash, role: 'admin' },
+})
 ```
 
-รหัสผ่านถูก hash ด้วย `BCRYPT_ROUNDS` และ email ถูกแปลงเป็นตัวพิมพ์เล็ก การ start ใหม่จะไม่แตะ admin ที่มีอยู่แล้ว
+email และ password มาจาก `ADMIN_EMAIL`/`ADMIN_PASSWORD` (ดู `.env`) ถ้าตัวแปรใดตัวแปรหนึ่งไม่ได้ตั้งค่าไว้ — seed จะแค่ print คำเตือนแล้วจบโดยไม่มี error แอปทำงานได้ปกติแม้ไม่มี admin account ขั้นตอนนี้ไม่ได้บังคับ
 
-`ADMIN_EMAIL`/`ADMIN_PASSWORD` ใน `.env.example` เป็นค่า placeholder เหมือน `JWT_SECRET`: ควรตั้งค่าของตัวเองก่อนใช้งานจริง
+script นี้ **idempotent** — รันซ้ำบน database ที่ seed ไปแล้วจะไม่สร้างซ้ำ และไม่แก้ password ของ admin ที่มีอยู่ แค่ print ว่ามีอยู่แล้ว
+
+### วิธีรัน
+
+ทั้ง `migrate dev` และ `migrate reset` ไม่รัน seed ให้อัตโนมัติ — ต้องเรียกแยกเองทุกครั้ง:
+
+```bash
+pnpm prisma migrate reset   # สร้าง database ใหม่ (ถ้าจำเป็น)
+pnpm prisma db seed         # จากนั้น seed admin account อย่างชัดเจน
+```
+
+คำสั่ง seed ถูกกำหนดไว้ใน `prisma.config.ts` — นี่คือสิ่งที่ `prisma db seed` รันจริง:
+
+```typescript
+migrations: {
+  path: 'prisma/migrations',
+  seed: 'tsx prisma/seed.ts',
+},
+```
+
+> **`tsx`** — TypeScript runner ที่เอกสารของ Prisma 7 แนะนำสำหรับ seed
+
+### Production
+
+`ADMIN_EMAIL`/`ADMIN_PASSWORD` ใน `.env.example` เป็น placeholder ธรรมดา เหมือน `JWT_SECRET` ตั้งค่าของตัวเองก่อนใช้งานจริง หลังจาก seed รันสำเร็จครั้งแรก ควรเปลี่ยน password ของ admin account ผ่าน flow ปกติของแอป (หรือแค่ไม่เก็บ password production ไว้ใน `.env` นานเกินกว่าที่จำเป็นสำหรับรัน seed)
 
 ## การล้าง session ที่หมดอายุ
 
-ทุกครั้งที่ rotate record เดิมจะยังคงอยู่ใน `SessionsStore` โดยมี `isUsed: true` ถ้าผู้ใช้ refresh วันละครั้งตลอด 7 วัน — จะสะสมได้ 7 record ต่อหนึ่งสาย ถ้าไม่ล้าง Map ภายใน `SessionsStore` จะโตขึ้นไม่มีที่สิ้นสุด (memory leak ของ process)
+ทุกครั้งที่ rotate record เดิมจะยังคงอยู่ในตาราง `Session` โดยมี `isUsed: true` ถ้าผู้ใช้ refresh วันละครั้งตลอด 7 วัน — จะสะสมได้ 7 record ต่อหนึ่งสาย ถ้าไม่ล้าง ตารางจะโตขึ้นไม่มีที่สิ้นสุด
 
 `SessionCleanupService` รัน cron job ทุกคืนเวลา 03:00 น. และลบทุก record ที่ `expiresAt < now`:
 
 ```typescript
 @Cron(CronExpression.EVERY_DAY_AT_3AM)
-async cleanupExpiredSessions(): Promise<void> {
-  try {
-    const { count } = await this.sessions.deleteExpired()
-    if (count > 0) {
-      this.logger.log(`Deleted ${count} expired sessions`)
-    }
-  } catch (err) {
-    this.logger.error('Failed to cleanup expired sessions', err)
-  }
+async cleanupExpiredSessions() {
+  await this.prisma.session.deleteMany({
+    where: { expiresAt: { lt: new Date() } },
+  })
 }
 ```
 
@@ -328,15 +352,17 @@ async cleanupExpiredSessions(): Promise<void> {
 
 ## ตัวแปร ENV
 
-| ตัวแปร                        | คำอธิบาย                                             | ค่าเริ่มต้น  |
-| ---------------------------- | -------------------------------------------------- | -------- |
-| `THROTTLE_TTL`               | หน้าต่าง rate limiting (ms)                          | `60000`  |
-| `THROTTLE_LIMIT`             | จำนวน request สูงสุดต่อหน้าต่าง (global)                 | `100`    |
-| `JWT_SECRET`                 | secret สำหรับ sign JWT (อย่างน้อย 32 ตัวอักษร)           | — (บังคับ) |
-| `JWT_EXPIRES_IN`             | อายุของ access token                                | `15m`    |
-| `REFRESH_TOKEN_SECRET`       | secret สำหรับ HMAC refresh token (อย่างน้อย 32 ตัวอักษร) | — (บังคับ) |
-| `REFRESH_TOKEN_EXPIRES_DAYS` | อายุของ refresh token (วัน)                          | `7`      |
-| `BCRYPT_ROUNDS`              | cost factor ของ bcrypt สำหรับ hash รหัสผ่าน            | `12`     |
+| ตัวแปร                        | คำอธิบาย                                                                    | ค่าเริ่มต้น    |
+| ---------------------------- | ------------------------------------------------------------------------- | ---------- |
+| `THROTTLE_TTL`               | หน้าต่าง rate limiting (ms)                                                 | `60000`    |
+| `THROTTLE_LIMIT`             | จำนวน request สูงสุดต่อหน้าต่าง (global)                                        | `100`      |
+| `JWT_SECRET`                 | secret สำหรับ sign JWT (อย่างน้อย 32 ตัวอักษร)                                  | — (บังคับ)   |
+| `JWT_EXPIRES_IN`             | อายุของ access token                                                       | `15m`      |
+| `REFRESH_TOKEN_SECRET`       | secret สำหรับ HMAC refresh token (อย่างน้อย 32 ตัวอักษร)                        | — (บังคับ)   |
+| `REFRESH_TOKEN_EXPIRES_DAYS` | อายุของ refresh token (วัน)                                                 | `7`        |
+| `BCRYPT_ROUNDS`              | cost factor ของ bcrypt สำหรับ hash รหัสผ่าน                                   | `12`       |
+| `ADMIN_EMAIL`                | email ของ admin account สร้างโดย seed (ดู [Seed](#seed-สร้าง-admin-account)) | — (ไม่บังคับ) |
+| `ADMIN_PASSWORD`             | password ของ admin account สร้างโดย seed                                   | — (ไม่บังคับ) |
 
 ## E2E test
 
@@ -347,7 +373,7 @@ async cleanupExpiredSessions(): Promise<void> {
 - `GET /auth/me`: มี token และไม่มี
 - Refresh: rotate token, invalidate ตัวเก่า, token ใหม่ valid
 - Reuse detection: การนำ token เก่ามาใช้ซ้ำจะ invalidate ทั้งตระกูล; session ของอุปกรณ์อื่นไม่ได้รับผลกระทบ
-- Logout: ล้าง session ใน store, idempotent, ทำงานได้แม้ไม่มี token
+- Logout: ล้าง session ใน DB, idempotent, ทำงานได้แม้ไม่มี token
 
 **`test/throttle/throttle.e2e-spec.ts`** — rate limiting (throttler เปิด รายละเอียดในหัวข้อ Rate limiting → การทดสอบ)
 

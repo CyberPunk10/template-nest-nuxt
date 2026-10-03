@@ -75,6 +75,7 @@ localhost/dev/docs/   → static ของเอกสาร
 | `PORT`            | `apps/*/.env` | พอร์ตของ process ตอน `pnpm dev`  |
 | `*_INTERNAL_PORT` | `.env` (root) | พอร์ตของ process ภายใน container |
 | `NGINX_HOST_PORT` | `.env` (root) | พอร์ตเดียวที่เปิดออกภายนอกใน Docker  |
+| `POSTGRES_PORT` | `.env` (root) | host port ของฐานข้อมูล — เข้าถึงจากเครื่อง |
 
 เอกสารไม่มี `*_INTERNAL_PORT`: ใน Docker ไฟล์ static ของมันอยู่ใน image ของ proxy อยู่แล้ว จึงไม่มี process แยก ส่วนใน dev นั้น VitePress รัน server ของตัวเอง — จึงมี `PORT=5173`
 

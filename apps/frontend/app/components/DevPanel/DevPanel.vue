@@ -3,7 +3,7 @@ import DevPanelViewport from './DevPanelViewport.vue'
 import { useDevLinks } from './composables/useDevLinks'
 
 // меняется вручную при переключении на другую ветку шаблона
-const appBranch = 'auth-session'
+const appBranch = 'postgres-prisma'
 
 const { t } = useI18n()
 

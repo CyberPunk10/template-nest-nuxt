@@ -13,10 +13,10 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { CurrentUser } from '../auth/decorators/current-user.decorator'
 import { Roles } from '../auth/decorators/roles.decorator'
 import { JwtPayload } from '../auth/strategies/jwt.strategy'
-import { Role } from '../users/role.enum'
+import { Role } from '../../generated/prisma/enums'
 import { CreateTaskDto } from './dto/create-task.dto'
 import { UpdateTaskDto } from './dto/update-task.dto'
-import { Task } from './task.entity'
+import { Task } from '../../generated/prisma/client'
 import { TasksService } from './tasks.service'
 
 @ApiTags('Tasks')
@@ -27,7 +27,7 @@ export class TasksController {
   @ApiOperation({ summary: 'Получить все задачи всех пользователей (только admin)' })
   @ApiResponse({ status: 200 })
   @ApiResponse({ status: 403, description: 'Требуется роль admin' })
-  @Roles(Role.Admin)
+  @Roles(Role.admin)
   @Get('all')
   findAllGlobal() {
     return this.tasksService.findAllGlobal()

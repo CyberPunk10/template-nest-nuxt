@@ -1,15 +1,36 @@
 # docker compose
 
-`docker-compose.yml` brings up `nginx`, `backend` and `frontend` on a shared network.
+`docker-compose.yml` describes `postgres`, `nginx`, `backend` and `frontend` on a shared network.
 
 The documentation isn't a service of its own: `docs-builder` compiles its static output and the same `nginx` serves it — more in [apps/docs](./apps/docs/docker-image).
+
+## Profiles
+
+One file, but different sets of services to bring up from it — that's what profiles solve:
+
+| What you need | Command | What comes up |
+| --- | --- | --- |
+| Database only (for `pnpm dev`) | `pnpm db:up` | `postgres` |
+| The whole stack | `pnpm docker:up` | `postgres`, `backend`, `frontend`, `nginx` |
+
+```yaml
+postgres:
+  image: postgres:17-alpine   # no profiles — always comes up
+
+backend:
+  profiles: [app]             # only with --profile app
+```
+
+`postgres` deliberately has no profile: the database is always needed. So `docker compose up` only touches it, and the application stack requires an explicit `--profile app`.
+
+A containerised dev variant of the applications is added the same way: one more profile in this same file, no second compose file.
 
 ## Start
 
 The usual way is the standard Compose command:
 
 ```bash
-docker compose up
+docker compose --profile app up
 ```
 
 On a fresh clone it won't work right away, though: the `.env` files and the Docker network are missing, and the proxy port may be taken.
@@ -20,9 +41,9 @@ To avoid doing that by hand, there's a script:
 pnpm docker:up
 ```
 
-Before starting it calls [`predocker.mjs`](./scripts/predocker), which creates the missing `.env` files, checks the proxy port and sets up the network — and then hands over to the same `docker compose up`. That's why one command is enough right after cloning.
+Before starting it calls [`predocker.mjs`](./scripts/predocker), which creates the missing `.env` files, checks the proxy port and sets up the network — and then hands over to the same `docker compose --profile app up`. That's why one command is enough right after cloning.
 
-Once the environment is prepared there's no difference: you can use `docker compose` directly. Commands run **from the monorepo root**, and the `--build` flag rebuilds the images before starting.
+Once the environment is prepared there's no difference: you can use `docker compose` directly — just don't forget `--profile app`, or only the database comes up. Commands run **from the monorepo root**, and the `--build` flag rebuilds the images before starting.
 
 After startup everything is available on a single port:
 
@@ -42,7 +63,7 @@ Without it, a plain `docker compose up` fails with `network ... declared as exte
 
 The name comes from `COMPOSE_NETWORK_NAME` in the root `.env` — read by both `docker-compose.yml` and `ensure-network.mjs`. If the variable is missing, both sides say so explicitly.
 
-Why external instead of Compose-managed: containers from **other** compose files attach to it — for example `docker-compose.dev.yml` with postgres on the database branches. No single file owns the network, so it's created from outside; otherwise startup order would start to matter.
+Why external instead of Compose-managed: containers from **other** compose files and projects may attach to it. No single file owns the network, so it's created from outside; otherwise startup order would start to matter.
 
 ## Stopping
 
@@ -57,7 +78,9 @@ docker network rm template-nest-nuxt_app
 ```
 
 ::: warning
-`docker compose down --remove-orphans` will also remove containers from neighbouring compose files attached to the same network — for example postgres on the database branches. The data stays in its volume, but the container has to be brought back up.
+`docker compose down --remove-orphans` will also remove containers from neighbouring compose files attached to the same network. The data stays in its volume, but the container has to be brought back up.
+
+`docker compose down` without a profile stops `postgres` as well — it simply doesn't see the profiled services, but the database has no profile. To shut down only the applications and leave the database running: `docker compose --profile app stop nginx backend frontend`.
 :::
 
 ## All .env files are mandatory
@@ -92,7 +115,7 @@ frontend:
     NUXT_BACKEND_URL: http://backend:3100   # overrides localhost:3100 from .env
 ```
 
-The same mechanism switches the Docker run into production mode:
+The same mechanism sets the build mode — production for now:
 
 ```yaml
 backend:
@@ -133,3 +156,22 @@ BACKEND_INTERNAL_PORT=3100
 ```
 
 And `PORT` in `apps/backend/.env` has no effect under Docker: the `environment: PORT` line overrides it at startup, because `environment` in Compose always beats `env_file`. That `PORT` serves a different purpose — running via `pnpm dev`, where Docker isn't involved.
+
+### Why ENV in the Dockerfile isn't enough
+
+The port is already set there:
+
+```dockerfile
+ENV PORT=3100
+```
+
+It would seem that this is enough and `environment` in compose is redundant. But the precedence is:
+
+```
+ENV in Dockerfile  →  env_file  →  environment
+     weaker                          stronger
+```
+
+`env_file: apps/backend/.env` overrides `ENV`. Without the `environment: PORT` line, the value from a developer's personal `.env` would end up inside the container — and that file is meant for `pnpm dev` and can hold anything: change it locally to 3300 and Docker breaks.
+
+So `environment: PORT` guards against `env_file`, not against the Dockerfile. `ENV PORT` still pulls its weight: with it the image works without compose too — `docker run` will bring it up on 3100 without a single variable.

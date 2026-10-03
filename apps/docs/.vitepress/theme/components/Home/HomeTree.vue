@@ -31,7 +31,7 @@ const home = computed(() => theme.value.home!)
 ├── <span class="tree__dir">packages/</span>
 │   ├── <span class="tree__pkg">shared/</span> <span class="tree__comment">← типы, i18n</span>
 │   └── <span class="tree__pkg">ui/</span> <span class="tree__comment">← UiButton, UiBadge, UiCard</span>
-└── <span class="tree__docker">docker-compose.yml</span> <span class="tree__comment">← prod</span></pre>
+└── <span class="tree__docker">docker-compose.yml</span> <span class="tree__comment">← PostgreSQL + профиль app</span></pre>
   </section>
 </template>
 

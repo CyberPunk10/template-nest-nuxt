@@ -8,6 +8,18 @@
 | `PORT`                    | `3100`             | พอร์ต backend ตอน `pnpm dev` ใน Docker จะถูก override ด้วย `BACKEND_INTERNAL_PORT` จาก `.env` ที่ root                                                                                   |
 | `CORS_ORIGIN`             | `http://localhost:3200` | Origin ของ frontend ที่อนุญาตให้ส่ง request มา ใน Docker เปลี่ยนเป็น `http://localhost` — [รายละเอียด](../../../env-variables#cors-origin) |
 
+## PostgreSQL
+
+| ตัวแปร               | ค่า (dev)    | คอมเมนต์                                                                                          |
+| ------------------- | ----------- | ------------------------------------------------------------------------------------------------- |
+| `POSTGRES_HOST`     | `localhost` | จำเป็น ใน container เปลี่ยนเป็น `postgres` — ชื่อ service ภายใน network                              |
+| `POSTGRES_PORT`     | `5432`      | ต้องตรงกับ `POSTGRES_PORT` ใน `.env` ที่ root ซึ่งกำหนด host port ที่เปิดออก ภายใน container เป็น `5432` เสมอ |
+| `POSTGRES_USER`     | `postgres`  | จำเป็น ใน container รับค่าจาก `.env` ที่ root — ที่เดียวกับที่ container ฐานข้อมูลรับค่า                  |
+| `POSTGRES_PASSWORD` | `postgres`  | จำเป็น แหล่งเดียวกัน                                                                                |
+| `POSTGRES_DB`       | `template`  | จำเป็น แหล่งเดียวกัน                                                                                |
+
+ค่าเหล่านี้ถูกเขียนซ้ำใน `.env` ที่ root อย่างตั้งใจ: ไฟล์นั้น Compose อ่าน ส่วนไฟล์นี้ Nest บน host อ่าน [รายละเอียด](../../../database/configuration#env-ที่-root)
+
 ## การยืนยันตัวตน
 
 | ตัวแปร                        | ค่า (dev)   | คอมเมนต์                                                                              |

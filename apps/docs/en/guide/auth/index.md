@@ -8,15 +8,15 @@
 
 ### Why JWT access + refresh in HttpOnly cookies
 
-There are various architectural approaches to authentication. We chose **a JWT access token (15 min) + a refresh token with server-side rotation (in-memory)**.
+There are various architectural approaches to authentication. We chose **a JWT access token (15 min) + a refresh token with server-side rotation (PostgreSQL)**.
 
-| Approach                                            | When it fits                                                     | Why we didn't choose it                                                       |
-| --------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| **Session cookie** (nuxt-auth-utils, iron-session)  | Monolith, simple app, no need for logout across all devices      | Can't revoke a session instantly, no device history, no reuse detection      |
-| **Pure stateless JWT**                              | Microservices, service-to-service, very short TTL                | A JWT can't be invalidated — a stolen token is valid until it expires        |
-| **Managed auth** (Clerk, Auth0)                     | Startup, no data-storage requirements                            | External dependency, data goes to a third party, cost at scale               |
-| **OAuth / OIDC** (Keycloak, Google)                 | B2B SaaS, corporate SSO                                          | Overkill for a template; can be added on top of the current solution         |
-| **JWT access + refresh on the server** ← our choice | Nuxt/Next + a separate API, full security needed                 | —                                                                            |
+| Approach                                            | When it fits                                                | Why we didn't choose it                                                 |
+| --------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------- |
+| **Session cookie** (nuxt-auth-utils, iron-session)  | Monolith, simple app, no need for logout across all devices | Can't revoke a session instantly, no device history, no reuse detection |
+| **Pure stateless JWT**                              | Microservices, service-to-service, very short TTL           | A JWT can't be invalidated — a stolen token is valid until it expires   |
+| **Managed auth** (Clerk, Auth0)                     | Startup, no data-storage requirements                       | External dependency, data goes to a third party, cost at scale          |
+| **OAuth / OIDC** (Keycloak, Google)                 | B2B SaaS, corporate SSO                                     | Overkill for a template; can be added on top of the current solution    |
+| **JWT access + refresh on the server** ← our choice | Nuxt/Next + a separate API, full security needed            | —                                                                       |
 
 ### Why not stateless JWT
 

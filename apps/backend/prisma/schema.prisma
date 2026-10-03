@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+  // Nest компилирует в CommonJS, а этот генератор по умолчанию выдаёт ESM.
+  // Без cjs в сгенерированный клиент попадает import.meta — Node считает файл
+  // ESM-модулем и падает на exports: `exports is not defined in ES module scope`.
+  moduleFormat = "cjs"
+  // Импорты без расширения — как во всём остальном коде проекта. По умолчанию
+  // генератор ссылается на .js, хотя рядом лежат только .ts: такие импорты
+  // понимает tsc, но не Jest и не ts-node.
+  importFileExtension = ""
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  user
+  admin
+}
+
+model User {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  role         Role      @default(user)
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
+  tasks        Task[]
+}
+
+model Task {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Session {
+  id               String   @id @default(uuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  familyId         String
+  refreshTokenHash String   @unique
+  isUsed           Boolean  @default(false)
+  userAgent        String?
+  ip               String?
+  lastUsedAt       DateTime @default(now())
+  expiresAt        DateTime
+  createdAt        DateTime @default(now())
+
+  @@index([familyId]) // deleteMany по familyId при reuse detection
+  @@index([expiresAt]) // deleteMany по expiresAt в cleanup cron
+  @@index([userId]) // CASCADE DELETE по userId
+}

@@ -42,8 +42,8 @@
       "devAdminHint": {
         "title": "Signing in as admin",
         "credentials": "Credentials come from the ADMIN_EMAIL and ADMIN_PASSWORD variables in apps/backend/.env",
-        "autoCreate": "The admin with these credentials is created automatically on every backend startup",
-        "noDb": "The auth-session branch isn't connected to a database — all data (except the configured admin) is kept in memory and reset on every backend restart"
+        "autoCreate": "The admin with these credentials is created by the seed (prisma db seed or migrate reset) — idempotent, running it again won't create duplicates",
+        "noDb": "Data is stored in PostgreSQL and survives backend restarts — it only resets on an explicit prisma migrate reset"
       }
     },
     "register": {

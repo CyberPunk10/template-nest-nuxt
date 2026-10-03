@@ -1,5 +1,40 @@
+# Один compose-файл на оба способа запуска, разделение — через профили:
+#
+#   pnpm db:up      → только postgres, для `pnpm dev`
+#   pnpm docker:up  → профиль `app`: nginx, backend, frontend + та же БД
+#
+# У postgres профиля нет намеренно: БД нужна в любом случае.
+# Профиль `app` собирается в production-конфигурации; dev-вариант
+# с hot-reload добавится сюда же отдельным профилем.
 services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    # Порт публикуется и в Docker-режиме: приложениям внутри сети он не нужен
+    # (они ходят по имени сервиса), но с хоста к БД удобно подключаться
+    # клиентом и запускать миграции/сиды через `pnpm --filter backend ...`.
+    # Только на 127.0.0.1: на сервере БД не должна быть видна из интернета.
+    # Docker пишет свои правила iptables в обход ufw, поэтому файрвол
+    # опубликованный на 0.0.0.0 порт не закрыл бы.
+    ports:
+      - '127.0.0.1:${POSTGRES_PORT:?}:5432'
+    environment:
+      POSTGRES_USER: '${POSTGRES_USER:?}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:?}'
+      POSTGRES_DB: '${POSTGRES_DB:?}'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:?} -d ${POSTGRES_DB:?}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - app
+
   nginx:
+    profiles: [app]
     build:
       context: .
       dockerfile: infra/nginx/Dockerfile
@@ -22,6 +57,7 @@ services:
       - app
 
   docs-builder:
+    profiles: [app]
     build:
       context: .
       dockerfile: apps/docs/Dockerfile
@@ -33,6 +69,7 @@ services:
       - app
 
   backend:
+    profiles: [app]
     build:
       context: .
       dockerfile: apps/backend/Dockerfile
@@ -48,10 +85,25 @@ services:
       # поэтому origin это адрес сайта (PUBLIC_ORIGIN в корневом .env).
       # Порт 80 в origin не пишется — браузер его тоже опускает.
       CORS_ORIGIN: '${PUBLIC_ORIGIN:?}'
+      # Подключение к БД переопределяется здесь, а не берётся из
+      # apps/backend/.env: тот файл описывает локальный запуск (`pnpm dev`,
+      # хост и проброшенный порт), а внутри Docker-сети Postgres доступен по
+      # имени сервиса на 5432. Логин/пароль/база берутся из корневого .env —
+      # из того же места, что и у сервиса postgres выше, чтобы значения
+      # не могли разойтись.
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: '5432'
+      POSTGRES_USER: '${POSTGRES_USER:?}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:?}'
+      POSTGRES_DB: '${POSTGRES_DB:?}'
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - app
 
   frontend:
+    profiles: [app]
     build:
       context: .
       dockerfile: apps/frontend/Dockerfile
@@ -73,13 +125,16 @@ services:
     networks:
       - app
 
+volumes:
+  postgres_data:
+
 networks:
   app:
     # Явное имя сети — без него Docker генерирует имя из папки проекта.
     # Фиксированное имя нужно когда к сети нужно подключить контейнеры
-    # из другого compose-файла (например, отдельный compose для БД):
+    # из другого compose-файла или проекта:
     #   docker network connect $COMPOSE_NETWORK_NAME <container>
     # или через external: true в другом compose.
-    # Сеть создаётся вручную или через добавленный в проект скрипт: `pnpm docker:up`.
+    # Сеть создаётся не Compose, а скриптами `pnpm db:up` / `pnpm docker:up`.
     name: ${COMPOSE_NETWORK_NAME:?}
     external: true

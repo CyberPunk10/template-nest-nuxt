@@ -50,6 +50,10 @@ jobs:
         run: pnpm audit
         continue-on-error: true
 
+      # БД для тестов — тем же скриптом, что и при разработке.
+      - run: pnpm db:up
+      - run: pnpm db:migrate
+
       - run: pnpm test
       - run: pnpm test:e2e
 
@@ -105,6 +109,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # Dockerfile и контексты сборки Compose берёт из docker-compose.yml.
+      # Сервисы указаны явно: они под профилем app и иначе не соберутся.
       - run: docker compose build backend frontend nginx
 
       # Два тега: <ветка>-<sha> указывает на конкретный коммит и нужен для
@@ -165,10 +170,12 @@ jobs:
 
       # Сервисы перечислены явно: docs-builder публикуется не как образ,
       # а как статика внутри nginx, и compose полез бы собирать его с нуля.
+      # postgres тянется готовым образом с Docker Hub и в профиль не входит,
+      # поэтому его приходится называть вместе с остальными.
       # --wait держит команду до готовности healthcheck'ов, объявленных
       # в Dockerfile каждого сервиса. Таймаут больше start-period бэкенда (60s).
       - name: Start stack
-        run: docker compose up -d --wait --wait-timeout 180 backend frontend nginx
+        run: docker compose --profile app up -d --wait --wait-timeout 180 postgres backend frontend nginx
 
       # Все адреса идут через nginx — так же, как к ним придёт пользователь.
       - name: Check routes
@@ -182,8 +189,8 @@ jobs:
 
       - name: Show logs on failure
         if: failure()
-        run: docker compose logs --tail 200
+        run: docker compose --profile app logs --tail 200
 
       - name: Stop stack
         if: always()
-        run: docker compose down -v
+        run: docker compose --profile app down -v

@@ -45,6 +45,7 @@ const config: LocaleEntry = {
                       { text: 'package.json', link: '/th/guide/structure/apps/backend/package-json' },
                       { text: 'tsconfig.json', link: '/th/guide/structure/apps/backend/tsconfig' },
                       { text: 'tsconfig.build.json', link: '/th/guide/structure/apps/backend/tsconfig-build' },
+                      { text: 'prisma', link: '/th/guide/structure/apps/backend/prisma/' },
                     ],
                   },
                   {
@@ -123,6 +124,7 @@ const config: LocaleEntry = {
                   { text: 'check-ports.mjs', link: '/th/guide/structure/scripts/check-ports' },
                   { text: 'ensure-network.mjs', link: '/th/guide/structure/scripts/ensure-network' },
                   { text: 'log.mjs', link: '/th/guide/structure/scripts/log' },
+                  { text: 'db.mjs', link: '/th/guide/structure/scripts/db' },
                   { text: 'dev.mjs', link: '/th/guide/structure/scripts/dev' },
                   { text: 'reinstall.mjs', link: '/th/guide/structure/scripts/reinstall' },
                 ],
@@ -160,6 +162,17 @@ const config: LocaleEntry = {
             items: [
               { text: 'Backend', link: '/th/guide/auth/backend' },
               { text: 'Frontend', link: '/th/guide/auth/frontend' },
+            ],
+          },
+          {
+            text: 'ฐานข้อมูล',
+            link: '/th/guide/database/',
+            collapsed: true,
+            items: [
+              { text: 'การตั้งค่า', link: '/th/guide/database/configuration' },
+              { text: 'Prisma: schema และ client', link: '/th/guide/database/prisma' },
+              { text: 'Migration', link: '/th/guide/database/migrations' },
+              { text: 'Error ของ Prisma', link: '/th/guide/database/errors' },
             ],
           },
         ],
