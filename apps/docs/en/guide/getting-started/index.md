@@ -11,7 +11,7 @@ pnpm install
 pnpm dev
 ```
 
-`create-nest-nuxt` asks two questions along the way:
+`create-nest-nuxt` asks two questions:
 
 1. **Language** — English, Russian or Thai. The documentation inside the project (`apps/docs`) will be in it.
 2. **Template variant:**
