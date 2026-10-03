@@ -2,7 +2,7 @@
 
 ## Quick start
 
-You need [Node.js >= 24 and pnpm](./setup):
+Make sure Node.js, pnpm and Docker are installed — [setup](./setup).
 
 ```bash
 npx create-nest-nuxt my-app
