@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
-import { sponsorUrl, contacts, freeSponsorSlots } from './site-data'
+import { sponsorUrl, contacts, freeSponsorSlots } from '../site-data'
 
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress).
 const { theme } = useData()

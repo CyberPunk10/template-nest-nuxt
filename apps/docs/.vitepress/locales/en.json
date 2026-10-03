@@ -6,6 +6,7 @@
       "titleAccent": "Monorepo Template",
       "subtitle": "Production-ready starting point for full-stack applications.\nDeploy in minutes, scale to production.",
       "demo": "View demo",
+      "backToProject": "Back to project",
       "login": "Sign in",
       "github": "GitHub",
       "docs": "Documentation"
