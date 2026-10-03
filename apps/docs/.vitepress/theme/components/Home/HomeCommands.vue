@@ -154,4 +154,18 @@ const groups = computed<CommandGroup[]>(() => {
   white-space: nowrap;
   margin-left: auto;
 }
+
+/* На телефоне описание встаёт над командой: в одну строку они не помещаются */
+@media (max-width: 600px) {
+  .command {
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+  .command__desc {
+    order: -1;
+    flex-basis: 100%;
+    margin-left: 0;
+    white-space: normal;
+  }
+}
 </style>

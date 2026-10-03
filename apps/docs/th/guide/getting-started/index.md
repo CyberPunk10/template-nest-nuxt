@@ -2,7 +2,7 @@
 
 ## เริ่มแบบเร็ว
 
-ต้องมี [Node.js >= 24 และ pnpm](./setup):
+ตรวจสอบว่าติดตั้ง Node.js, pnpm และ Docker แล้ว — [การเตรียมความพร้อม](./setup)
 
 ```bash
 npx create-nest-nuxt my-app
@@ -11,7 +11,7 @@ pnpm install
 pnpm dev
 ```
 
-`create-nest-nuxt` จะถามสองคำถามระหว่างทาง:
+`create-nest-nuxt` จะถามสองคำถาม:
 
 1. **ภาษา** — อังกฤษ รัสเซีย หรือไทย เอกสารภายในโปรเจกต์ (`apps/docs`) จะเป็นภาษานี้
 2. **รูปแบบของเทมเพลต:**
