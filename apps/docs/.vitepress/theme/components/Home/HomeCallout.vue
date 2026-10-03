@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useData } from 'vitepress'
 
 /**
@@ -7,7 +7,7 @@ import { useData } from 'vitepress'
  * участках страницы: одна и та же мысль подаётся по-разному в зависимости от
  * того, что читатель только что прочёл.
  *
- *   type  — под hero: типографика без рамки, работает только шрифтом;
+ *   type  — под hero: типографика без рамки, фраза печатается по буквам;
  *   split — после честного разбора «кому подходит»: аргумент через контраст;
  *   steps — перед «Быстрым стартом»: шкала пройденных этапов подводит к нему.
  */
@@ -18,6 +18,114 @@ const props = defineProps<{ variant: 'split' | 'steps' | 'type' }>()
 const { theme } = useData()
 const callout = computed(() => theme.value.home!.callout)
 const v = computed(() => callout.value[props.variant])
+
+// ── Печать для варианта type ──
+// Фраза набирается по буквам: зачин, вычеркнутый вариант, его зачёркивание,
+// затем оставшийся. typed = null — показать всё сразу: так фраза выглядит
+// при серверном рендере, без JS и при prefers-reduced-motion.
+const CHAR_MS = 45
+const LINE_PAUSE_MS = 350
+// Пауза перед зачёркиванием — чтобы вариант успели прочитать
+const BEFORE_STRIKE_MS = 1000
+// Сколько ждать после начала зачёркивания. Линия идёт 1.5 с, но с замедлением
+// к концу — основную часть она проходит раньше, и печать можно продолжать
+const STRIKE_MS = 1100
+
+const typed = ref<number | null>(null)
+const struck = ref(true)
+// Курсор виден только пока идёт набор: в паузах и после конца его нет
+const paused = ref(true)
+const root = ref<HTMLElement>()
+let timer: ReturnType<typeof setTimeout> | undefined
+let observer: IntersectionObserver | undefined
+
+// Части фразы по порядку печати; start — сколько букв напечатано до части
+const parts = computed(() => {
+  const t = callout.value.type
+  let start = 0
+  return [t.call, t.struck, t.kept, t.accent].map((text: string) => {
+    const part = { text, start }
+    start += text.length
+    return part
+  })
+})
+
+// Напечатанная и ещё скрытая часть: скрытая занимает место, чтобы блок
+// не менял высоту по ходу печати
+function split(i: number) {
+  const { text, start } = parts.value[i]!
+  const n = typed.value === null ? text.length : Math.min(Math.max(typed.value - start, 0), text.length)
+  return { shown: text.slice(0, n), hidden: text.slice(n) }
+}
+
+// Курсор стоит в части, которая сейчас печатается
+const cursorAt = computed(() => {
+  if (typed.value === null || paused.value) return -1
+  return parts.value.findIndex(p => typed.value! < p.start + p.text.length)
+})
+
+function step() {
+  const total = parts.value.reduce((n, p) => n + p.text.length, 0)
+  if (typed.value === null || typed.value >= total) return
+  typed.value++
+  const ends = parts.value.map(p => p.start + p.text.length)
+  if (typed.value === ends[1]) {
+    // Вычеркнутый вариант допечатан: пауза, зачёркивание, затем печать дальше
+    pause(() => {
+      struck.value = true
+      pause(step, STRIKE_MS)
+    }, BEFORE_STRIKE_MS)
+    return
+  }
+  // Пауза только после зачина: «реализации» и выделенное «своих идей» —
+  // одна строка, разрыв посреди неё выглядел бы запинкой
+  if (typed.value === ends[0]) pause(step, LINE_PAUSE_MS)
+  else type(step, CHAR_MS)
+}
+
+// Следующий шаг с курсором (идёт набор) или без него (пауза)
+function type(next: () => void, ms: number) {
+  paused.value = false
+  timer = setTimeout(next, ms)
+}
+function pause(next: () => void, ms: number) {
+  paused.value = true
+  timer = setTimeout(next, ms)
+}
+
+function start() {
+  typed.value = 0
+  struck.value = false
+  pause(step, LINE_PAUSE_MS)
+}
+
+onMounted(() => {
+  if (props.variant !== 'type' || !root.value) return
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  // Печатать, когда блок виден: иначе анимация пройдёт без зрителя
+  typed.value = 0
+  struck.value = false
+  observer = new IntersectionObserver((entries) => {
+    if (entries.some(e => e.isIntersecting)) {
+      observer?.disconnect()
+      start()
+    }
+  })
+  observer.observe(root.value)
+})
+
+// Смена языка посреди печати — показать новую фразу целиком
+watch(() => callout.value.type, () => {
+  clearTimeout(timer)
+  observer?.disconnect()
+  typed.value = null
+  struck.value = true
+})
+
+onBeforeUnmount(() => {
+  clearTimeout(timer)
+  observer?.disconnect()
+})
 </script>
 
 <template>
@@ -75,13 +183,16 @@ const v = computed(() => callout.value[props.variant])
        Конструкция: общий зачин, под ним два одинаково начинающихся
        продолжения — одно вычеркнуто, второе остаётся. Параллельные строки
        и держат приём: читатель видит выбор, а не одну длинную фразу. -->
-  <section v-else class="typeset">
-    <p class="typeset__line">
-      <span class="typeset__call">{{ v.call }}</span>
-      <span class="typeset__option typeset__struck">{{ v.struck }}</span>
-      <span class="typeset__option typeset__kept">
-        {{ v.kept }}<span class="typeset__accent">{{ v.accent }}</span>
-      </span>
+  <section v-else ref="root" class="typeset">
+    <!-- Скринридеру — фраза целиком: по буквам её читать незачем -->
+    <p class="typeset__line" :aria-label="`${v.call} ${v.kept}${v.accent}`">
+      <span class="typeset__call" aria-hidden="true">{{ split(0).shown }}<span v-if="cursorAt === 0" class="typeset__cursor" /><span class="typeset__hidden">{{ split(0).hidden }}</span></span>
+      <span
+        class="typeset__option typeset__struck"
+        :class="{ 'typeset__struck--on': struck }"
+        aria-hidden="true"
+      >{{ split(1).shown }}<span v-if="cursorAt === 1" class="typeset__cursor" /><span class="typeset__hidden">{{ split(1).hidden }}</span></span>
+      <span class="typeset__option typeset__kept" aria-hidden="true">{{ split(2).shown }}<span v-if="cursorAt === 2" class="typeset__cursor" /><span class="typeset__hidden">{{ split(2).hidden }}</span><span class="typeset__accent">{{ split(3).shown }}<span v-if="cursorAt === 3" class="typeset__cursor" /><span class="typeset__hidden">{{ split(3).hidden }}</span></span></span>
     </p>
   </section>
 </template>
@@ -219,13 +330,15 @@ const v = computed(() => callout.value[props.variant])
 .typeset {
   padding: 8px 0;
 }
-/* Строки складывает flex, а не <br>: так у вариантов общий отступ слева
-   и одинаковый ритм — противопоставление держится на выравнивании. */
+/* Части фразы — элементы flex с переносом: на широком экране фраза в одну
+   строку, при сужении сама разбивается на две, затем на три. Каждая часть
+   переносится целиком, поэтому разрыв всегда приходится между частями. */
 .typeset__line {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.3em;
+  row-gap: 2px;
   font-size: var(--home-text-2xl);
   font-weight: 800;
   line-height: 1.25;
@@ -235,7 +348,6 @@ const v = computed(() => callout.value[props.variant])
 /* Зачин стоит ступенью тише вариантов: он вводит выбор, а не спорит с ним. */
 .typeset__call {
   color: var(--home-text-muted);
-  margin-bottom: 4px;
 }
 .typeset__option {
   display: inline-block;
@@ -251,7 +363,19 @@ const v = computed(() => callout.value[props.variant])
 .typeset__struck {
   position: relative;
   white-space: nowrap;
-  color: var(--home-text-dim);
+  /* Пока не зачёркнут — того же цвета, что зачин; гаснет вместе с линией */
+  color: var(--home-text-muted);
+  transition: color 1.5s ease;
+}
+/* Гаснет к фону, а не в другой токен: --home-text-dim в светлой теме темнее
+   --home-text-muted, и вычеркнутое стало бы ярче зачина. Линия — псевдоэлемент
+   со своим цветом, её угасание не задевает. */
+.typeset__struck--on {
+  color: color-mix(in srgb, var(--home-text-muted) 50%, transparent);
+}
+/* В тёмной теме зачин и так близок к фону — гасим слабее, чтобы вариант читался */
+.dark .typeset__struck--on {
+  color: color-mix(in srgb, var(--home-text-muted) 85%, transparent);
 }
 /* Тонкая линия: толстая перекрывает строчные и текст под ней не читается. */
 .typeset__struck::after {
@@ -260,12 +384,34 @@ const v = computed(() => callout.value[props.variant])
   left: -0.04em;
   right: -0.04em;
   top: 55%;
-  height: 2px;
+  height: 1.5px;
   border-radius: 1px;
-  background: var(--home-accent);
+  background: var(--home-text-primary);
   transform: scaleX(0);
   transform-origin: left;
-  animation: callout-strike 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.3s forwards;
+}
+/* Зачёркивание включает печать — когда вычеркнутый вариант допечатан */
+.typeset__struck--on::after {
+  animation: callout-strike 1.5s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+/* Ещё не напечатанное занимает своё место, но не видно — высота не скачет */
+.typeset__hidden {
+  visibility: hidden;
+}
+/* Курсор печати: тонкая черта в цвет акцента, мигает */
+.typeset__cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin: 0 1px;
+  vertical-align: -0.1em;
+  background: var(--home-accent);
+  animation: callout-cursor 1s steps(1) infinite;
+}
+@keyframes callout-cursor {
+  50% {
+    opacity: 0;
+  }
 }
 @keyframes callout-strike {
   to {
@@ -296,7 +442,10 @@ const v = computed(() => callout.value[props.variant])
 
 /* Анимация зачёркивания — декоративная. */
 @media (prefers-reduced-motion: reduce) {
-  .typeset__struck::after {
+  .typeset__struck {
+    transition: none;
+  }
+  .typeset__struck--on::after {
     animation: none;
     transform: scaleX(1);
   }
