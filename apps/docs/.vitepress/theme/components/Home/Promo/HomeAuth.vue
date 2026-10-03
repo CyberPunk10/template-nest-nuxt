@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 import { authPoints } from './home-data'
-import { authDocsUrl } from './site-data'
+import { authDocsUrl } from '../site-data'
 
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress),
 // без vue-i18n. theme меняется при смене языка — компонент перерисовывается.

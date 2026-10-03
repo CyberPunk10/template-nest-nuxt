@@ -6,6 +6,7 @@
       "titleAccent": "Monorepo Template",
       "subtitle": "Production-ready стартовая точка для full-stack приложений.\nРазворачивается за минуты, масштабируется до продакшена.",
       "demo": "Посмотреть демо",
+      "backToProject": "Вернуться в проект",
       "login": "Войти",
       "github": "GitHub",
       "docs": "Документация"
