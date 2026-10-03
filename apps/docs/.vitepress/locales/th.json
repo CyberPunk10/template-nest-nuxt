@@ -52,8 +52,6 @@
     },
     "quickstart": {
       "title": "เริ่มต้นอย่างรวดเร็ว",
-      "requirements": "สิ่งที่ต้องมี:",
-      "setup": "วิธีติดตั้ง",
       "steps": {
         "create": "สร้างโปรเจกต์",
         "install": "ติดตั้ง dependencies",
@@ -261,7 +259,7 @@
       },
       "auth": {
         "label": "Auth",
-        "desc": "จุดเริ่มต้นที่เหมาะสำหรับแดชบอร์ดและแผงผู้ดูแลระบบ JWT authentication ต่อยอดจากตัวแปรพื้นฐาน: email + password, httpOnly cookies, sessions ใน DB"
+        "desc": "จุดเริ่มต้นที่เหมาะสำหรับแดชบอร์ดและแผงผู้ดูแลระบบ JWT authentication ต่อยอดจากตัวแปรพื้นฐาน: email + password, httpOnly cookies, sessions ในหน่วยความจำของ process"
       }
     },
     "commands": {

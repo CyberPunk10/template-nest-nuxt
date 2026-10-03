@@ -2,14 +2,22 @@
 
 ## Quick start
 
-You need [Node.js >= 24 and pnpm](./setup) — the script handles the rest:
+You need [Node.js >= 24 and pnpm](./setup):
 
 ```bash
-git clone git@github.com:CyberPunk10/template-nest-nuxt.git
-cd template-nest-nuxt
+npx create-nest-nuxt my-app
+cd my-app
 pnpm install
 pnpm dev
 ```
+
+`create-nest-nuxt` asks two questions along the way:
+
+1. **Language** — English, Russian or Thai. The documentation inside the project (`apps/docs`) will be in it.
+2. **Template variant:**
+   - `main` — the minimal one: you implement authentication and the database yourself;
+   - `auth-session` — with ready-made authentication; you plug in your own database;
+   - `postgres-prisma` — with ready-made authentication and a database (PostgreSQL + Prisma).
 
 It opens at [http://localhost:3200](http://localhost:3200). Everything else on this page is about how this mode differs from Docker, and what to configure if something didn't start.
 

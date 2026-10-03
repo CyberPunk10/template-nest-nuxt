@@ -52,8 +52,6 @@
     },
     "quickstart": {
       "title": "Quick Start",
-      "requirements": "Requirements:",
-      "setup": "how to install",
       "steps": {
         "create": "Create the project",
         "install": "Install dependencies",
@@ -261,7 +259,7 @@
       },
       "auth": {
         "label": "Auth",
-        "desc": "The perfect starting point for dashboards and admin panels. JWT authentication on top of the base variant: email + password, httpOnly cookies, sessions in DB."
+        "desc": "The perfect starting point for dashboards and admin panels. JWT authentication on top of the base variant: email + password, httpOnly cookies, sessions in process memory."
       }
     },
     "commands": {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, inject, ref, type Ref } from 'vue'
+import { computed, inject, type Ref } from 'vue'
 import { useData } from 'vitepress'
-import { quickstarts } from './home-data'
+import { quickstartSteps } from './home-data'
 
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress),
 // без vue-i18n. theme меняется при смене языка — компонент перерисовывается.
@@ -10,28 +10,14 @@ const home = computed(() => theme.value.home!)
 
 const copied = inject<Ref<string | null>>('copied')!
 const copyCmd = inject<(cmd: string) => void>('copyCmd')!
-
-const activeQs = ref(0)
 </script>
 
 <template>
   <section class="section">
     <h2 class="section__title">{{ home.quickstart.title }}</h2>
-    <div class="qs-tabs">
-      <button
-        v-for="(qs, i) in quickstarts"
-        :key="qs.branch"
-        class="qs-tab"
-        :class="{ 'qs-tab--active': activeQs === i }"
-        @click="activeQs = i"
-      >
-        <Icon name="lucide:git-branch" size="11" />
-        {{ qs.branch }}
-      </button>
-    </div>
     <div class="quickstart">
       <div
-        v-for="(step, i) in quickstarts[activeQs]?.steps"
+        v-for="(step, i) in quickstartSteps"
         :key="i"
         class="qs-step"
         @click="copyCmd(step.cmd)"
@@ -53,39 +39,6 @@ const activeQs = ref(0)
 </template>
 
 <style scoped>
-.qs-tabs {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-
-.qs-tab {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 12px;
-  border-radius: var(--home-radius-md);
-  font-size: var(--home-text-sm);
-  font-family: monospace;
-  cursor: pointer;
-  background: transparent;
-  border: 1px solid var(--home-border-subtle);
-  color: var(--home-text-muted);
-  transition:
-    border-color 0.15s,
-    color 0.15s,
-    background 0.15s;
-}
-.qs-tab:hover {
-  border-color: var(--home-text-dim);
-  color: var(--home-text-hover);
-}
-.qs-tab--active {
-  border-color: rgba(0, 220, 130, 0.3);
-  background: rgba(0, 220, 130, 0.05);
-  color: var(--home-accent);
-}
-
 .quickstart {
   display: flex;
   flex-direction: column;

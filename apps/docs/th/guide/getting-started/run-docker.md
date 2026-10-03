@@ -41,6 +41,13 @@ backend กับ frontend ไม่ได้ใช้ host port ของตั
 
 ::: warning
 `docker compose up` ตรงๆ โดยข้าม `pnpm docker:up` ก็ทำงานได้ แต่ไม่มีการเตรียมให้: ถ้าไม่มี `.env` ที่ root จะไม่ยอม start (`no port specified`) ถ้าไม่มี `apps/*/.env` ก็ไม่ยอมเช่นกัน (`env file ... not found`) และถ้าพอร์ตถูกใช้อยู่จะได้ Docker error ธรรมดา `address already in use` โดยไม่มี dialog
+
+ถ้าไม่มี Docker network ก็ไม่ยอม start เช่นกัน: `network ... declared as external, but could not be found` — [ทำไม network ถึงเป็น external](../structure/docker-compose#network) เตรียมทุกอย่างไว้ล่วงหน้า:
+
+```bash
+pnpm env:copy
+docker network create template-nest-nuxt_app
+```
 :::
 
 ## การหยุด
