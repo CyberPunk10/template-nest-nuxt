@@ -52,14 +52,12 @@
     },
     "quickstart": {
       "title": "เริ่มต้นอย่างรวดเร็ว",
+      "requirements": "สิ่งที่ต้องมี:",
+      "setup": "วิธีติดตั้ง",
       "steps": {
-        "clone": "โคลน repository",
+        "create": "สร้างโปรเจกต์",
         "install": "ติดตั้ง dependencies",
-        "run": "เริ่มต้นแอปพลิเคชัน",
-        "envCheck": "ตรวจสอบ .env — การเปลี่ยน branch อาจต้องการตัวแปรใหม่",
-        "network": "สร้าง Docker network (ครั้งแรกเท่านั้น)",
-        "postgres": "เริ่ม PostgreSQL",
-        "migrate": "รัน migrations"
+        "run": "เริ่มต้นแอปพลิเคชัน"
       }
     },
     "principles": {
@@ -252,7 +250,6 @@
     },
     "branches": {
       "title": "ตัวแปร",
-      "current": "ปัจจุบัน",
       "basedOn": "ต่อยอดจาก",
       "main": {
         "label": "พื้นฐาน",

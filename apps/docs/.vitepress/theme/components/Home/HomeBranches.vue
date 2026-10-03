@@ -17,7 +17,6 @@ const home = computed(() => theme.value.home!)
         v-for="(b, bi) in branches"
         :key="b.name"
         class="home-card branch-card"
-        :class="{ 'branch-card--current': b.current }"
       >
         <div class="branch-card__header">
           <div class="branch-card__name-row">
@@ -27,9 +26,6 @@ const home = computed(() => theme.value.home!)
               class="branch-card__icon"
             />
             <code class="branch-card__name">{{ b.name }}</code>
-            <span v-if="b.current" class="branch-card__badge">{{
-              home.branches.current
-            }}</span>
           </div>
           <span class="branch-card__label">{{ home.branches[b.id].label }}</span>
         </div>
@@ -49,14 +45,6 @@ const home = computed(() => theme.value.home!)
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
-.branch-card--current {
-  border-color: rgba(0, 220, 130, 0.3);
-  background: rgba(0, 220, 130, 0.03);
-}
-.branch-card--current:hover {
-  border-color: rgba(0, 220, 130, 0.45);
-  background: rgba(0, 220, 130, 0.06);
-}
 .branch-card__header {
   display: flex;
   flex-direction: column;
@@ -74,16 +62,6 @@ const home = computed(() => theme.value.home!)
   font-family: monospace;
   font-size: var(--home-text-sm);
   color: var(--home-accent);
-}
-.branch-card__badge {
-  font-size: var(--home-text-xs);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  background: rgba(0, 220, 130, 0.12);
-  color: var(--home-accent);
-  border-radius: 20px;
-  padding: 2px 10px;
 }
 .branch-card__label {
   font-size: var(--home-text-lg);
