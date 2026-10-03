@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import { ref, provide } from 'vue'
 import HomeHero from './Home/HomeHero.vue'
-import HomeQuickstart from './Home/HomeQuickstart.vue'
-import HomePrinciples from './Home/HomePrinciples.vue'
-import HomeBranches from './Home/HomeBranches.vue'
-import HomeShowcase from './Home/HomeShowcase.vue'
-import HomeFit from './Home/HomeFit.vue'
-import HomeAuth from './Home/HomeAuth.vue'
-import HomeCallout from './Home/HomeCallout.vue'
-import HomeCommands from './Home/HomeCommands.vue'
-import HomeTree from './Home/HomeTree.vue'
-import HomeSponsors from './Home/HomeSponsors.vue'
+import HomeBodyPromo from './Home/Promo/HomeBodyPromo.vue'
+import HomeHeroPromo from './Home/Promo/HomeHero.vue'
+import HomeBody from './Home/HomeBody.vue'
+import HomeModeSwitch from './Home/Promo/HomeModeSwitch.vue'
 import HomeFooter from './Home/HomeFooter.vue'
+
+const mode = ref<'promo' | 'dev'>('promo')
 
 const copied = ref<string | null>(null)
 
@@ -29,24 +25,13 @@ provide('copyCmd', copyCmd)
 
 <template>
   <div class="home">
-    <HomeHero />
+    <HomeHeroPromo v-if="mode === 'promo'" />
+    <HomeHero v-else />
     <div class="home__nav-line" />
-    <div class="home__body">
-      <HomeQuickstart />
-      <HomeShowcase />
-      <HomePrinciples />
-      <HomeFit />
-      <HomeCallout variant="split" />
-      <HomeAuth />
-      <HomeBranches />
-      <HomeCallout variant="steps" />
-      <div class="home__bottom">
-        <HomeCommands />
-        <HomeTree />
-      </div>
-    </div>
-    <HomeSponsors />
+    <HomeBodyPromo v-if="mode === 'promo'" />
+    <HomeBody v-else />
     <HomeFooter />
+    <HomeModeSwitch v-model="mode" />
   </div>
 </template>
 

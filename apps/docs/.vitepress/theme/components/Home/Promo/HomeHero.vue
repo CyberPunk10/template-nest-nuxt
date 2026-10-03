@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData, withBase } from 'vitepress'
+import HomeCallout from './HomeCallout.vue'
 
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress),
 // без vue-i18n. theme меняется при смене языка — компонент перерисовывается.
@@ -15,7 +16,9 @@ const docsLink = computed(() => {
   return withBase(`${prefix}/guide/getting-started`)
 })
 
-const appLink = computed(() => theme.value.dashboardUrl)
+// Адрес развёрнутого фронтенда задаётся при сборке через DASHBOARD_URL
+// (см. config.ts) — кнопка ведёт туда как на живое демо шаблона.
+const demoLink = computed(() => theme.value.dashboardUrl)
 </script>
 
 <template>
@@ -27,19 +30,9 @@ const appLink = computed(() => theme.value.dashboardUrl)
         <h1 class="hero__title">
           {{ hero.title }}<br><span class="hero__title-accent">{{ hero.titleAccent }}</span>
         </h1>
+        <HomeCallout variant="type" class="hero__thesis" />
         <p class="hero__subtitle" v-html="hero.subtitle.replace('\n', '<br />')" />
         <div class="hero__actions">
-          <!-- target="_self" обязателен: иначе роутер VitePress сочтёт ссылку
-               внутренней, перехватит клик и попробует найти такую страницу
-               у себя вместо перехода на фронтенд. -->
-          <a
-            class="hero__btn hero__btn--ghost"
-            :href="appLink"
-            target="_self"
-          >
-            <Icon name="lucide:arrow-left" size="15" />
-            {{ hero.backToProject }}
-          </a>
           <a
             class="hero__btn hero__btn--primary"
             :href="docsLink"
@@ -47,13 +40,24 @@ const appLink = computed(() => theme.value.dashboardUrl)
             <Icon name="lucide:book-open" size="15" />
             {{ hero.docs }}
           </a>
+          <!-- target="_self" обязателен: иначе роутер VitePress сочтёт ссылку
+               внутренней, перехватит клик и попробует найти такую страницу
+               у себя вместо перехода на фронтенд. -->
+          <a
+            class="hero__btn hero__btn--ghost"
+            :href="demoLink"
+            target="_self"
+          >
+            <Icon name="lucide:circle-play" size="15" />
+            {{ hero.demo }}
+          </a>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style>
 .hero {
   position: relative;
   overflow: hidden;
@@ -74,8 +78,9 @@ const appLink = computed(() => theme.value.dashboardUrl)
   margin: 0 auto;
   position: relative;
 }
+/* Ширины хватает, чтобы тезис под заголовком шёл в одну строку */
 .hero__inner {
-  max-width: 600px;
+  max-width: 760px;
 }
 .hero__badge {
   display: inline-flex;
@@ -106,6 +111,12 @@ const appLink = computed(() => theme.value.dashboardUrl)
   color: var(--home-text-muted);
   margin: 0 0 32px;
   line-height: var(--home-leading-normal);
+}
+.hero__thesis {
+  margin: 0 0 16px;
+}
+.hero__thesis .typeset {
+  padding: 0;
 }
 .hero__actions {
   display: flex;
