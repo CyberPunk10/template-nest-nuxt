@@ -192,7 +192,7 @@ export function createAuthErrorHandler(navigateToLogin) {
 
 `user` ถูกเก็บใน `useState('auth.user')` — per-request state (ไม่ใช่ตัวแปร global) Nuxt serialize มันลงใน SSR payload และกู้คืนบน client ตอน hydration ด้วยเหตุนี้ `user` ที่ถูก set บน server จึงพร้อมใช้งานบน client ทันทีโดยไม่ต้อง request ซ้ำ
 
-หลังจาก `login` และ `register` จะ request `/auth/me` อย่างชัดเจนแล้วนำผลลัพธ์ไปใส่ใน `user` — เชื่อถือได้มากกว่าการ parse response ของ login เอง เพราะ `/auth/me` คืนข้อมูลที่เป็นปัจจุบันจาก DB เสมอ
+หลังจาก `login` และ `register` จะ request `/auth/me` อย่างชัดเจนแล้วนำผลลัพธ์ไปใส่ใน `user` — เชื่อถือได้มากกว่าการ parse response ของ login เอง เพราะ `/auth/me` คืนข้อมูลที่เป็นปัจจุบันจากที่เก็บข้อมูลเสมอ
 
 ## middleware/auth.global.ts
 

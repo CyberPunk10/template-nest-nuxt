@@ -28,7 +28,7 @@ Both tokens are set with the same flags:
 - `secure` is enabled **only** in production: such a cookie is never sent over plain HTTP, so local development without TLS simply couldn't log in.
 - `path: '/'` is set explicitly for a reason — Express requires the `path` to match between setting and clearing, otherwise `clearCookie()` on logout won't remove it.
 
-Lifetimes come from `JWT_EXPIRES_IN` and `REFRESH_TOKEN_EXPIRES_DAYS` — [backend variables](/en/guide/structure/apps/backend/env-example).
+Lifetimes come from `JWT_EXPIRES_IN` and `REFRESH_TOKEN_EXPIRES_DAYS` — [backend variables](../structure/apps/backend/env-example).
 
 ### Why store sessions at all
 
@@ -259,7 +259,7 @@ A user has a role (`Role.Admin` or `Role.User`), which is embedded in the JWT pa
 
 **No-DB/no-seeds starter:** the first user ever registered is automatically granted `Role.Admin` (see `UsersService.create`) — this exists so the demo endpoints (`GET /users`, `GET /tasks/all`) work out of the box without a separate seeding step.
 
-> **Important for production:** this is a dev convenience, not a secure bootstrap. The rule applies to *whoever* wins the first successful `POST /auth/register`, not to a specific owner — if the database is empty (e.g. after a reset or before the first deploy), admin goes to whoever registers first. Before real use, replace this with an explicit admin seed (an environment variable, a migration, or a dedicated CLI command) rather than relying on registration order.
+> **Important for production:** this is a dev convenience, not a secure bootstrap. The rule applies to *whoever* wins the first successful `POST /auth/register`, not to a specific owner — if the storage is empty (e.g. after a reset or before the first deploy), admin goes to whoever registers first. Before real use, replace this with an explicit admin seed (an environment variable, a migration, or a dedicated CLI command) rather than relying on registration order.
 
 ### `RolesGuard` and `@Roles()`
 

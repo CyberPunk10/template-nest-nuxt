@@ -28,7 +28,7 @@ token ทั้งสองตัวถูกตั้งด้วย flag ช�
 - `secure` เปิดใช้ **เฉพาะ** ตอน production: cookie แบบนี้จะไม่ถูกส่งผ่าน HTTP ธรรมดาเลย การพัฒนาในเครื่องที่ไม่มี TLS จึงจะ login ไม่ได้
 - `path: '/'` ระบุไว้อย่างชัดเจนด้วยเหตุผล — Express ต้องการให้ `path` ตรงกันทั้งตอนตั้งและตอนลบ ไม่งั้น `clearCookie()` ตอน logout จะลบ cookie ไม่ออก
 
-อายุของ token มาจาก `JWT_EXPIRES_IN` และ `REFRESH_TOKEN_EXPIRES_DAYS` — [ตัวแปรของ backend](/th/guide/structure/apps/backend/env-example)
+อายุของ token มาจาก `JWT_EXPIRES_IN` และ `REFRESH_TOKEN_EXPIRES_DAYS` — [ตัวแปรของ backend](../structure/apps/backend/env-example)
 
 ### ทำไมต้องเก็บ session ไว้
 
@@ -259,7 +259,7 @@ pnpm test:e2e:throttle  # throttle-test (throttler เปิด)
 
 **Starter แบบไม่มี DB/ไม่มี seed:** ผู้ใช้คนแรกที่ลงทะเบียนสำเร็จจะได้ `Role.Admin` โดยอัตโนมัติ (ดู `UsersService.create`) — ทำแบบนี้เพื่อให้ demo endpoint (`GET /users`, `GET /tasks/all`) ใช้งานได้ทันทีโดยไม่ต้องมีขั้นตอน seed แยก
 
-> **สำคัญสำหรับ production:** นี่คือ dev convenience ไม่ใช่ bootstrap ที่ปลอดภัย กฎนี้ใช้กับ *ใครก็ตาม* ที่ `POST /auth/register` สำเร็จเป็นคนแรก ไม่ใช่เจ้าของระบบโดยเฉพาะ — ถ้า database ว่างเปล่า (เช่น หลัง reset หรือก่อน deploy ครั้งแรก) สิทธิ์ admin จะตกเป็นของใครก็ตามที่ลงทะเบียนก่อน ก่อนใช้งานจริงควรแทนที่ด้วยการ seed admin อย่างชัดเจน (ผ่าน environment variable, migration หรือคำสั่ง CLI แยก) แทนการพึ่งลำดับการลงทะเบียน
+> **สำคัญสำหรับ production:** นี่คือ dev convenience ไม่ใช่ bootstrap ที่ปลอดภัย กฎนี้ใช้กับ *ใครก็ตาม* ที่ `POST /auth/register` สำเร็จเป็นคนแรก ไม่ใช่เจ้าของระบบโดยเฉพาะ — ถ้าที่เก็บข้อมูลว่างเปล่า (เช่น หลัง reset หรือก่อน deploy ครั้งแรก) สิทธิ์ admin จะตกเป็นของใครก็ตามที่ลงทะเบียนก่อน ก่อนใช้งานจริงควรแทนที่ด้วยการ seed admin อย่างชัดเจน (ผ่าน environment variable, migration หรือคำสั่ง CLI แยก) แทนการพึ่งลำดับการลงทะเบียน
 
 ### `RolesGuard` และ `@Roles()`
 
