@@ -2,7 +2,7 @@
 
 Runs automatically before `pnpm docker:up` — via the npm `pre*` convention.
 
-It does three things:
+Before starting, it runs these steps in order:
 
 1. **Copies `.env.example` → `.env`** for all four files at once (root, `apps/backend`, `apps/frontend`, `apps/docs`) — via the shared `copyEnvFiles()` from [`copy-env.mjs`](./copy-env).
 2. **Checks the port and resolves conflicts** — via the shared `checkPorts()` from [`check-ports.mjs`](./check-ports). On conflict it offers a dialog: kill the process holding the port or abort the run.

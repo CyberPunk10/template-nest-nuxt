@@ -10,33 +10,24 @@
 ![Docker Compose](https://img.shields.io/badge/Compose-%E2%89%A55.5.0-2496ED?style=flat-square&logo=docker&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-24-339933?style=flat-square&logo=node.js&logoColor=white)
 
+## Быстрый старт
+
+Проверьте, что установлены Node.js, pnpm и Docker — [подготовка](apps/docs/guide/getting-started/setup.md).
+
+```bash
+npx create-nest-nuxt my-app
+cd my-app
+pnpm install
+pnpm dev
+```
+
+Генератор спросит язык документации и вариант шаблона. Откроется на [http://localhost:3200](http://localhost:3200).
+
 ## Варианты
 
-Шаблон существует в нескольких версиях — каждая хранится в отдельной git-ветке и является самостоятельной точкой старта. Выберите нужную и клонируйте сразу с ней.
-
-### `main` — базовый шаблон
-
-NestJS + Nuxt 4 + Docker. Tasks CRUD in-memory, i18n, Swagger, ESLint, Husky. Без БД.
-
-```bash
-git clone https://github.com/CyberPunk10/template-nest-nuxt.git my-app
-```
-
-### `auth-session` — + JWT авторизация
-
-Всё из `main`, плюс Passport.js, email+пароль, httpOnly cookies, сессии in-memory, глобальный guard, `@Public()` декоратор.
-
-```bash
-git clone -b auth-session https://github.com/CyberPunk10/template-nest-nuxt.git my-app
-```
-
-### `postgres-prisma` — + PostgreSQL + Prisma
-
-Всё из `auth-session`, плюс Prisma 7 + PostgreSQL 17, PrismaModule, миграции. БД живёт в общем `docker-compose.yml` и поднимается в обоих режимах: `pnpm dev` стартует только её, `pnpm docker:up` — весь стек.
-
-```bash
-git clone -b postgres-prisma https://github.com/CyberPunk10/template-nest-nuxt.git my-app
-```
+- `main` — минимальный: авторизацию и БД вы реализуете сами;
+- `auth-session` — с готовой авторизацией, БД подключаете свою;
+- `postgres-prisma` — с готовой авторизацией и БД (PostgreSQL + Prisma).
 
 ---
 
