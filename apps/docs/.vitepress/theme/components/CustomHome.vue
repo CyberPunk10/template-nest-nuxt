@@ -32,7 +32,6 @@ provide('copyCmd', copyCmd)
     <HomeHero />
     <div class="home__nav-line" />
     <div class="home__body">
-      <HomeCallout variant="type" />
       <HomeQuickstart />
       <HomeShowcase />
       <HomePrinciples />

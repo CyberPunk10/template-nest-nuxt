@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData, withBase } from 'vitepress'
+import HomeCallout from './HomeCallout.vue'
 
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress),
 // без vue-i18n. theme меняется при смене языка — компонент перерисовывается.
@@ -29,6 +30,7 @@ const demoLink = computed(() => theme.value.dashboardUrl)
         <h1 class="hero__title">
           {{ hero.title }}<br><span class="hero__title-accent">{{ hero.titleAccent }}</span>
         </h1>
+        <HomeCallout variant="type" class="hero__thesis" />
         <p class="hero__subtitle" v-html="hero.subtitle.replace('\n', '<br />')" />
         <div class="hero__actions">
           <a
@@ -76,8 +78,9 @@ const demoLink = computed(() => theme.value.dashboardUrl)
   margin: 0 auto;
   position: relative;
 }
+/* Ширины хватает, чтобы тезис под заголовком шёл в одну строку */
 .hero__inner {
-  max-width: 600px;
+  max-width: 760px;
 }
 .hero__badge {
   display: inline-flex;
@@ -108,6 +111,12 @@ const demoLink = computed(() => theme.value.dashboardUrl)
   color: var(--home-text-muted);
   margin: 0 0 32px;
   line-height: var(--home-leading-normal);
+}
+.hero__thesis {
+  margin: 0 0 16px;
+}
+.hero__thesis .typeset {
+  padding: 0;
 }
 .hero__actions {
   display: flex;
