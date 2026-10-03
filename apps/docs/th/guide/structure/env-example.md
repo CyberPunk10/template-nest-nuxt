@@ -9,7 +9,7 @@
 | `NGINX_INTERNAL_PORT`    | `80`                     | พอร์ตที่ nginx ฟังอยู่ภายใน container                                                                                                                                                                                                  |
 | `BACKEND_INTERNAL_PORT`  | `3100`                   | พอร์ตของ backend **ภายใน container**; ไม่ได้เปิดออกสู่ภายนอก                                                                                                                                                                           |
 | `FRONTEND_INTERNAL_PORT` | `3200`                   | พอร์ตของ frontend ภายใน container; ไม่ได้เปิดออกสู่ภายนอก                                                                                                                                                                              |
-| `COMPOSE_NETWORK_NAME`   | `template-nest-nuxt_app` | ชื่อของ Docker network ที่ใช้ร่วมกัน อ่านโดยทั้ง `docker-compose.yml` และ `ensure-network.mjs` network ถูกประกาศเป็น `external` — Compose ไม่ได้สร้างให้ แต่ `pnpm docker:up` เป็นคนสร้าง — [รายละเอียด](/th/guide/structure/docker-compose#network) |
+| `COMPOSE_NETWORK_NAME`   | `template-nest-nuxt_app` | ชื่อของ Docker network ที่ใช้ร่วมกัน อ่านโดยทั้ง `docker-compose.yml` และ `ensure-network.mjs` network ถูกประกาศเป็น `external` — Compose ไม่ได้สร้างให้ แต่ `pnpm docker:up` เป็นคนสร้าง — [รายละเอียด](./docker-compose#network) |
 
 เอกสารไม่ได้ใช้พอร์ตของตัวเอง — static file ของมันถูก build เข้าไปใน image ของ reverse proxy โดยตรง
 
@@ -20,6 +20,6 @@
 - `BACKEND_INTERNAL_PORT` และ `FRONTEND_INTERNAL_PORT` — ไปที่ `expose` ของ container, ไปที่ `PORT` ของตัวแอปเอง, ไปที่ address `NUXT_BACKEND_URL` ของ frontend และไปที่ config ของ nginx ที่ใช้ proxy
 - `NGINX_INTERNAL_PORT` — ไปที่ `listen` ใน config ของ nginx และไปที่การเปิดพอร์ตออกภายนอก
 
-ใน `pnpm dev` ตัวแปรเหล่านี้ไม่เกี่ยวข้อง: พอร์ตมาจาก `PORT` ใน `apps/*/.env` — [อธิบายทั้งสองโหมด](/th/guide/env-variables#พอร์ต)
+ใน `pnpm dev` ตัวแปรเหล่านี้ไม่เกี่ยวข้อง: พอร์ตมาจาก `PORT` ใน `apps/*/.env` — [อธิบายทั้งสองโหมด](../env-variables#พอร์ต)
 
-[ตัวแปรสภาพแวดล้อม](/th/guide/env-variables#ไฟล์)
+[ตัวแปรสภาพแวดล้อม](../env-variables#ไฟล์)

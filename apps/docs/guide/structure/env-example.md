@@ -9,7 +9,7 @@
 | `NGINX_INTERNAL_PORT`    | `80`                     | Порт, на котором nginx слушает внутри контейнера                                                                                                                                                                     |
 | `BACKEND_INTERNAL_PORT`  | `3100`                   | Порт backend **внутри контейнера**; наружу не публикуется                                                                                                                                                            |
 | `FRONTEND_INTERNAL_PORT` | `3200`                   | Порт frontend внутри контейнера; наружу не публикуется                                                                                                                                                               |
-| `COMPOSE_NETWORK_NAME`   | `template-nest-nuxt_app` | Имя общей Docker-сети. Читают и `docker-compose.yml`, и `ensure-network.mjs`. Сеть объявлена как `external` — Compose её не создаёт, это делает `pnpm docker:up` — [подробнее](/guide/structure/docker-compose#сеть) |
+| `COMPOSE_NETWORK_NAME`   | `template-nest-nuxt_app` | Имя общей Docker-сети. Читают и `docker-compose.yml`, и `ensure-network.mjs`. Сеть объявлена как `external` — Compose её не создаёт, это делает `pnpm docker:up` — [подробнее](./docker-compose#сеть) |
 
 Документация своего порта не занимает — её статика собрана прямо в образ reverse proxy.
 
@@ -20,6 +20,6 @@
 - `BACKEND_INTERNAL_PORT` и `FRONTEND_INTERNAL_PORT` — в `expose` контейнеров, в `PORT` самих приложений, в адрес `NUXT_BACKEND_URL` для фронтенда и в конфиг nginx, откуда он проксирует запросы.
 - `NGINX_INTERNAL_PORT` — в `listen` конфига nginx и в публикацию порта наружу.
 
-В `pnpm dev` эти переменные не участвуют: там порты берутся из `PORT` в `apps/*/.env` — [разбор двух режимов](/guide/env-variables#порты).
+В `pnpm dev` эти переменные не участвуют: там порты берутся из `PORT` в `apps/*/.env` — [разбор двух режимов](../env-variables#порты).
 
-[Переменные окружения](/guide/env-variables#фаилы).
+[Переменные окружения](../env-variables#фаилы).

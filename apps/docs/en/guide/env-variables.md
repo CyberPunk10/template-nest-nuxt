@@ -21,7 +21,7 @@ Each application reads **only its own** `.env`, unaware the others exist. The ro
 
 The repository holds only `.env.example` files. Working `.env` files have to be created, and there are three ways:
 
-- **automatically** — the first `pnpm dev` or `pnpm docker:up` creates them under the hood via [`predev.mjs` / `predocker.mjs`](/en/guide/structure/scripts/);
+- **automatically** — the first `pnpm dev` or `pnpm docker:up` creates them under the hood via [`predev.mjs` / `predocker.mjs`](./structure/scripts/);
 - **by command** — `pnpm env:copy` creates all four at once without starting anything;
 - **by hand** — copy `.env.example` → `.env` in the root and in every `apps/*/`.
 
@@ -39,10 +39,10 @@ pnpm env:copy:force
 
 ## Variables by file
 
-- [`.env`](/en/guide/structure/env-example) — the root one, for docker compose
-- [`apps/backend/.env`](/en/guide/structure/apps/backend/env-example)
-- [`apps/frontend/.env`](/en/guide/structure/apps/frontend/env-example)
-- [`apps/docs/.env`](/en/guide/structure/apps/docs/env-example)
+- [`.env`](./structure/env-example) — the root one, for docker compose
+- [`apps/backend/.env`](./structure/apps/backend/env-example)
+- [`apps/frontend/.env`](./structure/apps/frontend/env-example)
+- [`apps/docs/.env`](./structure/apps/docs/env-example)
 
 ## Ports
 
@@ -86,13 +86,13 @@ Practical consequence: if your local 3200 is taken, change `PORT` in `apps/front
 
 ### Why backend and frontend have no host port
 
-`docker-compose.yml` uses `expose` for them rather than `ports`: the port is declared but not forwarded to the host. They're reachable only through the reverse proxy — [why that is](/en/guide/reverse-proxy#why-the-app-ports-are-closed).
+`docker-compose.yml` uses `expose` for them rather than `ports`: the port is declared but not forwarded to the host. They're reachable only through the reverse proxy — [why that is](./reverse-proxy#why-the-app-ports-are-closed).
 
 ### Why `PORT` from `apps/*/.env` doesn't apply under Docker
 
 The file does reach the container — through `env_file` in compose. But the `environment: PORT` line overrides it at startup: in Compose, `environment` always beats `env_file`.
 
-That's deliberate. Otherwise a local `PORT`, tweaked for your own needs, would travel into the container and break the link with nginx. [Detailed breakdown](/en/guide/structure/docker-compose#internal-ports).
+That's deliberate. Otherwise a local `PORT`, tweaked for your own needs, would travel into the container and break the link with nginx. [Detailed breakdown](./structure/docker-compose#internal-ports).
 
 ## CORS_ORIGIN
 

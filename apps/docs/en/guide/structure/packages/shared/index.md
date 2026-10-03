@@ -19,4 +19,4 @@ Anything that must match on the client and the server: request and response shap
 
 `main` and `types` point straight at `src/index.ts`. There's no build step: the applications compile the sources as part of their own build — the backend with `tsc`, the frontend through Vite. Resolution goes through the pnpm workspace symlink, not through TypeScript `paths`.
 
-Package manifest — [package.json](/en/guide/structure/packages/shared/package-json).
+Package manifest — [package.json](./package-json).

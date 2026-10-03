@@ -13,7 +13,7 @@ const config: LocaleEntry = {
     home: locale.home,
     sidebar: [
       {
-        text: 'เอกสาร',
+        text: 'เอกสารของโปรเจกต์',
         items: [
           {
             text: 'เริ่มต้นใช้งาน',
@@ -168,13 +168,6 @@ const config: LocaleEntry = {
         text: 'ข้อมูลเพิ่มเติม',
         items: [
           { text: 'pnpm และ Corepack', link: '/th/guide/pnpm' },
-        ],
-      },
-      {
-        text: 'ตัวอย่าง',
-        items: [
-          { text: 'Markdown', link: '/th/markdown-examples' },
-          { text: 'Runtime API', link: '/th/api-examples' },
         ],
       },
     ],

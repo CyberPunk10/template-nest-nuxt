@@ -1,6 +1,6 @@
 # tsconfig.base.json
 
-ในโปรเจกต์มีไฟล์ config ของ TypeScript ทั้งหมดเจ็ดไฟล์ หลักการเดียวที่ช่วยไม่ให้สับสนคือ **ทุกไฟล์ยกเว้นไฟล์เดียวมีไว้ตรวจสอบ type เท่านั้น** การ compile เป็นหน้าที่ของเครื่องมืออื่น — `nest build`, Nuxt, VitePress ข้อยกเว้นเดียวคือ [`apps/backend/tsconfig.build.json`](/th/guide/structure/apps/backend/tsconfig-build)
+ในโปรเจกต์มีไฟล์ config ของ TypeScript ทั้งหมดเจ็ดไฟล์ หลักการเดียวที่ช่วยไม่ให้สับสนคือ **ทุกไฟล์ยกเว้นไฟล์เดียวมีไว้ตรวจสอบ type เท่านั้น** การ compile เป็นหน้าที่ของเครื่องมืออื่น — `nest build`, Nuxt, VitePress ข้อยกเว้นเดียวคือ [`apps/backend/tsconfig.build.json`](./apps/backend/tsconfig-build)
 
 ## การสืบทอด config
 
@@ -24,7 +24,7 @@ template-nest-nuxt/
         └── tsconfig.json
 ```
 
-ทุก config extends ตัวพื้นฐาน ยกเว้น `apps/frontend`: config จริงของมัน Nuxt เป็นคนสร้างไว้ใน `.nuxt/` ส่วนไฟล์นั้นเพียง reference ถึงพวกมัน และตัวที่ generate มาก็ไม่ได้ extends อะไรเช่นกัน — Nuxt เขียนทุกออปชันไว้ครบ รวมถึง `strict` และ `noEmit` ชุดเดียวกับที่นี่ [รายละเอียด](/th/guide/structure/apps/frontend/tsconfig)
+ทุก config extends ตัวพื้นฐาน ยกเว้น `apps/frontend`: config จริงของมัน Nuxt เป็นคนสร้างไว้ใน `.nuxt/` ส่วนไฟล์นั้นเพียง reference ถึงพวกมัน และตัวที่ generate มาก็ไม่ได้ extends อะไรเช่นกัน — Nuxt เขียนทุกออปชันไว้ครบ รวมถึง `strict` และ `noEmit` ชุดเดียวกับที่นี่ [รายละเอียด](./apps/frontend/tsconfig)
 
 แต่ละไฟล์เก็บ **เฉพาะสิ่งที่ต่างจาก base** เท่านั้น ออปชันที่ไม่ได้เขียนไว้จะถูกสืบทอดมา และนี่เป็นความตั้งใจ — การเขียน `strict` ซ้ำในทุกไฟล์คือหนทางที่ทำให้สักวันหนึ่งมีแพ็กเกจที่ลืมใส่ไปเงียบ ๆ
 
@@ -131,12 +131,12 @@ Backend รันบน Node ส่วนแพ็กเกจ Vue รันใ�
 
 | Config | ความต่าง |
 | --- | --- |
-| [`apps/backend`](/th/guide/structure/apps/backend/tsconfig) | resolve แบบ `node16`, decorator, type ของ jest |
-| [`apps/backend/tsconfig.build.json`](/th/guide/structure/apps/backend/tsconfig-build) | ตัวเดียวที่ compile จริง |
-| [`apps/frontend`](/th/guide/structure/apps/frontend/tsconfig) | ไม่ extends base — Nuxt สร้าง config ให้ |
-| [`apps/docs`](/th/guide/structure/apps/docs/tsconfig) | resolve แบบ bundler, DOM lib, type ของ VitePress |
-| [`packages/shared`](/th/guide/structure/packages/shared/tsconfig) | resolve แบบ bundler, resolveJsonModule สำหรับคำแปล |
-| [`packages/ui`](/th/guide/structure/packages/ui/tsconfig) | resolve แบบ bundler, DOM lib สำหรับ component |
+| [`apps/backend`](./apps/backend/tsconfig) | resolve แบบ `node16`, decorator, type ของ jest |
+| [`apps/backend/tsconfig.build.json`](./apps/backend/tsconfig-build) | ตัวเดียวที่ compile จริง |
+| [`apps/frontend`](./apps/frontend/tsconfig) | ไม่ extends base — Nuxt สร้าง config ให้ |
+| [`apps/docs`](./apps/docs/tsconfig) | resolve แบบ bundler, DOM lib, type ของ VitePress |
+| [`packages/shared`](./packages/shared/tsconfig) | resolve แบบ bundler, resolveJsonModule สำหรับคำแปล |
+| [`packages/ui`](./packages/ui/tsconfig) | resolve แบบ bundler, DOM lib สำหรับ component |
 
 ## การตรวจสอบ type
 

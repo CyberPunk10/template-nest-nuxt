@@ -21,7 +21,7 @@ template-nest-nuxt/
 
 В репозитории лежат только `.env.example`. Рабочие `.env` нужно создать, для этого есть три способа:
 
-- **автоматически** — при первом `pnpm dev` или `pnpm docker:up` их под капотом создают [`predev.mjs` / `predocker.mjs`](/guide/structure/scripts/);
+- **автоматически** — при первом `pnpm dev` или `pnpm docker:up` их под капотом создают [`predev.mjs` / `predocker.mjs`](./structure/scripts/);
 - **командой** — `pnpm env:copy` создаёт все четыре разом, ничего не запуская;
 - **вручную** — скопировать `.env.example` → `.env` в корне и в каждой `apps/*/`.
 
@@ -39,10 +39,10 @@ pnpm env:copy:force
 
 ## Переменные по файлам
 
-- [`.env`](/guide/structure/env-example) — корневой, для docker compose
-- [`apps/backend/.env`](/guide/structure/apps/backend/env-example)
-- [`apps/frontend/.env`](/guide/structure/apps/frontend/env-example)
-- [`apps/docs/.env`](/guide/structure/apps/docs/env-example)
+- [`.env`](./structure/env-example) — корневой, для docker compose
+- [`apps/backend/.env`](./structure/apps/backend/env-example)
+- [`apps/frontend/.env`](./structure/apps/frontend/env-example)
+- [`apps/docs/.env`](./structure/apps/docs/env-example)
 
 ## Порты
 
@@ -86,13 +86,13 @@ localhost/dev/docs/   → статика документации
 
 ### Почему у backend и frontend нет хост-порта
 
-В `docker-compose.yml` для них указан `expose`, а не `ports`: порт объявлен, но на хост не проброшен. Достучаться можно только через reverse proxy — [почему так](/guide/reverse-proxy#почему-порты-приложении-закрыты).
+В `docker-compose.yml` для них указан `expose`, а не `ports`: порт объявлен, но на хост не проброшен. Достучаться можно только через reverse proxy — [почему так](./reverse-proxy#почему-порты-приложении-закрыты).
 
 ### Почему `PORT` из `apps/*/.env` не действует в Docker
 
 Файл в контейнер попадает — через `env_file` в compose. Но строка `environment: PORT` перекрывает его при старте: `environment` в Compose всегда сильнее `env_file`.
 
-Так и задумано. Иначе локальный `PORT`, изменённый под свои нужды, уезжал бы в контейнер и ломал бы связку с nginx. [Подробный разбор](/guide/structure/docker-compose#внутренние-порты).
+Так и задумано. Иначе локальный `PORT`, изменённый под свои нужды, уезжал бы в контейнер и ломал бы связку с nginx. [Подробный разбор](./structure/docker-compose#внутренние-порты).
 
 ## CORS_ORIGIN
 

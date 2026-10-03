@@ -1,13 +1,15 @@
-import { repoUrl } from './site-data'
+// Имя папки проекта в примерах быстрого старта
+const projectDir = 'my-app'
 
-function cloneCmd(branch: string) {
-  return `git clone ${repoUrl} && git checkout ${branch}`
+// Проект создаёт генератор create-nest-nuxt; --variant выбирает вариант
+// сразу, без вопроса в терминале.
+function createCmd(variant: string) {
+  return `npx create-nest-nuxt ${projectDir} --variant ${variant}`
 }
 
 export interface Branch {
   id: string // ключ в home.branches (main | auth | postgresPrisma)
   name: string
-  current: boolean
 }
 
 export interface QuickstartStep {
@@ -29,17 +31,14 @@ export const branches: Branch[] = [
   {
     id: 'main',
     name: 'main',
-    current: false,
   },
   {
     id: 'auth',
     name: 'auth-session',
-    current: true,
   },
   {
     id: 'postgresPrisma',
     name: 'postgres-prisma',
-    current: false,
   },
 ]
 
@@ -47,44 +46,24 @@ export const quickstarts: Quickstart[] = [
   {
     branch: 'main',
     steps: [
-      { id: 'clone', cmd: cloneCmd('main') },
-      { id: 'install', cmd: 'pnpm install' },
+      { id: 'create', cmd: createCmd('main') },
+      { id: 'install', cmd: `cd ${projectDir} && pnpm install` },
       { id: 'run', cmd: 'pnpm dev' },
     ],
   },
   {
     branch: 'auth-session',
     steps: [
-      { id: 'clone', cmd: cloneCmd('auth-session') },
-      { id: 'install', cmd: 'pnpm install' },
-      {
-        id: 'envCheck',
-        cmd: 'pnpm env:copy',
-      },
+      { id: 'create', cmd: createCmd('auth-session') },
+      { id: 'install', cmd: `cd ${projectDir} && pnpm install` },
       { id: 'run', cmd: 'pnpm dev' },
     ],
   },
   {
     branch: 'postgres-prisma',
     steps: [
-      { id: 'clone', cmd: cloneCmd('postgres-prisma') },
-      { id: 'install', cmd: 'pnpm install' },
-      {
-        id: 'envCheck',
-        cmd: 'pnpm env:copy',
-      },
-      {
-        id: 'network',
-        cmd: 'docker network create template-nest-nuxt_app',
-      },
-      {
-        id: 'postgres',
-        cmd: 'docker compose -f docker-compose.dev.yml up -d',
-      },
-      {
-        id: 'migrate',
-        cmd: 'cd apps/backend && pnpm prisma migrate dev',
-      },
+      { id: 'create', cmd: createCmd('postgres-prisma') },
+      { id: 'install', cmd: `cd ${projectDir} && pnpm install` },
       { id: 'run', cmd: 'pnpm dev' },
     ],
   },
@@ -102,6 +81,9 @@ export const principles: Principle[] = [
 export interface StackLogo {
   id: string
   color: string
+  // Документация именно той версии, что стоит в шаблоне, если у технологии
+  // она версионируется: по умолчанию сайты показывают последнюю.
+  url: string
   optional?: true
 }
 
@@ -114,14 +96,14 @@ export interface StackLogo {
  * и раздаются nginx).
  */
 export const stackLogos: StackLogo[] = [
-  { id: 'nest', color: '#e0234e' },
-  { id: 'nuxt', color: '#00dc82' },
-  { id: 'vue', color: '#42b883' },
-  { id: 'typescript', color: '#3178c6' },
-  { id: 'docker', color: '#2496ed' },
-  { id: 'pnpm', color: '#f9ad00' },
-  { id: 'prisma', color: '#5a67d8', optional: true },
-  { id: 'postgres', color: '#4169e1', optional: true },
+  { id: 'nest', color: '#e0234e', url: 'https://docs.nestjs.com/' },
+  { id: 'nuxt', color: '#00dc82', url: 'https://nuxt.com/docs/4.x/getting-started/introduction' },
+  { id: 'vue', color: '#42b883', url: 'https://vuejs.org/guide/introduction' },
+  { id: 'typescript', color: '#3178c6', url: 'https://www.typescriptlang.org/docs/' },
+  { id: 'docker', color: '#2496ed', url: 'https://docs.docker.com/' },
+  { id: 'pnpm', color: '#f9ad00', url: 'https://pnpm.io/motivation' },
+  { id: 'prisma', color: '#5a67d8', url: 'https://www.prisma.io/docs/orm/v7', optional: true },
+  { id: 'postgres', color: '#4169e1', url: 'https://www.postgresql.org/docs/17/', optional: true },
 ]
 
 // ──────────────────────────  Авторизация  ──────────────────────────

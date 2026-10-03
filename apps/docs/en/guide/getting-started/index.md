@@ -2,7 +2,7 @@
 
 ## Quick start
 
-You need [Node.js >= 24 and pnpm](/en/guide/getting-started/setup) — the script handles the rest:
+You need [Node.js >= 24 and pnpm](./setup) — the script handles the rest:
 
 ```bash
 git clone git@github.com:CyberPunk10/template-nest-nuxt.git
@@ -19,8 +19,8 @@ Where the applications run and which build they are, are independent choices. Th
 
 |          | On the host                                                                  | In containers                                            |
 | -------- | ---------------------------------------------------------------------------- | -------------------------------------------------------- |
-| **dev**  | [`pnpm dev`](/en/guide/getting-started/run-pnpm)                             | not set up                                               |
-| **prod** | [`pnpm build` + `start:prod`](/en/guide/getting-started/run-pnpm#pnpm-build) | [`pnpm docker:up`](/en/guide/getting-started/run-docker) |
+| **dev**  | [`pnpm dev`](./run-pnpm)                             | not set up                                               |
+| **prod** | [`pnpm build` + `start:prod`](./run-pnpm#pnpm-build) | [`pnpm docker:up`](./run-docker) |
 
 - Everyday work is `pnpm dev`.
 - To exercise the production build as a whole, reverse proxy included, use `pnpm docker:up`.
@@ -32,8 +32,8 @@ How you reach them differs too:
 
 ## Where to start
 
-1. [Setup](/en/guide/getting-started/setup) — Node.js, pnpm, Docker, `.env` files
-2. [Run with pnpm](/en/guide/getting-started/run-pnpm) or [with Docker](/en/guide/getting-started/run-docker)
+1. [Setup](./setup) — Node.js, pnpm, Docker, `.env` files
+2. [Run with pnpm](./run-pnpm) or [with Docker](./run-docker)
 
 ## What differs in practice
 

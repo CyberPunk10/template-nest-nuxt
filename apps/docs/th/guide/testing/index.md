@@ -48,7 +48,7 @@ pnpm --filter @repo/backend test:watch     # script ใดก็ได้ขอ�
 
 | Application                              | Stack             |
 | ---------------------------------------- | ----------------- |
-| [backend](/th/guide/testing/backend)     | Jest, Supertest   |
+| [backend](./backend)     | Jest, Supertest   |
 
 เทสต์ของ frontend ยังไม่รวมอยู่ในเทมเพลต
 

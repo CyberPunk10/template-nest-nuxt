@@ -1,6 +1,6 @@
 # tsconfig.json
 
-Type checking for the backend — what the IDE sees and what `pnpm type-check` runs. Building is handled by [`tsconfig.build.json`](/en/guide/structure/apps/backend/tsconfig-build), which extends this file.
+Type checking for the backend — what the IDE sees and what `pnpm type-check` runs. Building is handled by [`tsconfig.build.json`](./tsconfig-build), which extends this file.
 
 ```json
 {
@@ -18,13 +18,13 @@ Type checking for the backend — what the IDE sees and what `pnpm type-check` r
 }
 ```
 
-Everything else — `strict`, `skipLibCheck`, `noEmit` — comes from the [base config](/en/guide/structure/tsconfig-base).
+Everything else — `strict`, `skipLibCheck`, `noEmit` — comes from the [base config](../../tsconfig-base).
 
 ## Why node16
 
 Nest loads modules through `require`, so both the format and the resolution follow Node's rules. `node16` sets both with one value: it looks at the `type` field in `package.json`, there is none — so the format is CommonJS.
 
-Both options are spelled out together: TypeScript requires them to agree. [How these options are distributed across packages](/en/guide/structure/tsconfig-base).
+Both options are spelled out together: TypeScript requires them to agree. [How these options are distributed across packages](../../tsconfig-base).
 
 ## Decorators
 

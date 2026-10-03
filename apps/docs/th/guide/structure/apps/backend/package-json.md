@@ -16,4 +16,4 @@ Manifest ของ application สคริปต์ทำงานเฉพา�
 | `test:e2e`                         | `jest --config ...`  | E2E test ใช้ config ของตัวเอง `test/jest-e2e.json`                   |
 | `test:e2e:throttle`                | `jest --config ...`  | E2E ของ rate limiting — แยก config เพื่อไม่ให้ลิมิตของเทสต์หนึ่งกระทบเทสต์อื่น |
 
-อะไรอยู่ที่ไหน — [apps/backend](/th/guide/structure/apps/backend/)
+อะไรอยู่ที่ไหน — [apps/backend](./)

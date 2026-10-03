@@ -15,7 +15,7 @@ The config for `nest build` — the only one in the repository that actually com
 }
 ```
 
-It extends not the base config but [the neighbouring `tsconfig.json`](/en/guide/structure/apps/backend/tsconfig) — so it inherits both the Nest settings and the shared rules from the base.
+It extends not the base config but [the neighbouring `tsconfig.json`](./tsconfig) — so it inherits both the Nest settings and the shared rules from the base.
 
 ## noEmit: false
 

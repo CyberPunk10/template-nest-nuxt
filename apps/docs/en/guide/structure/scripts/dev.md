@@ -27,7 +27,7 @@ If one of the three processes crashes, `concurrently` doesn't stop the others by
 pnpm dev
 ```
 
-[`predev.mjs`](/en/guide/structure/scripts/predev) runs automatically beforehand — it prepares the `.env` files and checks the ports.
+[`predev.mjs`](./predev) runs automatically beforehand — it prepares the `.env` files and checks the ports.
 
 To bring up one application instead of three, use a filter and bypass this script:
 

@@ -16,4 +16,4 @@
 | `test:e2e`                         | `jest --config ...`  | E2E-тесты, свой конфиг `test/jest-e2e.json`                                              |
 | `test:e2e:throttle`                | `jest --config ...`  | E2E rate limiting — отдельным конфигом, чтобы лимиты одного теста не влияли на остальные |
 
-Что где лежит — [apps/backend](/guide/structure/apps/backend/).
+Что где лежит — [apps/backend](./).

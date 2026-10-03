@@ -38,7 +38,7 @@ The pnpm version is pinned in `packageManager` of the root `package.json` — th
 corepack enable
 ```
 
-From then on, `pnpm` in this project is the version listed in `packageManager`. If another pnpm is installed globally, it may intercept the call before the Corepack shim and substitute a different version. Check with `pnpm --version`, and if it differs from `packageManager`, see [pnpm and Corepack](/en/guide/pnpm).
+From then on, `pnpm` in this project is the version listed in `packageManager`. If another pnpm is installed globally, it may intercept the call before the Corepack shim and substitute a different version. Check with `pnpm --version`, and if it differs from `packageManager`, see [pnpm and Corepack](../pnpm).
 :::
 
 ## 3. Docker >= 23 + Docker Compose >= 2.33
@@ -50,7 +50,7 @@ docker --version
 docker compose version
 ```
 
-The Compose version matters: on an older one the build fails with `failed to get build context docs` — [why](/en/guide/structure/apps/docs/docker-image).
+The Compose version matters: on an older one the build fails with `failed to get build context docs` — [why](../structure/apps/docs/docker-image).
 
 The template was verified on Docker `27.5.1` and Compose `v5.5.0`.
 
@@ -74,7 +74,7 @@ If you run `docker compose` directly, create it once yourself:
 docker network create template-nest-nuxt_app
 ```
 
-Without it, a plain `docker compose up` fails with `network ... declared as external, but could not be found` — [why the network is external](/en/guide/structure/docker-compose#network).
+Without it, a plain `docker compose up` fails with `network ... declared as external, but could not be found` — [why the network is external](../structure/docker-compose#network).
 
 ## 5. `.env` files
 
@@ -86,7 +86,7 @@ To create them ahead of time — say, before a plain `docker compose up` — the
 pnpm env:copy
 ```
 
-Which variables live where and why — see [ENV variables](/en/guide/env-variables).
+Which variables live where and why — see [ENV variables](../env-variables).
 
 ::: tip
 When switching branches, the local `.env` doesn't update automatically — it may be missing variables introduced by the new branch. Compare it against `.env.example` and add whatever's missing.

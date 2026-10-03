@@ -29,4 +29,4 @@ pnpm env:copy          # node scripts/copy-env-cli.mjs
 pnpm env:copy:force    # node scripts/copy-env-cli.mjs --force
 ```
 
-แยกออกจาก [`copy-env.mjs`](/th/guide/structure/scripts/copy-env) เพื่อให้ตัว module เองสะอาด (ไม่มี side effect ตอน import) — side effect ทั้งหมดอยู่ในไฟล์นี้ไฟล์เดียว ซึ่งถูกเรียกจาก npm script เท่านั้น
+แยกออกจาก [`copy-env.mjs`](./copy-env) เพื่อให้ตัว module เองสะอาด (ไม่มี side effect ตอน import) — side effect ทั้งหมดอยู่ในไฟล์นี้ไฟล์เดียว ซึ่งถูกเรียกจาก npm script เท่านั้น

@@ -23,6 +23,6 @@ apps/docs/
 
 ## Свой Dockerfile без запуска
 
-Образ `apps/docs` ничего не поднимает: он только собирает статику, которую забирает образ nginx. Отдельного контейнера с документацией в Compose нет — подробнее в [apps/docs](/guide/structure/apps/docs/docker-image) раздела Docker.
+Образ `apps/docs` ничего не поднимает: он только собирает статику, которую забирает образ nginx. Отдельного контейнера с документацией в Compose нет — подробнее в [apps/docs](./docker-image) раздела Docker.
 
-Скрипты приложения — [package.json](/guide/structure/apps/docs/package-json).
+Скрипты приложения — [package.json](./package-json).

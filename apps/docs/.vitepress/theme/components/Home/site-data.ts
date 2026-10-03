@@ -44,5 +44,5 @@ export const sponsors: never[] = []
 /** Сколько свободных слотов показывать в секции спонсоров. */
 export const freeSponsorSlots = 3
 
-/** Команда установки шаблона. TODO: — скаффолдер ещё не опубликован в npm. */
+/** Команда создания проекта генератором create-nest-nuxt. */
 export const installCmd = 'npx create-nest-nuxt my-app'

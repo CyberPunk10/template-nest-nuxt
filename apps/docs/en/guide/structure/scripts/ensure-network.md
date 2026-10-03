@@ -9,11 +9,11 @@ WARN[0000] The "COMPOSE_NETWORK_NAME" variable is not set. Defaulting to a blank
 network  declared as external, but could not be found.
 ```
 
-Called from [`predocker.mjs`](/en/guide/structure/scripts/predocker) — before `pnpm docker:up`.
+Called from [`predocker.mjs`](./predocker) — before `pnpm docker:up`.
 
 ## Usage
 
-There's no pnpm command of its own — it's called from [`predocker.mjs`](/en/guide/structure/scripts/predocker), so it fires on `pnpm docker:up`:
+There's no pnpm command of its own — it's called from [`predocker.mjs`](./predocker), so it fires on `pnpm docker:up`:
 
 ```js
 import { ensureNetwork } from './ensure-network.mjs'

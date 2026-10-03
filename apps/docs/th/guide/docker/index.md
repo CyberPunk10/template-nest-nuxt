@@ -1,6 +1,6 @@
 # Docker
 
-โปรเจกต์นี้มี [Dockerfile](/th/guide/docker/dockerfiles) อิสระสี่ไฟล์ — ไฟล์ละหนึ่ง application (`backend`, `frontend`, `docs`) บวก reverse proxy (`nginx`) — และ [docker-compose.yml](/th/guide/structure/docker-compose) หนึ่งไฟล์ที่ประกอบทั้งหมดเข้าเป็น stack
+โปรเจกต์นี้มี [Dockerfile](./dockerfiles) อิสระสี่ไฟล์ — ไฟล์ละหนึ่ง application (`backend`, `frontend`, `docs`) บวก reverse proxy (`nginx`) — และ [docker-compose.yml](../structure/docker-compose) หนึ่งไฟล์ที่ประกอบทั้งหมดเข้าเป็น stack
 
 ## จุดเข้าเดียว
 
@@ -16,11 +16,11 @@ browser  →  nginx:80
                           └──  backend:3100   API ผ่าน BFF proxy
 ```
 
-การ routing ทำงานอย่างไรและ proxy ทำอะไรอีกบ้าง — ดู [Reverse proxy](/th/guide/reverse-proxy)
+การ routing ทำงานอย่างไรและ proxy ทำอะไรอีกบ้าง — ดู [Reverse proxy](../reverse-proxy)
 
 ## เริ่มจากตรงไหน
 
-- [Dockerfile](/th/guide/docker/dockerfiles) — image ถูกสร้างอย่างไร: stage, layer, เวอร์ชัน
-- [docker compose](/th/guide/structure/docker-compose) — ยก stack ขึ้นอย่างไร: ตัวแปร, network, เริ่มและหยุด
+- [Dockerfile](./dockerfiles) — image ถูกสร้างอย่างไร: stage, layer, เวอร์ชัน
+- [docker compose](../structure/docker-compose) — ยก stack ขึ้นอย่างไร: ตัวแปร, network, เริ่มและหยุด
 
-ถ้าแค่อยากรันโปรเจกต์ — [รันด้วย Docker](/th/guide/getting-started/run-docker)
+ถ้าแค่อยากรันโปรเจกต์ — [รันด้วย Docker](../getting-started/run-docker)

@@ -2,7 +2,7 @@
 
 ## เริ่มแบบเร็ว
 
-ต้องมี [Node.js >= 24 และ pnpm](/th/guide/getting-started/setup) — ที่เหลือ script จัดการให้:
+ต้องมี [Node.js >= 24 และ pnpm](./setup) — ที่เหลือ script จัดการให้:
 
 ```bash
 git clone git@github.com:CyberPunk10/template-nest-nuxt.git
@@ -19,8 +19,8 @@ pnpm dev
 
 |          | บน host                                                                      | ใน container                                             |
 | -------- | ---------------------------------------------------------------------------- | -------------------------------------------------------- |
-| **dev**  | [`pnpm dev`](/th/guide/getting-started/run-pnpm)                             | ยังไม่ได้ตั้งค่า                                               |
-| **prod** | [`pnpm build` + `start:prod`](/th/guide/getting-started/run-pnpm#pnpm-build) | [`pnpm docker:up`](/th/guide/getting-started/run-docker) |
+| **dev**  | [`pnpm dev`](./run-pnpm)                             | ยังไม่ได้ตั้งค่า                                               |
+| **prod** | [`pnpm build` + `start:prod`](./run-pnpm#pnpm-build) | [`pnpm docker:up`](./run-docker) |
 
 - งานประจำวันใช้ `pnpm dev`
 - ถ้าต้องการตรวจสอบ build แบบ production ทั้งชุดพร้อม reverse proxy ให้ใช้ `pnpm docker:up`
@@ -32,8 +32,8 @@ pnpm dev
 
 ## เริ่มจากตรงไหน
 
-1. [การเตรียมความพร้อม](/th/guide/getting-started/setup) — Node.js, pnpm, Docker, ไฟล์ `.env`
-2. [รันด้วย pnpm](/th/guide/getting-started/run-pnpm) หรือ [ด้วย Docker](/th/guide/getting-started/run-docker)
+1. [การเตรียมความพร้อม](./setup) — Node.js, pnpm, Docker, ไฟล์ `.env`
+2. [รันด้วย pnpm](./run-pnpm) หรือ [ด้วย Docker](./run-docker)
 
 ## ต่างกันอย่างไรในทางปฏิบัติ
 

@@ -1,6 +1,6 @@
 # tsconfig.json
 
-แพ็กเกจนี้ต้องการเพิ่มจาก [ตัวพื้นฐาน](/th/guide/structure/tsconfig-base) ไม่มาก — แค่บอกว่ามันไปที่ไหน:
+แพ็กเกจนี้ต้องการเพิ่มจาก [ตัวพื้นฐาน](../../tsconfig-base) ไม่มาก — แค่บอกว่ามันไปที่ไหน:
 
 ```json
 {
@@ -40,11 +40,11 @@ import ru from './ru.json'
 
 ไม่ต้องมี `outDir`: แพ็กเกจไม่ได้ build อะไร และ `noEmit` มาจาก config พื้นฐานแล้ว
 
-เวลาที่ backend เป็นคน compile ซอร์สเหล่านี้ จะใช้ [config ของมัน](/th/guide/structure/apps/backend/tsconfig) ที่ resolve แบบ Node แทน — ไฟล์เดียวกัน กฎต่างกัน โค้ดที่นี่จึงเขียนให้ผ่านการตรวจทั้งสองแบบ
+เวลาที่ backend เป็นคน compile ซอร์สเหล่านี้ จะใช้ [config ของมัน](../../apps/backend/tsconfig) ที่ resolve แบบ Node แทน — ไฟล์เดียวกัน กฎต่างกัน โค้ดที่นี่จึงเขียนให้ผ่านการตรวจทั้งสองแบบ
 
 ## ทำไม lib ไม่มี DOM
 
-[`packages/ui`](/th/guide/structure/packages/ui/tsconfig) ข้าง ๆ ใส่ `DOM` ไว้ใน `lib` ที่นี่ไม่มีโดยเจตนา แพ็กเกจนี้ไปทั้ง browser และ Node — การเรียก `window` หรือ `document` ในโค้ดส่วนกลางจะทำให้ backend พังตอน runtime เมื่อไม่มี `DOM` ความพยายามนั้นจะกลายเป็น type error แทนที่จะเป็นเรื่องเซอร์ไพรส์ฝั่ง server
+[`packages/ui`](../ui/tsconfig) ข้าง ๆ ใส่ `DOM` ไว้ใน `lib` ที่นี่ไม่มีโดยเจตนา แพ็กเกจนี้ไปทั้ง browser และ Node — การเรียก `window` หรือ `document` ในโค้ดส่วนกลางจะทำให้ backend พังตอน runtime เมื่อไม่มี `DOM` ความพยายามนั้นจะกลายเป็น type error แทนที่จะเป็นเรื่องเซอร์ไพรส์ฝั่ง server
 
 ## การตรวจสอบ type
 

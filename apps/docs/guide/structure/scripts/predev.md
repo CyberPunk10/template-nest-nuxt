@@ -4,12 +4,12 @@
 
 Делает две вещи:
 
-1. **Копирует `.env.example` → `.env`** для всех четырёх файлов разом (корневой, `apps/backend`, `apps/frontend`, `apps/docs`) — через общую `copyEnvFiles()` из [`copy-env.mjs`](/guide/structure/scripts/copy-env).
-2. **Проверяет порты и разрешает конфликты** — через общую `checkPorts()` из [`check-ports.mjs`](/guide/structure/scripts/check-ports). При конфликте предлагает диалог: убить занявший процесс или прервать запуск.
+1. **Копирует `.env.example` → `.env`** для всех четырёх файлов разом (корневой, `apps/backend`, `apps/frontend`, `apps/docs`) — через общую `copyEnvFiles()` из [`copy-env.mjs`](./copy-env).
+2. **Проверяет порты и разрешает конфликты** — через общую `checkPorts()` из [`check-ports.mjs`](./check-ports). При конфликте предлагает диалог: убить занявший процесс или прервать запуск.
 
 Проверяются dev-порты: `PORT` из `apps/backend/.env`, `apps/frontend/.env` и `apps/docs/.env`.
 
-Тем же занимается [`predocker.mjs`](/guide/structure/scripts/predocker) — разница только в списке портов и в том, что он дополнительно заводит Docker-сеть.
+Тем же занимается [`predocker.mjs`](./predocker) — разница только в списке портов и в том, что он дополнительно заводит Docker-сеть.
 
 ## Что выводит
 

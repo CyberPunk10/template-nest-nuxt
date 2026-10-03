@@ -15,7 +15,7 @@ const config: LocaleEntry = {
     home: locale.home,
     sidebar: [
       {
-        text: 'Документация',
+        text: 'Документация проекта',
         items: [
           {
             text: 'Запуск проекта',
@@ -170,13 +170,6 @@ const config: LocaleEntry = {
         text: 'Дополнительная информация',
         items: [
           { text: 'pnpm и Corepack', link: '/guide/pnpm' },
-        ],
-      },
-      {
-        text: 'Примеры',
-        items: [
-          { text: 'Markdown', link: '/markdown-examples' },
-          { text: 'Runtime API', link: '/api-examples' },
         ],
       },
     ],

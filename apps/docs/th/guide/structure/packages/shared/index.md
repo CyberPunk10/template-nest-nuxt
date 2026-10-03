@@ -19,4 +19,4 @@ packages/shared/
 
 `main` และ `types` ชี้ไปที่ `src/index.ts` ตรง ๆ ไม่มีขั้นตอน build: แอปพลิเคชัน compile ซอร์สเป็นส่วนหนึ่งของ build ตัวเอง — backend ด้วย `tsc` ส่วน frontend ผ่าน Vite การ resolve อาศัย symlink ของ pnpm workspace ไม่ใช่ `paths` ของ TypeScript
 
-Manifest ของ package — [package.json](/th/guide/structure/packages/shared/package-json)
+Manifest ของ package — [package.json](./package-json)

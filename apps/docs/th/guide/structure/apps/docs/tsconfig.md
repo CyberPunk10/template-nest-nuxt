@@ -20,7 +20,7 @@
 
 ## target กับ lib
 
-Theme รันในเบราว์เซอร์ จึงต้องมี DOM type: `document`, `window`, `HTMLElement` [config พื้นฐาน](/th/guide/structure/tsconfig-base) ตั้งใจไม่ใส่ไว้ — มันไม่ผูกกับสภาพแวดล้อมใด และ backend ก็รันอยู่คนละที่
+Theme รันในเบราว์เซอร์ จึงต้องมี DOM type: `document`, `window`, `HTMLElement` [config พื้นฐาน](../../tsconfig-base) ตั้งใจไม่ใส่ไว้ — มันไม่ผูกกับสภาพแวดล้อมใด และ backend ก็รันอยู่คนละที่
 
 ## types: ทำไมต้อง vitepress/client
 

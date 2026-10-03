@@ -7,9 +7,9 @@ COPY infra/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=docs /app/apps/docs/.vitepress/dist /srv/docs
 ```
 
-The first is the config template: `envsubst` substitutes the variables into it when the container starts. The second is the documentation's static output, built by [apps/docs](/en/guide/structure/apps/docs/docker-image).
+The first is the config template: `envsubst` substitutes the variables into it when the container starts. The second is the documentation's static output, built by [apps/docs](../../apps/docs/docker-image).
 
-Beyond routing, the proxy handles asset caching, security headers, gzip and WebSocket forwarding. The config walkthrough — [Reverse proxy](/en/guide/reverse-proxy).
+Beyond routing, the proxy handles asset caching, security headers, gzip and WebSocket forwarding. The config walkthrough — [Reverse proxy](../../../reverse-proxy).
 
 ## Build and check
 
@@ -20,7 +20,7 @@ docker compose build nginx
 docker compose up -d nginx
 ```
 
-To check that the proxy answers, use the built-in [HEALTHCHECK](/en/guide/docker/dockerfiles#healthcheck):
+To check that the proxy answers, use the built-in [HEALTHCHECK](../../../docker/dockerfiles#healthcheck):
 
 ```bash
 docker inspect --format='{{json .State.Health}}' template-nest-nuxt-nginx-1

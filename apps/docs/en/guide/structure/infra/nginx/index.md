@@ -18,4 +18,4 @@ Not every variable gets substituted: the Dockerfile sets `NGINX_ENVSUBST_FILTER`
 
 The Dockerfile copies VitePress's built output from the `docs-builder` image into `/srv/docs`. There is no separate documentation container — nginx serves it from disk.
 
-Route breakdown — [Reverse proxy](/en/guide/reverse-proxy), image build — [Dockerfile](/en/guide/structure/infra/nginx/docker-image).
+Route breakdown — [Reverse proxy](../../../reverse-proxy), image build — [Dockerfile](./docker-image).

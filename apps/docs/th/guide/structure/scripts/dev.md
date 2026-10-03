@@ -27,7 +27,7 @@ concurrently(
 pnpm dev
 ```
 
-ก่อน start จะมี [`predev.mjs`](/th/guide/structure/scripts/predev) ทำงานอัตโนมัติ — เตรียม `.env` และตรวจพอร์ต
+ก่อน start จะมี [`predev.mjs`](./predev) ทำงานอัตโนมัติ — เตรียม `.env` และตรวจพอร์ต
 
 ถ้าต้องการ start แค่ application เดียวแทนที่จะเป็นสามตัว ใช้ filter โดยข้ามสคริปต์นี้:
 

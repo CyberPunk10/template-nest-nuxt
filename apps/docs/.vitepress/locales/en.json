@@ -52,14 +52,12 @@
     },
     "quickstart": {
       "title": "Quick Start",
+      "requirements": "Requirements:",
+      "setup": "how to install",
       "steps": {
-        "clone": "Clone the repository",
+        "create": "Create the project",
         "install": "Install dependencies",
-        "run": "Start the applications",
-        "envCheck": "Check .env — switching branches may require new variables",
-        "network": "Create Docker network (first time only)",
-        "postgres": "Start PostgreSQL",
-        "migrate": "Apply migrations"
+        "run": "Start the applications"
       }
     },
     "principles": {
@@ -252,7 +250,6 @@
     },
     "branches": {
       "title": "Variants",
-      "current": "current",
       "basedOn": "based on",
       "main": {
         "label": "Base",

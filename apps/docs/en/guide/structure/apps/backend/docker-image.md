@@ -29,7 +29,7 @@ Check:
 curl http://localhost:3100/health
 ```
 
-Or via the built-in [HEALTHCHECK](/en/guide/docker/dockerfiles#healthcheck) — Docker polls it on its own, you just read the result:
+Or via the built-in [HEALTHCHECK](../../../docker/dockerfiles#healthcheck) — Docker polls it on its own, you just read the result:
 
 ```bash
 docker inspect --format='{{json .State.Health}}' backend-preview

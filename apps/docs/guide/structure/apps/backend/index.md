@@ -37,6 +37,6 @@ apps/backend/
 
 `tsconfig.json` работает с `noEmit` — он нужен IDE и команде `type-check`. Сборкой занимается `tsconfig.build.json`, где задан `rootDir: ./src`: без него `dist/` повторил бы путь `apps/backend/src/...` и точка входа переехала бы с `dist/main.js`.
 
-Подробнее про конфиги — [tsconfig.base.json](/guide/structure/tsconfig-base).
+Подробнее про конфиги — [tsconfig.base.json](../../tsconfig-base).
 
-Скрипты приложения — [package.json](/guide/structure/apps/backend/package-json).
+Скрипты приложения — [package.json](./package-json).

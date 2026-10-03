@@ -15,9 +15,12 @@ const home = computed(() => theme.value.home!)
     <h2 class="section__title">{{ home.showcase.title }}</h2>
     <p class="showcase__lead">{{ home.showcase.lead }}</p>
     <div class="showcase">
-      <div
+      <a
         v-for="logo in stackLogos"
         :key="logo.id"
+        :href="logo.url"
+        target="_blank"
+        rel="noopener noreferrer"
         class="showcase__item"
         :class="{ 'showcase__item--optional': logo.optional }"
         :style="{ '--logo-color': logo.color }"
@@ -31,7 +34,7 @@ const home = computed(() => theme.value.home!)
         </div>
         <p class="showcase__name">{{ home.showcase.items[logo.id].name }}</p>
         <p class="showcase__role">{{ home.showcase.items[logo.id].role }}</p>
-      </div>
+      </a>
     </div>
 
     <p class="showcase__footnote">
@@ -67,12 +70,15 @@ const home = computed(() => theme.value.home!)
   border: 1px solid var(--home-border-subtle);
   border-radius: 10px;
   background: var(--home-surface-2);
+  color: inherit;
+  text-decoration: none;
   transition:
     border-color 0.2s,
     background 0.2s,
     transform 0.2s;
 }
-.showcase__item:hover {
+.showcase__item:hover,
+.showcase__item:focus-visible {
   /* color-mix даёт подложку и рамку в фирменном цвете технологии,
      не заводя по паре захардкоженных rgba на каждый логотип. */
   border-color: color-mix(in srgb, var(--logo-color) 45%, transparent);
@@ -87,7 +93,8 @@ const home = computed(() => theme.value.home!)
   transition: color 0.2s;
   margin-bottom: 6px;
 }
-.showcase__item:hover .showcase__logo {
+.showcase__item:hover .showcase__logo,
+.showcase__item:focus-visible .showcase__logo {
   color: var(--logo-color);
 }
 

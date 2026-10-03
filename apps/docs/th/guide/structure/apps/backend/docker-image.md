@@ -29,7 +29,7 @@ secret จำเป็นต้องมี: ถ้าไม่มี Nest จ�
 curl http://localhost:3100/health
 ```
 
-หรือผ่าน [HEALTHCHECK](/th/guide/docker/dockerfiles#healthcheck) ที่มีอยู่แล้ว — Docker เรียกเองเป็นระยะ เราแค่ดูผลลัพธ์:
+หรือผ่าน [HEALTHCHECK](../../../docker/dockerfiles#healthcheck) ที่มีอยู่แล้ว — Docker เรียกเองเป็นระยะ เราแค่ดูผลลัพธ์:
 
 ```bash
 docker inspect --format='{{json .State.Health}}' backend-preview
