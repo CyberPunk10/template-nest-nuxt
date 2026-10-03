@@ -39,7 +39,3 @@ apps/backend/.env     POSTGRES_PORT=5435
 `.env` ที่ root กำหนดพอร์ตที่ container ฐานข้อมูลถูกเปิดออกมาบนเครื่อง host ส่วนไฟล์ที่สองจำเป็นเมื่อ backend รันผ่าน `pnpm dev`: มันบอก Nest และ Prisma ว่าให้เชื่อมต่อไปที่พอร์ตไหน
 
 เมื่อ backend รันใน container เอง ไฟล์ที่สองจะไม่ถูกใช้เลย: compose ส่ง `postgres:5432` ให้ ซึ่งเป็นชื่อ service และพอร์ตภายใน network การ map พอร์ตออก host ไม่เกี่ยวข้องในกรณีนี้
-
-## เมื่อสลับ branch
-
-ไฟล์ `.env` ในเครื่องจะไม่อัปเดตให้อัตโนมัติ — อาจไม่มีตัวแปรของ branch ใหม่อยู่ในนั้น ให้เทียบกับ `.env.example` แล้วเพิ่มตัวแปรที่ขาดไป เช่น เมื่อสลับ branch `main` → `postgres-prisma` ไฟล์ `apps/backend/.env` อาจไม่มีตัวแปร `POSTGRES_*` ให้คัดลอกมาจาก `apps/backend/.env.example`
