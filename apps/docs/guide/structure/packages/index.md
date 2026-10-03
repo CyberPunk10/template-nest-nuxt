@@ -10,7 +10,7 @@ packages/
 
 | Пакет                                       | Кто использует    | Сборка      | Проверка типов                    |
 | ------------------------------------------- | ----------------- | ----------- | --------------------------------- |
-| [shared](/guide/structure/packages/shared/) | backend, frontend | source-only | `tsc --noEmit`                    |
-| [ui](/guide/structure/packages/ui/)         | frontend          | source-only | `vue-tsc --noEmit` — из-за `.vue` |
+| [shared](./shared/) | backend, frontend | source-only | `tsc --noEmit`                    |
+| [ui](./ui/)         | frontend          | source-only | `vue-tsc --noEmit` — из-за `.vue` |
 
-Ни один не компилируется: `main` указывает прямо на `src/index.ts`, а исходники обрабатывают сами потребители — Nest через `tsc`, Nuxt через Vite. Подробный разбор — [Архитектура](/guide/architecture#пакеты-как-потребляются).
+Ни один не компилируется: `main` указывает прямо на `src/index.ts`, а исходники обрабатывают сами потребители — Nest через `tsc`, Nuxt через Vite. Подробный разбор — [Архитектура](../../architecture#пакеты-как-потребляются).

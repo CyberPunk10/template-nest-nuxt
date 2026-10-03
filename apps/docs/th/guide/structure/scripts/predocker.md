@@ -4,9 +4,9 @@
 
 ทำสามอย่าง:
 
-1. **คัดลอก `.env.example` → `.env`** ทั้งสี่ไฟล์พร้อมกัน (root, `apps/backend`, `apps/frontend`, `apps/docs`) — ผ่าน `copyEnvFiles()` ที่ใช้ร่วมกันจาก [`copy-env.mjs`](/th/guide/structure/scripts/copy-env)
-2. **ตรวจสอบพอร์ตและแก้ปัญหาชนกัน** — ผ่าน `checkPorts()` ที่ใช้ร่วมกันจาก [`check-ports.mjs`](/th/guide/structure/scripts/check-ports) ถ้าชนกันจะเสนอ dialog: kill process ที่ครองพอร์ตอยู่ หรือยกเลิกการรัน
-3. **สร้าง Docker network** ถ้ายังไม่มี — ผ่าน [`ensure-network.mjs`](/th/guide/structure/scripts/ensure-network) ชื่อ network มาจาก `COMPOSE_NETWORK_NAME` ในไฟล์ `.env` ที่ root — แหล่งเดียวกับที่ `docker-compose.yml` อ่าน การรันซ้ำจะไม่ทำอะไร
+1. **คัดลอก `.env.example` → `.env`** ทั้งสี่ไฟล์พร้อมกัน (root, `apps/backend`, `apps/frontend`, `apps/docs`) — ผ่าน `copyEnvFiles()` ที่ใช้ร่วมกันจาก [`copy-env.mjs`](./copy-env)
+2. **ตรวจสอบพอร์ตและแก้ปัญหาชนกัน** — ผ่าน `checkPorts()` ที่ใช้ร่วมกันจาก [`check-ports.mjs`](./check-ports) ถ้าชนกันจะเสนอ dialog: kill process ที่ครองพอร์ตอยู่ หรือยกเลิกการรัน
+3. **สร้าง Docker network** ถ้ายังไม่มี — ผ่าน [`ensure-network.mjs`](./ensure-network) ชื่อ network มาจาก `COMPOSE_NETWORK_NAME` ในไฟล์ `.env` ที่ root — แหล่งเดียวกับที่ `docker-compose.yml` อ่าน การรันซ้ำจะไม่ทำอะไร
 
 ตรวจเพียงพอร์ตเดียว — `NGINX_HOST_PORT` จาก `.env` ที่ root ส่วน backend และ frontend ไม่ได้ใช้ host port เลย เพราะอยู่ใน network ภายใน ส่วนพอร์ตของฐานข้อมูลถูกเปิดออกภายนอกก็จริง แต่ไม่อยู่ในการตรวจ — Docker เป็นผู้ครอง และถ้าฐานข้อมูลรันอยู่แล้วจะกลายเป็นการชนกันแบบหลอก
 
@@ -14,7 +14,7 @@
 สิ่งนี้จะทำงานแค่ก่อน `pnpm docker:up` เท่านั้น ไม่ใช่ก่อน `docker compose up` ตรงๆ ถ้าเรียก `docker compose up` ตรงๆ โดยไม่ผ่าน npm wrapper บน clone ใหม่ที่ยังไม่มี `.env` — คำสั่งจะปฏิเสธไม่ start: ตัวแปรพอร์ตใน `docker-compose.yml` ไม่มีค่า default (`no port specified` ถ้าไม่มี `.env` ที่ root) และ `env_file` สำหรับ `apps/*/.env` จำเป็นต้องมีโดย default (`env file ... not found`) และจะไม่มีการตรวจสอบพอร์ตชนกันแบบชัดเจนด้วย — ถ้า host port ถูกใช้อยู่ จะได้ Docker error ธรรมดา `address already in use` โดยไม่มี dialog เสนอให้ปล่อยพอร์ต สร้าง `.env` ที่ขาดหายไว้ล่วงหน้าโดยไม่ต้องรันอะไร: `pnpm env:copy`
 :::
 
-ตัวคู่กันสำหรับ develop ในเครื่อง — [`predev.mjs`](/th/guide/structure/scripts/predev)
+ตัวคู่กันสำหรับ develop ในเครื่อง — [`predev.mjs`](./predev)
 
 ## สิ่งที่แสดงผล
 

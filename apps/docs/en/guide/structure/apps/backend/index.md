@@ -38,6 +38,6 @@ Nest has no strict requirements about where files go — everything is wired thr
 
 `tsconfig.json` runs with `noEmit` — it serves the IDE and the `type-check` command. Building is `tsconfig.build.json`'s job, where `rootDir: ./src` is set: without it `dist/` would mirror the `apps/backend/src/...` path and the entry point would move away from `dist/main.js`.
 
-More on the configs — [tsconfig.base.json](/en/guide/structure/tsconfig-base).
+More on the configs — [tsconfig.base.json](../../tsconfig-base).
 
-Application scripts — [package.json](/en/guide/structure/apps/backend/package-json).
+Application scripts — [package.json](./package-json).

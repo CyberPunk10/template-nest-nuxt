@@ -11,4 +11,4 @@ Manifest ของ application สคริปต์ทำงานเฉพา�
 
 Filter ที่นี่คือชื่อเต็มของ package `@repo/docs` ไม่ใช่ `docs` เหมือน application อื่น
 
-อะไรอยู่ที่ไหน — [apps/docs](/th/guide/structure/apps/docs/)
+อะไรอยู่ที่ไหน — [apps/docs](./)

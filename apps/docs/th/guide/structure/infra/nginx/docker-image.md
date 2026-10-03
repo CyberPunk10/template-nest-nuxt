@@ -7,9 +7,9 @@ COPY infra/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=docs /app/apps/docs/.vitepress/dist /srv/docs
 ```
 
-ชุดแรกคือ template ของ config: `envsubst` จะแทนค่าตัวแปรตอน container start ชุดที่สองคือ static ของเอกสารที่ [apps/docs](/th/guide/structure/apps/docs/docker-image) build ไว้
+ชุดแรกคือ template ของ config: `envsubst` จะแทนค่าตัวแปรตอน container start ชุดที่สองคือ static ของเอกสารที่ [apps/docs](../../apps/docs/docker-image) build ไว้
 
-นอกจาก routing แล้ว proxy ยังดูแล cache ของ asset, security header, gzip และการ forward WebSocket คำอธิบาย config — [Reverse proxy](/th/guide/reverse-proxy)
+นอกจาก routing แล้ว proxy ยังดูแล cache ของ asset, security header, gzip และการ forward WebSocket คำอธิบาย config — [Reverse proxy](../../../reverse-proxy)
 
 ## build และตรวจสอบ
 
@@ -20,7 +20,7 @@ docker compose build nginx
 docker compose up -d nginx
 ```
 
-ตรวจว่า proxy ตอบไหม ใช้ [HEALTHCHECK](/th/guide/docker/dockerfiles#healthcheck) ที่มีอยู่แล้ว:
+ตรวจว่า proxy ตอบไหม ใช้ [HEALTHCHECK](../../../docker/dockerfiles#healthcheck) ที่มีอยู่แล้ว:
 
 ```bash
 docker inspect --format='{{json .State.Health}}' template-nest-nuxt-nginx-1

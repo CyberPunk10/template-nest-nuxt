@@ -15,7 +15,7 @@ Config สำหรับ `nest build` — ไฟล์เดียวใน rep
 }
 ```
 
-มัน extends ไม่ใช่ config พื้นฐาน แต่เป็น [`tsconfig.json` ที่อยู่ข้าง ๆ](/th/guide/structure/apps/backend/tsconfig) — จึงได้ทั้งการตั้งค่าของ Nest และกฎร่วมจาก base
+มัน extends ไม่ใช่ config พื้นฐาน แต่เป็น [`tsconfig.json` ที่อยู่ข้าง ๆ](./tsconfig) — จึงได้ทั้งการตั้งค่าของ Nest และกฎร่วมจาก base
 
 ## noEmit: false
 

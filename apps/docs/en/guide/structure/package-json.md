@@ -25,7 +25,7 @@ The monorepo's root manifest. Its scripts orchestrate the whole repository: `pnp
 
 These don't overlap with the application scripts: the root ones work across the whole monorepo, per-app ones only inside their own workspace and are called through a filter (`pnpm --filter backend dev`) or transitively from the root commands.
 
-Most commands are backed by [Node scripts](/en/guide/structure/scripts/) in `scripts/`.
+Most commands are backed by [Node scripts](./scripts/) in `scripts/`.
 
 ## Tooling versions
 
@@ -38,4 +38,4 @@ Most commands are backed by [Node scripts](/en/guide/structure/scripts/) in `scr
 }
 ```
 
-`packageManager` pins the pnpm version through Corepack; `engines` together with `engine-strict=true` in `.npmrc` prevents installing dependencies on an unsupported Node version — [pnpm and Corepack](/en/guide/pnpm).
+`packageManager` pins the pnpm version through Corepack; `engines` together with `engine-strict=true` in `.npmrc` prevents installing dependencies on an unsupported Node version — [pnpm and Corepack](../pnpm).

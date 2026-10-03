@@ -192,7 +192,7 @@ Contains the auth actions and the reactive `user`.
 
 `user` is stored in `useState('auth.user')` — per-request state (not a global variable). Nuxt serializes it into the SSR payload and restores it on the client during hydration. Thanks to this, a `user` set on the server is immediately available to the client without a repeat request.
 
-After `login` and `register` it explicitly requests `/auth/me` and puts the result into `user` — more reliable than parsing the login response itself, because `/auth/me` always returns up-to-date data from the DB.
+After `login` and `register` it explicitly requests `/auth/me` and puts the result into `user` — more reliable than parsing the login response itself, because `/auth/me` always returns up-to-date data from the storage.
 
 ## middleware/auth.global.ts
 

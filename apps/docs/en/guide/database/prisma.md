@@ -11,7 +11,7 @@ apps/backend/
 └── prisma.config.ts        ← Prisma configuration (datasource URL)
 ```
 
-How to change the schema and work with `migrations/` — on the [Migrations](/en/guide/database/migrations) page.
+How to change the schema and work with `migrations/` — on the [Migrations](./migrations) page.
 
 ## Client generation
 
@@ -68,4 +68,4 @@ pnpm prisma db seed         # then explicitly seed the admin account
 
 The script is idempotent (upsert by email) and reads its data from `ADMIN_EMAIL`/`ADMIN_PASSWORD` in `.env`.
 
-Details (how it works, production notes) — in [Auth → Backend: Seed](/en/guide/auth/backend#seed-creating-the-admin-account).
+Details (how it works, production notes) — in [Auth → Backend: Seed](../auth/backend#seed-creating-the-admin-account).

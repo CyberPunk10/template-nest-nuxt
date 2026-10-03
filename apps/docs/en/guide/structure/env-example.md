@@ -9,7 +9,7 @@ Variables for docker compose: the names and ports Compose needs to know **before
 | `NGINX_INTERNAL_PORT`    | `80`                     | The port nginx listens on inside the container                                                                                                                                                                                                     |
 | `BACKEND_INTERNAL_PORT`  | `3100`                   | Backend port **inside the container**; not published                                                                                                                                                                                               |
 | `FRONTEND_INTERNAL_PORT` | `3200`                   | Frontend port inside the container; not published                                                                                                                                                                                                  |
-| `COMPOSE_NETWORK_NAME`   | `template-nest-nuxt_app` | Name of the shared Docker network. Read by both `docker-compose.yml` and `ensure-network.mjs`. The network is declared `external` — Compose doesn't create it, `pnpm docker:up` does — [details](/en/guide/structure/docker-compose#network)       |
+| `COMPOSE_NETWORK_NAME`   | `template-nest-nuxt_app` | Name of the shared Docker network. Read by both `docker-compose.yml` and `ensure-network.mjs`. The network is declared `external` — Compose doesn't create it, `pnpm docker:up` does — [details](./docker-compose#network)       |
 | `POSTGRES_USER`          | `postgres`               | Database user: created when the container initialises, and used by the backend to connect                                                                                                                                                          |
 | `POSTGRES_PASSWORD`      | `postgres`               | Password for that user                                                                                                                                                                                                                             |
 | `POSTGRES_DB`            | `template`               | Name of the database to create                                                                                                                                                                                                                     |
@@ -17,10 +17,14 @@ Variables for docker compose: the names and ports Compose needs to know **before
 
 The documentation takes no port of its own — its static files are built straight into the reverse proxy image.
 
-## What from this file is used under `pnpm dev`
+## Who reads this
 
-Ports — no: the applications run directly on the host, without containers, and read `PORT` from their own `apps/*/.env` — [more on the two modes](/en/guide/env-variables#ports).
+Variables from here fan out to several consumers. Changing them is safer than it looks, since the value is set in one place.
 
-`POSTGRES_*` — yes: Postgres always runs in a container, and Compose reads these variables from here. The same values are duplicated in `apps/backend/.env` because Nest reads them itself outside Docker — [details](/en/guide/database/configuration#root-env).
+- `BACKEND_INTERNAL_PORT` and `FRONTEND_INTERNAL_PORT` — into the containers' `expose`, into the applications' own `PORT`, into the `NUXT_BACKEND_URL` address for the frontend, and into the nginx config it proxies from.
+- `NGINX_INTERNAL_PORT` — into the `listen` directive of the nginx config and into publishing the port outward.
+- `POSTGRES_*` — into the database container, under `pnpm dev` too: Postgres always runs in a container, and Compose reads these variables from here. The same values are duplicated in `apps/backend/.env` — Nest reads them itself outside Docker — [details](../database/configuration#root-env).
 
-[ENV variables](/en/guide/env-variables#files).
+Under `pnpm dev` the ports from here play no part: ports come from `PORT` in `apps/*/.env` — [both modes explained](../env-variables#ports).
+
+[ENV variables](../env-variables#files).

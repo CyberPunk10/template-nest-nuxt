@@ -105,7 +105,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
 | frontend | `http://127.0.0.1:${PORT}/api/health`      | `30s` / `5s`            |
 | nginx    | `http://127.0.0.1:${NGINX_INTERNAL_PORT}/` | `30s` / `5s`            |
 
-backend ตรวจถี่กว่า — 5 วินาทีแทน 30: `depends_on: service_healthy` ของ frontend รอ healthcheck ตัวนี้อยู่ ถ้าตรวจห่างกว่านี้การ start ทั้ง stack จะยืดออกไปอีกครึ่งนาที ส่วน `start-period` 60 วินาทีมีไว้เพราะ [มีการรัน migration](/th/guide/structure/apps/backend/docker-image#migration-ตอน-start) ก่อนที่แอปจะเริ่ม
+backend ตรวจถี่กว่า — 5 วินาทีแทน 30: `depends_on: service_healthy` ของ frontend รอ healthcheck ตัวนี้อยู่ ถ้าตรวจห่างกว่านี้การ start ทั้ง stack จะยืดออกไปอีกครึ่งนาที ส่วน `start-period` 60 วินาทีมีไว้เพราะ [มีการรัน migration](../structure/apps/backend/docker-image#migration-ตอน-start) ก่อนที่แอปจะเริ่ม
 
 `docs-builder` ไม่มี healthcheck — ไม่มีอะไรให้ตรวจ image จบที่ stage build
 

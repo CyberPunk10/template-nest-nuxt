@@ -31,7 +31,7 @@ The split isn't cosmetic: these layers have different global types and different
 
 `references` ties the four configs into one project — that's how the IDE knows which to apply to the open file. `files: []` means it checks nothing on its own.
 
-The generated configs don't extend anything either: Nuxt writes every option out in full. There are overlaps with the [base config](/en/guide/structure/tsconfig-base) — `strict`, `moduleResolution: Bundler`, `noEmit` — but they're set independently, from Nuxt's own defaults.
+The generated configs don't extend anything either: Nuxt writes every option out in full. There are overlaps with the [base config](../../tsconfig-base) — `strict`, `moduleResolution: Bundler`, `noEmit` — but they're set independently, from Nuxt's own defaults.
 
 They can be changed through `typescript.tsConfig` in `nuxt.config.ts`; the template doesn't define that section, so the defaults apply.
 

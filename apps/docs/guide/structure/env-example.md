@@ -9,7 +9,7 @@
 | `NGINX_INTERNAL_PORT`    | `80`                     | Порт, на котором nginx слушает внутри контейнера                                                                                                                                                                     |
 | `BACKEND_INTERNAL_PORT`  | `3100`                   | Порт backend **внутри контейнера**; наружу не публикуется                                                                                                                                                            |
 | `FRONTEND_INTERNAL_PORT` | `3200`                   | Порт frontend внутри контейнера; наружу не публикуется                                                                                                                                                               |
-| `COMPOSE_NETWORK_NAME`   | `template-nest-nuxt_app` | Имя общей Docker-сети. Читают и `docker-compose.yml`, и `ensure-network.mjs`. Сеть объявлена как `external` — Compose её не создаёт, это делает `pnpm docker:up` — [подробнее](/guide/structure/docker-compose#сеть) |
+| `COMPOSE_NETWORK_NAME`   | `template-nest-nuxt_app` | Имя общей Docker-сети. Читают и `docker-compose.yml`, и `ensure-network.mjs`. Сеть объявлена как `external` — Compose её не создаёт, это делает `pnpm docker:up` — [подробнее](./docker-compose#сеть) |
 | `POSTGRES_USER`          | `postgres`               | Пользователь БД: создаётся при инициализации контейнера, с ним же подключается backend                                                                                                                               |
 | `POSTGRES_PASSWORD`      | `postgres`               | Пароль этого пользователя                                                                                                                                                                                            |
 | `POSTGRES_DB`            | `template`               | Имя создаваемой базы                                                                                                                                                                                                 |
@@ -17,10 +17,14 @@
 
 Документация своего порта не занимает — её статика собрана прямо в образ reverse proxy.
 
-## Что используется из этого файла в `pnpm dev`
+## Кто это читает
 
-Порты — нет: приложения запускаются прямо на хосте, без контейнеров, и берут `PORT` из своих `apps/*/.env` — [подробнее о двух режимах](/guide/env-variables#порты).
+Переменные отсюда расходятся по нескольким потребителям. Менять их безопаснее, чем кажется, т.к значение задано в одном месте.
 
-`POSTGRES_*` — да: Postgres всегда живёт в контейнере, а Compose читает эти переменные отсюда. Те же значения продублированы в `apps/backend/.env`, потому что Nest вне Docker читает их сам — [подробнее](/guide/database/configuration#корневои-env).
+- `BACKEND_INTERNAL_PORT` и `FRONTEND_INTERNAL_PORT` — в `expose` контейнеров, в `PORT` самих приложений, в адрес `NUXT_BACKEND_URL` для фронтенда и в конфиг nginx, откуда он проксирует запросы.
+- `NGINX_INTERNAL_PORT` — в `listen` конфига nginx и в публикацию порта наружу.
+- `POSTGRES_*` — в контейнер БД, причём и в `pnpm dev`: Postgres всегда живёт в контейнере, а Compose читает эти переменные отсюда. Те же значения продублированы в `apps/backend/.env` — Nest вне Docker читает их сам — [подробнее](../database/configuration#корневои-env).
 
-[Переменные окружения](/guide/env-variables#фаилы).
+В `pnpm dev` порты отсюда не участвуют: там порты берутся из `PORT` в `apps/*/.env` — [разбор двух режимов](../env-variables#порты).
+
+[Переменные окружения](../env-variables#фаилы).

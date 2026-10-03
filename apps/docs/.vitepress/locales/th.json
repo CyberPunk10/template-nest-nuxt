@@ -53,13 +53,9 @@
     "quickstart": {
       "title": "เริ่มต้นอย่างรวดเร็ว",
       "steps": {
-        "clone": "โคลน repository",
+        "create": "สร้างโปรเจกต์",
         "install": "ติดตั้ง dependencies",
-        "run": "เริ่มต้นแอปพลิเคชัน",
-        "envCheck": "ตรวจสอบ .env — การเปลี่ยน branch อาจต้องการตัวแปรใหม่",
-        "network": "สร้าง Docker network (ครั้งแรกเท่านั้น)",
-        "postgres": "เริ่ม PostgreSQL",
-        "migrate": "รัน migrations"
+        "run": "เริ่มต้นแอปพลิเคชัน"
       }
     },
     "principles": {
@@ -252,7 +248,6 @@
     },
     "branches": {
       "title": "ตัวแปร",
-      "current": "ปัจจุบัน",
       "basedOn": "ต่อยอดจาก",
       "main": {
         "label": "พื้นฐาน",
@@ -264,7 +259,7 @@
       },
       "auth": {
         "label": "Auth",
-        "desc": "จุดเริ่มต้นที่เหมาะสำหรับแดชบอร์ดและแผงผู้ดูแลระบบ JWT authentication ต่อยอดจากตัวแปรพื้นฐาน: email + password, httpOnly cookies, sessions ใน DB"
+        "desc": "จุดเริ่มต้นที่เหมาะสำหรับแดชบอร์ดและแผงผู้ดูแลระบบ JWT authentication ต่อยอดจากตัวแปรพื้นฐาน: email + password, httpOnly cookies, sessions ในหน่วยความจำของ process"
       }
     },
     "commands": {

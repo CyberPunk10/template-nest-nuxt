@@ -2,7 +2,7 @@
 
 `docker-compose.yml` describes `postgres`, `nginx`, `backend` and `frontend` on a shared network.
 
-The documentation isn't a service of its own: `docs-builder` compiles its static output and the same `nginx` serves it — more in [apps/docs](/en/guide/structure/apps/docs/docker-image).
+The documentation isn't a service of its own: `docs-builder` compiles its static output and the same `nginx` serves it — more in [apps/docs](./apps/docs/docker-image).
 
 ## Profiles
 
@@ -41,7 +41,7 @@ To avoid doing that by hand, there's a script:
 pnpm docker:up
 ```
 
-Before starting it calls [`predocker.mjs`](/en/guide/structure/scripts/predocker), which creates the missing `.env` files, checks the proxy port and sets up the network — and then hands over to the same `docker compose --profile app up`. That's why one command is enough right after cloning.
+Before starting it calls [`predocker.mjs`](./scripts/predocker), which creates the missing `.env` files, checks the proxy port and sets up the network — and then hands over to the same `docker compose --profile app up`. That's why one command is enough right after cloning.
 
 Once the environment is prepared there's no difference: you can use `docker compose` directly — just don't forget `--profile app`, or only the database comes up. Commands run **from the monorepo root**, and the `--build` flag rebuilds the images before starting.
 
@@ -93,7 +93,7 @@ The repo holds only `.env.example` files. The working `.env` files can be create
 pnpm env:copy
 ```
 
-More detail — see [ENV variables](/en/guide/env-variables#files).
+More detail — see [ENV variables](../env-variables#files).
 
 ## `env_file` and overrides
 
@@ -123,7 +123,7 @@ backend:
     NODE_ENV: production   # apps/backend/.env holds development — that's for pnpm dev
 ```
 
-For details on which variables match and which get overridden — see [ENV variables](/en/guide/env-variables).
+For details on which variables match and which get overridden — see [ENV variables](../env-variables).
 
 ## Internal ports
 

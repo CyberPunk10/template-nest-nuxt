@@ -9,7 +9,7 @@ WARN[0000] The "COMPOSE_NETWORK_NAME" variable is not set. Defaulting to a blank
 network  declared as external, but could not be found.
 ```
 
-Called from [`predocker.mjs`](/en/guide/structure/scripts/predocker) — before `pnpm docker:up`, and from [`db.mjs`](/en/guide/structure/scripts/db) — before starting the database.
+Called from [`predocker.mjs`](./predocker) — before `pnpm docker:up`, and from [`db.mjs`](./db) — before starting the database.
 
 ## Usage
 

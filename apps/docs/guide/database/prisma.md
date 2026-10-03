@@ -11,7 +11,7 @@ apps/backend/
 └── prisma.config.ts        ← конфигурация Prisma (datasource URL)
 ```
 
-Как менять схему и работать с `migrations/` — на странице [Миграции](/guide/database/migrations).
+Как менять схему и работать с `migrations/` — на странице [Миграции](./migrations).
 
 ## Генерация клиента
 
@@ -68,4 +68,4 @@ pnpm prisma db seed         # затем явно создать admin-акка�
 
 Скрипт идемпотентен (upsert по email) и берёт данные из `ADMIN_EMAIL`/`ADMIN_PASSWORD` в `.env`.
 
-Подробности (как это работает, продакшен-примечания) — в [Auth → Backend: Seed](/guide/auth/backend#seed-создание-admin-аккаунта).
+Подробности (как это работает, продакшен-примечания) — в [Auth → Backend: Seed](../auth/backend#seed-создание-admin-аккаунта).

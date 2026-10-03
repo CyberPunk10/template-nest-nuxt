@@ -2,14 +2,22 @@
 
 ## Быстрый старт
 
-Нужны [Node.js ≥ 24 и pnpm](/guide/getting-started/setup) — остальное скрипт сделает сам:
+Нужны [Node.js ≥ 24 и pnpm](./setup):
 
 ```bash
-git clone git@github.com:CyberPunk10/template-nest-nuxt.git
-cd template-nest-nuxt
+npx create-nest-nuxt my-app
+cd my-app
 pnpm install
 pnpm dev
 ```
+
+`create-nest-nuxt` по ходу задаст два вопроса:
+
+1. **Язык** — английский, русский или тайский. На нём будет документация внутри проекта (`apps/docs`).
+2. **Вариант шаблона:**
+   - `main` — минимальный: авторизацию и БД вы реализуете сами;
+   - `auth-session` — с готовой авторизацией, БД подключаете свою;
+   - `postgres-prisma` — с готовой авторизацией и БД (PostgreSQL + Prisma).
 
 Откроется на [http://localhost:3200](http://localhost:3200). Всё остальное на этой странице — про то, чем этот режим отличается от Docker и что настроить, если что-то не завелось.
 
@@ -19,8 +27,8 @@ pnpm dev
 
 |          | На хосте                                                                  | В контейнерах                                         |
 | -------- | ------------------------------------------------------------------------- | ----------------------------------------------------- |
-| **dev**  | [`pnpm dev`](/guide/getting-started/run-pnpm)                             | не настроено                                          |
-| **prod** | [`pnpm build` + `start:prod`](/guide/getting-started/run-pnpm#pnpm-build) | [`pnpm docker:up`](/guide/getting-started/run-docker) |
+| **dev**  | [`pnpm dev`](./run-pnpm)                             | не настроено                                          |
+| **prod** | [`pnpm build` + `start:prod`](./run-pnpm#pnpm-build) | [`pnpm docker:up`](./run-docker) |
 
 - Повседневная работа — `pnpm dev`.
 - Проверить прод-сборку целиком, вместе с reverse proxy, — `pnpm docker:up`.
@@ -32,8 +40,8 @@ pnpm dev
 
 ## С чего начать
 
-1. [Подготовка](/guide/getting-started/setup) — Node.js, pnpm, Docker, `.env`-файлы
-2. [Запуск через pnpm](/guide/getting-started/run-pnpm) или [через Docker](/guide/getting-started/run-docker)
+1. [Подготовка](./setup) — Node.js, pnpm, Docker, `.env`-файлы
+2. [Запуск через pnpm](./run-pnpm) или [через Docker](./run-docker)
 
 ## Чем отличается на практике
 

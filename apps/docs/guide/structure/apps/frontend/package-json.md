@@ -12,4 +12,4 @@
 | `lint`        | `eslint . --fix` | Линтер с автофиксом                                                                 |
 | `type-check`  | `nuxt typecheck` | Проверка типов через `vue-tsc`                                                      |
 
-Что где лежит — [apps/frontend](/guide/structure/apps/frontend/).
+Что где лежит — [apps/frontend](./).

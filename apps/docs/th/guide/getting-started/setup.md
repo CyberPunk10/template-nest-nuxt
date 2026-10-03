@@ -15,7 +15,7 @@ node -v
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
 ```
 
-จากนั้นที่ root ของ repository (ที่มีไฟล์ `.nvmrc`):
+จากนั้นที่ root ของโปรเจกต์ (ที่มีไฟล์ `.nvmrc`):
 
 ```bash
 nvm install 24
@@ -31,14 +31,15 @@ nvm use 24
 pnpm --version
 ```
 
-เวอร์ชัน pnpm ถูกกำหนดไว้ใน `packageManager` ของ `package.json` ที่ root — วิธีที่แนะนำคือใช้ [Corepack](https://nodejs.org/api/corepack.html) ซึ่งมาพร้อมกับ Node.js
+เวอร์ชัน pnpm ถูกกำหนดไว้ใน `packageManager` ของ `package.json` ที่ root — วิธีที่แนะนำคือใช้ [Corepack](https://nodejs.org/api/corepack.html) ใน Node.js 24 มีมาให้ในตัว ตั้งแต่ Node.js 25 ต้องติดตั้งแยก
 
 ::: details วิธีติดตั้ง (Corepack)
 ```bash
+npm install -g corepack   # เฉพาะ Node.js 25+: ไม่มี Corepack มาในตัว
 corepack enable
 ```
 
-หลังจากนั้น `pnpm` ในโปรเจกต์นี้จะเป็นเวอร์ชันที่ระบุใน `packageManager` ถ้ามี pnpm ตัวอื่นติดตั้งแบบ global อยู่แล้ว มันอาจดักการเรียกก่อน Corepack shim แล้วใช้เวอร์ชันอื่นแทน ตรวจสอบด้วย `pnpm --version` และถ้าไม่ตรงกับ `packageManager` ให้ดู [pnpm และ Corepack](/th/guide/pnpm)
+หลังจากนั้น `pnpm` ในโปรเจกต์นี้จะเป็นเวอร์ชันที่ระบุใน `packageManager` ถ้ามี pnpm ตัวอื่นติดตั้งแบบ global อยู่แล้ว มันอาจดักการเรียกก่อน Corepack shim แล้วใช้เวอร์ชันอื่นแทน ตรวจสอบด้วย `pnpm --version` และถ้าไม่ตรงกับ `packageManager` ให้ดู [pnpm และ Corepack](../pnpm)
 :::
 
 ## 3. Docker >= 23 + Docker Compose >= 2.33
@@ -50,7 +51,7 @@ docker --version
 docker compose version
 ```
 
-เวอร์ชันของ Compose สำคัญ: เวอร์ชันเก่ากว่านั้น build จะพังพร้อมข้อความ `failed to get build context docs` — [ทำไม](/th/guide/structure/apps/docs/docker-image)
+เวอร์ชันของ Compose สำคัญ: เวอร์ชันเก่ากว่านั้น build จะพังพร้อมข้อความ `failed to get build context docs` — [ทำไม](../structure/apps/docs/docker-image)
 
 เทมเพลตนี้ทดสอบบน Docker `27.5.1` และ Compose `v5.5.0`
 
@@ -64,19 +65,7 @@ curl -fsSL https://get.docker.com | sh
 ```
 :::
 
-## 4. Docker network
-
-ถูกสร้างให้อัตโนมัติทั้งตอน `pnpm docker:up` และตอน `pnpm dev` (ผ่าน `pnpm db:up`) — ไม่ต้องทำขั้นตอนนี้แยก
-
-ถ้ารัน `docker compose` ตรงๆ ให้สร้างเองครั้งเดียว:
-
-```bash
-docker network create template-nest-nuxt_app
-```
-
-ถ้าไม่มี `docker compose up` แบบตรงๆ จะล้มเหลวด้วย `network ... declared as external, but could not be found` — [ทำไม network ถึงเป็น external](/th/guide/structure/docker-compose#network)
-
-## 5. ไฟล์ `.env`
+## 4. ไฟล์ `.env`
 
 ไม่จำเป็นต้องคัดลอก `.env.example` → `.env` ด้วยมือ: ตอนรันครั้งแรก script ตัวห่อจะทำให้เอง (`pnpm dev` → `predev.mjs`, `pnpm docker:up` → `predocker.mjs`) ทั้งคู่สร้างไฟล์ `.env` **ทั้งหมด** ที่ยังขาด — ทั้ง root, `apps/backend`, `apps/frontend`, `apps/docs`
 
@@ -86,8 +75,4 @@ docker network create template-nest-nuxt_app
 pnpm env:copy
 ```
 
-ตัวแปรไหนอยู่ที่ไหนและเพราะอะไร — ดู [ตัวแปรสภาพแวดล้อม](/th/guide/env-variables)
-
-::: tip
-ตอนสลับ branch ไฟล์ `.env` ในเครื่องจะไม่อัปเดตอัตโนมัติ — อาจขาดตัวแปรของ branch ใหม่ไป เทียบกับ `.env.example` แล้วเพิ่มตัวที่ขาดเข้าไป
-:::
+ตัวแปรไหนอยู่ที่ไหนและเพราะอะไร — ดู [ตัวแปรสภาพแวดล้อม](../env-variables)

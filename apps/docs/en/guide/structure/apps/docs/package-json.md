@@ -11,4 +11,4 @@ The documentation's manifest. Its scripts are called through a filter (`pnpm --f
 
 The filter here is the full package name `@repo/docs`, not `docs` like the other applications.
 
-What lives where — [apps/docs](/en/guide/structure/apps/docs/).
+What lives where — [apps/docs](./).

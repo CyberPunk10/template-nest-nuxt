@@ -6,7 +6,7 @@
 | `APP_ENV`                 | `development`      | Application-level mode (`development`/`production`/`prod_qa`/`test`). `production` in Docker                                                                                                        |
 | `SWAGGER_ENABLED`         | not set            | Whether to serve Swagger UI at `/api/docs`. When unset — enabled everywhere except `production`. Kept separate from `NODE_ENV` so you can open Swagger in prod for diagnostics, or hide it locally   |
 | `PORT`                    | `3100`             | Backend port under `pnpm dev`. Overridden by `BACKEND_INTERNAL_PORT` from the root `.env` in Docker                                                                                                 |
-| `CORS_ORIGIN`             | `http://localhost:3200` | The frontend origin that requests are allowed from. Overridden to `http://localhost` under Docker — [details](/en/guide/env-variables#cors-origin) |
+| `CORS_ORIGIN`             | `http://localhost:3200` | The frontend origin that requests are allowed from. Overridden to `http://localhost` under Docker — [details](../../../env-variables#cors-origin) |
 
 ## PostgreSQL
 
@@ -18,7 +18,7 @@
 | `POSTGRES_PASSWORD` | `postgres`  | Required, same source                                                                                              |
 | `POSTGRES_DB`       | `template`  | Required, same source                                                                                              |
 
-These values are duplicated in the root `.env` on purpose: that one is read by Compose, this one by Nest on the host. [Details](/en/guide/database/configuration#root-env).
+These values are duplicated in the root `.env` on purpose: that one is read by Compose, this one by Nest on the host. [Details](../../../database/configuration#root-env).
 
 ## Authentication
 
@@ -46,6 +46,6 @@ Some of these variables are tied to neighbouring applications:
 - **`CORS_ORIGIN`** must match the frontend address, i.e. `PORT` in `apps/frontend/.env`. If it doesn't, the browser blocks API calls while the server still answers `200` and the logs stay clean.
 - **`PORT`** — `NUXT_BACKEND_URL` in `apps/frontend/.env` points at it: that's the address Nuxt calls during server-side rendering.
 
-Change a port and check both sides. [All the links](/en/guide/env-variables#linked-variables).
+Change a port and check both sides. [All the links](../../../env-variables#linked-variables).
 
-How to create a working `.env` — [ENV variables](/en/guide/env-variables#files).
+How to create a working `.env` — [ENV variables](../../../env-variables#files).

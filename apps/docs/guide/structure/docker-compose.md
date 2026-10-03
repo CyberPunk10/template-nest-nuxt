@@ -2,7 +2,7 @@
 
 `docker-compose.yml` описывает `postgres`, `nginx`, `backend` и `frontend` в общей сети.
 
-Документация отдельным сервисом не поднимается: её статику собирает `docs-builder` и отдаёт тот же `nginx` — подробнее в [apps/docs](/guide/structure/apps/docs/docker-image).
+Документация отдельным сервисом не поднимается: её статику собирает `docs-builder` и отдаёт тот же `nginx` — подробнее в [apps/docs](./apps/docs/docker-image).
 
 ## Профили
 
@@ -41,7 +41,7 @@ docker compose --profile app up
 pnpm docker:up
 ```
 
-Перед стартом она вызывает [`predocker.mjs`](/guide/structure/scripts/predocker), который создаёт недостающие `.env`, проверяет порт прокси и заводит сеть, — а дальше передаёт управление тому же `docker compose --profile app up`. Поэтому сразу после клонирования достаточно одной этой команды.
+Перед стартом она вызывает [`predocker.mjs`](./scripts/predocker), который создаёт недостающие `.env`, проверяет порт прокси и заводит сеть, — а дальше передаёт управление тому же `docker compose --profile app up`. Поэтому сразу после клонирования достаточно одной этой команды.
 
 Когда окружение уже подготовлено, разницы нет: можно пользоваться `docker compose` напрямую — не забывая `--profile app`, иначе поднимется только БД. Команды выполняются **из корня монорепозитория**, флаг `--build` пересобирает образы перед стартом.
 
@@ -93,7 +93,7 @@ docker network rm template-nest-nuxt_app
 pnpm env:copy
 ```
 
-Подробнее — см. [ENV-переменные](/guide/env-variables#фаилы).
+Подробнее — см. [ENV-переменные](../env-variables#фаилы).
 
 ## `env_file` и override
 
@@ -123,7 +123,7 @@ backend:
     NODE_ENV: production   # в apps/backend/.env лежит development — для pnpm dev
 ```
 
-Подробнее про то, какие переменные совпадают, а какие переопределяются — см. [ENV-переменные](/guide/env-variables).
+Подробнее про то, какие переменные совпадают, а какие переопределяются — см. [ENV-переменные](../env-variables).
 
 ## Внутренние порты
 

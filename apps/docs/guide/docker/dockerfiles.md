@@ -105,7 +105,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
 | frontend | `http://127.0.0.1:${PORT}/api/health`      | `30s` / `5s`            |
 | nginx    | `http://127.0.0.1:${NGINX_INTERNAL_PORT}/` | `30s` / `5s`            |
 
-У backend `interval` чаще — 5 секунд вместо 30: от его healthcheck зависит `depends_on: service_healthy` у frontend, и с редким опросом старт всего стека растянулся бы на лишние полминуты. `start-period` в 60 секунд нужен потому, что перед приложением [применяются миграции](/guide/structure/apps/backend/docker-image#миграции-при-старте).
+У backend `interval` чаще — 5 секунд вместо 30: от его healthcheck зависит `depends_on: service_healthy` у frontend, и с редким опросом старт всего стека растянулся бы на лишние полминуты. `start-period` в 60 секунд нужен потому, что перед приложением [применяются миграции](../structure/apps/backend/docker-image#миграции-при-старте).
 
 У `docs-builder` healthcheck'а нет — там нечего проверять, образ заканчивается сборкой.
 

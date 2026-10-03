@@ -11,7 +11,7 @@ apps/backend/
 └── prisma.config.ts        ← การตั้งค่า Prisma (datasource URL)
 ```
 
-วิธีเปลี่ยน schema และทำงานกับ `migrations/` — ในหน้า [Migration](/th/guide/database/migrations)
+วิธีเปลี่ยน schema และทำงานกับ `migrations/` — ในหน้า [Migration](./migrations)
 
 ## การ generate client
 
@@ -68,4 +68,4 @@ pnpm prisma db seed         # จากนั้น seed admin account อย่
 
 script นี้ idempotent (upsert ตาม email) และอ่านข้อมูลจาก `ADMIN_EMAIL`/`ADMIN_PASSWORD` ใน `.env`
 
-รายละเอียด (วิธีทำงาน, ข้อควรระวังสำหรับ production) — ดูที่ [Auth → Backend: Seed](/th/guide/auth/backend#seed-สร้าง-admin-account)
+รายละเอียด (วิธีทำงาน, ข้อควรระวังสำหรับ production) — ดูที่ [Auth → Backend: Seed](../auth/backend#seed-สร้าง-admin-account)

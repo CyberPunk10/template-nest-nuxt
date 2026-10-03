@@ -1,8 +1,8 @@
 # db.mjs
 
-Manages the database: the container, the Prisma client and migrations. Works both as a CLI (`pnpm db:*`) and as a module — its functions are called from [`predev.mjs`](/en/guide/structure/scripts/predev).
+Manages the database: the container, the Prisma client and migrations. Works both as a CLI (`pnpm db:*`) and as a module — its functions are called from [`predev.mjs`](./predev).
 
-The database lives in the shared `docker-compose.yml` with no profile, while the application services sit behind the `app` profile. That's why a command without a profile only touches `postgres` — more in [docker-compose.yml](/en/guide/structure/docker-compose#profiles).
+The database lives in the shared `docker-compose.yml` with no profile, while the application services sit behind the `app` profile. That's why a command without a profile only touches `postgres` — more in [docker-compose.yml](../docker-compose#profiles).
 
 ## Commands
 

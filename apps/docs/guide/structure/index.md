@@ -19,7 +19,7 @@ template-nest-nuxt/
 └── конфиги в корне       pnpm, TypeScript, ESLint
 ```
 
-Как пакеты зависят друг от друга — в [Архитектуре](/guide/architecture).
+Как пакеты зависят друг от друга — в [Архитектуре](../architecture).
 
 ## Конфиги
 
@@ -35,7 +35,7 @@ template-nest-nuxt/
 | `.dockerignore`         | Что **не** попадёт в build-контекст: `node_modules`, сборки, `.env` (кроме `.example`). Прямо влияет на размер образов и скорость сборки     |
 | `pnpm-lock.yaml`        | Один лок-файл на всё монорепо — следствие workspaces. Точные версии всех зависимостей, включая транзитивные                                  |
 
-Разбор TypeScript-конфигов по слоям — [tsconfig.base.json](/guide/structure/tsconfig-base).
+Разбор TypeScript-конфигов по слоям — [tsconfig.base.json](./tsconfig-base).
 
 ## Куда добавлять новое
 

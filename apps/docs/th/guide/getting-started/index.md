@@ -2,14 +2,22 @@
 
 ## เริ่มแบบเร็ว
 
-ต้องมี [Node.js >= 24 และ pnpm](/th/guide/getting-started/setup) — ที่เหลือ script จัดการให้:
+ต้องมี [Node.js >= 24 และ pnpm](./setup):
 
 ```bash
-git clone git@github.com:CyberPunk10/template-nest-nuxt.git
-cd template-nest-nuxt
+npx create-nest-nuxt my-app
+cd my-app
 pnpm install
 pnpm dev
 ```
+
+`create-nest-nuxt` จะถามสองคำถามระหว่างทาง:
+
+1. **ภาษา** — อังกฤษ รัสเซีย หรือไทย เอกสารภายในโปรเจกต์ (`apps/docs`) จะเป็นภาษานี้
+2. **รูปแบบของเทมเพลต:**
+   - `main` — แบบเล็กที่สุด: คุณทำระบบยืนยันตัวตนและฐานข้อมูลเอง
+   - `auth-session` — มีระบบยืนยันตัวตนพร้อมใช้ ฐานข้อมูลต่อเอง
+   - `postgres-prisma` — มีระบบยืนยันตัวตนและฐานข้อมูลพร้อมใช้ (PostgreSQL + Prisma)
 
 เปิดที่ [http://localhost:3200](http://localhost:3200) ส่วนที่เหลือในหน้านี้เป็นเรื่องว่าโหมดนี้ต่างจาก Docker อย่างไร และต้องตั้งค่าอะไรถ้ามีอะไรไม่ทำงาน
 
@@ -19,8 +27,8 @@ pnpm dev
 
 |          | บน host                                                                      | ใน container                                             |
 | -------- | ---------------------------------------------------------------------------- | -------------------------------------------------------- |
-| **dev**  | [`pnpm dev`](/th/guide/getting-started/run-pnpm)                             | ยังไม่ได้ตั้งค่า                                               |
-| **prod** | [`pnpm build` + `start:prod`](/th/guide/getting-started/run-pnpm#pnpm-build) | [`pnpm docker:up`](/th/guide/getting-started/run-docker) |
+| **dev**  | [`pnpm dev`](./run-pnpm)                             | ยังไม่ได้ตั้งค่า                                               |
+| **prod** | [`pnpm build` + `start:prod`](./run-pnpm#pnpm-build) | [`pnpm docker:up`](./run-docker) |
 
 - งานประจำวันใช้ `pnpm dev`
 - ถ้าต้องการตรวจสอบ build แบบ production ทั้งชุดพร้อม reverse proxy ให้ใช้ `pnpm docker:up`
@@ -32,8 +40,8 @@ pnpm dev
 
 ## เริ่มจากตรงไหน
 
-1. [การเตรียมความพร้อม](/th/guide/getting-started/setup) — Node.js, pnpm, Docker, ไฟล์ `.env`
-2. [รันด้วย pnpm](/th/guide/getting-started/run-pnpm) หรือ [ด้วย Docker](/th/guide/getting-started/run-docker)
+1. [การเตรียมความพร้อม](./setup) — Node.js, pnpm, Docker, ไฟล์ `.env`
+2. [รันด้วย pnpm](./run-pnpm) หรือ [ด้วย Docker](./run-docker)
 
 ## ต่างกันอย่างไรในทางปฏิบัติ
 

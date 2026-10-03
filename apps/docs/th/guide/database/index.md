@@ -11,7 +11,7 @@
 
 PostgreSQL รันใน container เสมอ — ทั้งตอน `pnpm dev` และ `pnpm docker:up` ฐานข้อมูลถูกประกาศไว้ใน `docker-compose.yml` ไฟล์เดียวกันโดยไม่มี profile ส่วน service ของแอปอยู่ภายใต้ profile `app` ดังนั้น `docker compose up` จะแตะเฉพาะ postgres และถ้าต้องการ stack ทั้งหมดให้ใช้ `pnpm docker:up`
 
-การเตรียมฐานข้อมูลเกิดขึ้นเองตอนเริ่ม: ก่อนเริ่ม `pnpm dev` จะยก container ขึ้นมา generate client ของ Prisma และรัน migration — [รายละเอียด](/th/guide/structure/scripts/predev) ในโหมด Docker container ของ backend จะรัน migration เองตอน start
+การเตรียมฐานข้อมูลเกิดขึ้นเองตอนเริ่ม: ก่อนเริ่ม `pnpm dev` จะยก container ขึ้นมา generate client ของ Prisma และรัน migration — [รายละเอียด](../structure/scripts/predev) ในโหมด Docker container ของ backend จะรัน migration เองตอน start
 
 ยกหรือหยุดฐานข้อมูลแยกต่างหาก:
 

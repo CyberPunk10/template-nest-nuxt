@@ -21,7 +21,7 @@ template-nest-nuxt/
 
 ใน repo มีแค่ไฟล์ `.env.example` ส่วน `.env` ที่ใช้งานจริงต้องสร้างเอง ทำได้ 3 วิธี:
 
-- **อัตโนมัติ** — ตอนรัน `pnpm dev` หรือ `pnpm docker:up` ครั้งแรก [`predev.mjs` / `predocker.mjs`](/th/guide/structure/scripts/) จะสร้างให้เบื้องหลัง
+- **อัตโนมัติ** — ตอนรัน `pnpm dev` หรือ `pnpm docker:up` ครั้งแรก [`predev.mjs` / `predocker.mjs`](./structure/scripts/) จะสร้างให้เบื้องหลัง
 - **ด้วยคำสั่ง** — `pnpm env:copy` สร้างทั้ง 4 ไฟล์พร้อมกัน โดยไม่ต้องรันอะไรเพิ่ม
 - **ด้วยมือ** — คัดลอก `.env.example` → `.env` ทั้งที่ root และในทุก `apps/*/`
 
@@ -39,10 +39,10 @@ pnpm env:copy:force
 
 ## ตัวแปรแยกตามไฟล์
 
-- [`.env`](/th/guide/structure/env-example) — ไฟล์ root สำหรับ docker compose
-- [`apps/backend/.env`](/th/guide/structure/apps/backend/env-example)
-- [`apps/frontend/.env`](/th/guide/structure/apps/frontend/env-example)
-- [`apps/docs/.env`](/th/guide/structure/apps/docs/env-example)
+- [`.env`](./structure/env-example) — ไฟล์ root สำหรับ docker compose
+- [`apps/backend/.env`](./structure/apps/backend/env-example)
+- [`apps/frontend/.env`](./structure/apps/frontend/env-example)
+- [`apps/docs/.env`](./structure/apps/docs/env-example)
 
 ## พอร์ต
 
@@ -87,13 +87,13 @@ localhost/dev/docs/   → static ของเอกสาร
 
 ### ทำไม backend กับ frontend ไม่มี host port
 
-ใน `docker-compose.yml` ใช้ `expose` แทน `ports`: พอร์ตถูกประกาศไว้แต่ไม่ forward ออกมาที่ host เข้าถึงได้ผ่าน reverse proxy เท่านั้น — [ทำไมถึงเป็นแบบนี้](/th/guide/reverse-proxy#ทําไมพอร์ตของ-application-ถึงปิด)
+ใน `docker-compose.yml` ใช้ `expose` แทน `ports`: พอร์ตถูกประกาศไว้แต่ไม่ forward ออกมาที่ host เข้าถึงได้ผ่าน reverse proxy เท่านั้น — [ทำไมถึงเป็นแบบนี้](./reverse-proxy#ทําไมพอร์ตของ-application-ถึงปิด)
 
 ### ทำไม `PORT` จาก `apps/*/.env` ไม่มีผลใน Docker
 
 ไฟล์ถูกส่งเข้า container จริง — ผ่าน `env_file` ใน compose แต่บรรทัด `environment: PORT` ทับค่านั้นตอนเริ่มทำงาน: ใน Compose นั้น `environment` แรงกว่า `env_file` เสมอ
 
-ตั้งใจให้เป็นแบบนี้ ไม่งั้น `PORT` ที่แก้ไว้ใช้ในเครื่องตัวเองจะหลุดเข้าไปใน container และทำให้การเชื่อมกับ nginx พัง — [รายละเอียดเต็ม](/th/guide/structure/docker-compose#internal-port)
+ตั้งใจให้เป็นแบบนี้ ไม่งั้น `PORT` ที่แก้ไว้ใช้ในเครื่องตัวเองจะหลุดเข้าไปใน container และทำให้การเชื่อมกับ nginx พัง — [รายละเอียดเต็ม](./structure/docker-compose#internal-port)
 
 ## CORS_ORIGIN
 

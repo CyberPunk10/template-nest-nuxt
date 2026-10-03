@@ -37,8 +37,8 @@ schema กับประวัติเป็นสองแหล่งที�
 
 | การเริ่ม           | ใครเป็นคนรัน                                                                                                                     |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `pnpm dev`       | `predev.mjs` ขั้นตอน `migrations` — [รายละเอียด](/th/guide/structure/scripts/predev)                                              |
-| `pnpm docker:up` | container ของ backend ตอน start ก่อนแอปเริ่มทำงาน — [รายละเอียด](/th/guide/structure/apps/backend/docker-image#migration-ตอน-start) |
+| `pnpm dev`       | `predev.mjs` ขั้นตอน `migrations` — [รายละเอียด](../structure/scripts/predev)                                              |
+| `pnpm docker:up` | container ของ backend ตอน start ก่อนแอปเริ่มทำงาน — [รายละเอียด](../structure/apps/backend/docker-image#migration-ตอน-start) |
 
 ทั้งสองกรณีคือ `prisma migrate deploy` มันรันเฉพาะ migration ที่ยังไม่มีในฐานข้อมูล ไม่ถามอะไร ไม่สร้าง migration ใหม่ และไม่สร้างฐานข้อมูลใหม่ migration ที่รันไปแล้วจะถูกข้าม ดังนั้นการรันซ้ำจะไม่เปลี่ยนอะไร ในขณะเดียวกันมันรัน `migration.sql` ตามที่เขียนไว้และไม่เตือนเรื่องข้อมูลหาย — นี่คือเหตุผลที่ต้องตรวจ SQL ก่อน commit
 
@@ -239,4 +239,4 @@ pnpm prisma migrate reset   # จะถามยืนยัน
 pnpm prisma db seed         # seed หลัง reset ต้องรันแยก
 ```
 
-seed สร้างบัญชี admin — [รายละเอียด](/th/guide/database/prisma#seed-admin-account)
+seed สร้างบัญชี admin — [รายละเอียด](./prisma#seed-admin-account)

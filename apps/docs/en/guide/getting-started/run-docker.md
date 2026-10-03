@@ -2,9 +2,9 @@
 
 The applications run in containers behind a single entry point — the same images that go to deploy.
 
-These are production builds, there is no hot reload, a code change shows up only after a rebuild. For working on the code use [`pnpm dev`](/en/guide/getting-started/run-pnpm).
+These are production builds, there is no hot reload, a code change shows up only after a rebuild. For working on the code use [`pnpm dev`](./run-pnpm).
 
-Before the first run — [Setup](/en/guide/getting-started/setup).
+Before the first run — [Setup](./setup).
 
 ## Cheat sheet
 
@@ -29,9 +29,9 @@ Without `--build` compose uses the images it already has — fresh code changes 
 pnpm docker:up --build
 ```
 
-`pnpm docker:up` isn't just an alias for `docker compose up`: before starting, [`predocker.mjs`](/en/guide/structure/scripts/predocker) runs and creates missing `.env` files, checks the proxy port and sets up the Docker network. That's why the command works right after cloning.
+`pnpm docker:up` isn't just an alias for `docker compose up`: before starting, [`predocker.mjs`](../structure/scripts/predocker) runs and creates missing `.env` files, checks the proxy port and sets up the Docker network. That's why the command works right after cloning.
 
-Under the hood it's `docker compose --profile app up`: the application services carry the `app` profile, while the database has none and always comes up — see [profiles](/en/guide/structure/docker-compose#profiles).
+Under the hood it's `docker compose --profile app up`: the application services carry the `app` profile, while the database has none and always comes up — see [profiles](../structure/docker-compose#profiles).
 
 Only the reverse proxy faces outward — everything arrives on a single port (`NGINX_HOST_PORT`, `80` by default):
 
@@ -39,10 +39,17 @@ Only the reverse proxy faces outward — everything arrives on a single port (`N
 - Documentation: [http://localhost/dev/docs/](http://localhost/dev/docs/)
 - Swagger UI: [http://localhost/api/docs](http://localhost/api/docs) (when enabled — see `SWAGGER_ENABLED`)
 
-The backend and frontend take no host ports of their own: they aren't reachable from outside, only through the proxy — [why](/en/guide/reverse-proxy#why-the-app-ports-are-closed).
+The backend and frontend take no host ports of their own: they aren't reachable from outside, only through the proxy — [why](../reverse-proxy#why-the-app-ports-are-closed).
 
 ::: warning
 Calling Compose directly, bypassing `pnpm docker:up`, works too, but it needs the profile and skips the prep: `docker compose up` without `--profile app` brings up only the database, without the root `.env` it refuses to start (`no port specified`), without `apps/*/.env` it also refuses (`env file ... not found`). If the port is taken, you get a plain Docker `address already in use` error, with no dialog.
+
+It won't start without the Docker network either: `network ... declared as external, but could not be found` — [why the network is external](../structure/docker-compose#network). To prepare everything ahead of time:
+
+```bash
+pnpm env:copy
+docker network create template-nest-nuxt_app
+```
 :::
 
 ## Stopping
@@ -69,9 +76,9 @@ docker network rm template-nest-nuxt_app
 
 ## A single service
 
-Build and run one container without compose — for a spot check of a single image. Per-service commands are in the [Docker](/en/guide/docker/) section.
+Build and run one container without compose — for a spot check of a single image. Per-service commands are in the [Docker](../docker/) section.
 
 ## What next
 
-- [Docker](/en/guide/docker/) — how the images are built, `env_file` versus `environment`, `HEALTHCHECK`, `USER node`
-- [Reverse proxy](/en/guide/reverse-proxy) — routing, the nginx config, security headers
+- [Docker](../docker/) — how the images are built, `env_file` versus `environment`, `HEALTHCHECK`, `USER node`
+- [Reverse proxy](../reverse-proxy) — routing, the nginx config, security headers

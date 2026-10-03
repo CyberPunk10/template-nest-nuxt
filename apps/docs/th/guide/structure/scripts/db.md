@@ -1,8 +1,8 @@
 # db.mjs
 
-จัดการฐานข้อมูล: container, client ของ Prisma และ migration ใช้ได้ทั้งเป็น CLI (`pnpm db:*`) และเป็น module — ฟังก์ชันถูกเรียกจาก [`predev.mjs`](/th/guide/structure/scripts/predev)
+จัดการฐานข้อมูล: container, client ของ Prisma และ migration ใช้ได้ทั้งเป็น CLI (`pnpm db:*`) และเป็น module — ฟังก์ชันถูกเรียกจาก [`predev.mjs`](./predev)
 
-ฐานข้อมูลถูกประกาศไว้ใน `docker-compose.yml` ไฟล์เดียวกันโดยไม่มี profile ส่วน service ของแอปอยู่ภายใต้ profile `app` ด้วยเหตุนี้คำสั่งที่ไม่ระบุ profile จึงแตะเฉพาะ `postgres` — รายละเอียดใน [docker-compose.yml](/th/guide/structure/docker-compose#profile)
+ฐานข้อมูลถูกประกาศไว้ใน `docker-compose.yml` ไฟล์เดียวกันโดยไม่มี profile ส่วน service ของแอปอยู่ภายใต้ profile `app` ด้วยเหตุนี้คำสั่งที่ไม่ระบุ profile จึงแตะเฉพาะ `postgres` — รายละเอียดใน [docker-compose.yml](../docker-compose#profile)
 
 ## คำสั่ง
 

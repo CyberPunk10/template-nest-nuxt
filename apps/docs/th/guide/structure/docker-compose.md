@@ -2,7 +2,7 @@
 
 `docker-compose.yml` ประกาศ `postgres`, `nginx`, `backend` และ `frontend` ไว้ใน network เดียวกัน
 
-เอกสารไม่ได้เป็น service แยก: `docs-builder` build static ของมัน แล้ว `nginx` ตัวเดียวกันเป็นคนเสิร์ฟ — รายละเอียดใน [apps/docs](/th/guide/structure/apps/docs/docker-image)
+เอกสารไม่ได้เป็น service แยก: `docs-builder` build static ของมัน แล้ว `nginx` ตัวเดียวกันเป็นคนเสิร์ฟ — รายละเอียดใน [apps/docs](./apps/docs/docker-image)
 
 ## Profile
 
@@ -41,7 +41,7 @@ docker compose --profile app up
 pnpm docker:up
 ```
 
-ก่อนเริ่มมันจะเรียก [`predocker.mjs`](/th/guide/structure/scripts/predocker) ซึ่งสร้างไฟล์ `.env` ที่ขาด ตรวจพอร์ตของ proxy และสร้าง network — จากนั้นส่งต่อให้ `docker compose --profile app up` ตัวเดิม ด้วยเหตุนี้หลัง clone เสร็จจึงใช้คำสั่งเดียวก็พอ
+ก่อนเริ่มมันจะเรียก [`predocker.mjs`](./scripts/predocker) ซึ่งสร้างไฟล์ `.env` ที่ขาด ตรวจพอร์ตของ proxy และสร้าง network — จากนั้นส่งต่อให้ `docker compose --profile app up` ตัวเดิม ด้วยเหตุนี้หลัง clone เสร็จจึงใช้คำสั่งเดียวก็พอ
 
 เมื่อเตรียม environment ไว้แล้ว ก็ไม่ต่างกัน: ใช้ `docker compose` ตรงๆ ได้ — เพียงอย่าลืม `--profile app` ไม่งั้นจะขึ้นมาแค่ฐานข้อมูล คำสั่งรัน **จาก root ของ monorepo** ส่วน flag `--build` จะ build image ใหม่ก่อนเริ่ม
 
@@ -93,7 +93,7 @@ docker network rm template-nest-nuxt_app
 pnpm env:copy
 ```
 
-รายละเอียดเพิ่มเติม — ดู [ตัวแปรสภาพแวดล้อม](/th/guide/env-variables#ไฟล์)
+รายละเอียดเพิ่มเติม — ดู [ตัวแปรสภาพแวดล้อม](../env-variables#ไฟล์)
 
 ## `env_file` และการ override
 
@@ -123,7 +123,7 @@ backend:
     NODE_ENV: production   # ใน apps/backend/.env เป็น development — นั่นสำหรับ pnpm dev
 ```
 
-ตัวแปรไหนตรงกันและตัวไหนถูก override — ดู [ตัวแปรสภาพแวดล้อม](/th/guide/env-variables)
+ตัวแปรไหนตรงกันและตัวไหนถูก override — ดู [ตัวแปรสภาพแวดล้อม](../env-variables)
 
 ## Internal port
 

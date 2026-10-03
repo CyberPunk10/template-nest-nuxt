@@ -13,4 +13,4 @@ prisma/
 
 Prisma CLI เป็นตัวอ่านโฟลเดอร์นี้ โดยกำหนด path ไว้ใน `prisma.config.ts` ของ backend ส่วน client ที่ generate มาไม่ได้อยู่ที่นี่ — มันถูกสร้างใน `src/generated/prisma/` และไม่เข้า version control
 
-วิธีใช้งานทั้งหมด — migration, การ generate client, การ seed — อยู่ในหัวข้อ [ฐานข้อมูล](/th/guide/database/)
+วิธีใช้งานทั้งหมด — migration, การ generate client, การ seed — อยู่ในหัวข้อ [ฐานข้อมูล](../../../../database/)

@@ -11,7 +11,7 @@
 
 PostgreSQL always runs in a container — under both `pnpm dev` and `pnpm docker:up`. The database lives in the shared `docker-compose.yml` with no profile, while the application services sit behind the `app` profile. That way `docker compose up` only touches postgres, and the full stack comes up via `pnpm docker:up`.
 
-Starting the project takes care of preparing the database: before starting, `pnpm dev` brings the container up, generates the Prisma client and applies migrations — [details](/en/guide/structure/scripts/predev). In Docker mode the backend container applies migrations on startup.
+Starting the project takes care of preparing the database: before starting, `pnpm dev` brings the container up, generates the Prisma client and applies migrations — [details](../structure/scripts/predev). In Docker mode the backend container applies migrations on startup.
 
 To bring the database up or stop it on its own:
 

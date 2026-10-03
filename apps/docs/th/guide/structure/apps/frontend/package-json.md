@@ -12,4 +12,4 @@ Manifest ของ application สคริปต์ทำงานเฉพา�
 | `lint`        | `eslint . --fix` | Linter พร้อม auto-fix                                        |
 | `type-check`  | `nuxt typecheck` | ตรวจสอบ type ผ่าน `vue-tsc`                                  |
 
-อะไรอยู่ที่ไหน — [apps/frontend](/th/guide/structure/apps/frontend/)
+อะไรอยู่ที่ไหน — [apps/frontend](./)

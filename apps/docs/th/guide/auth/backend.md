@@ -28,7 +28,7 @@ token ทั้งสองตัวถูกตั้งด้วย flag ช�
 - `secure` เปิดใช้ **เฉพาะ** ตอน production: cookie แบบนี้จะไม่ถูกส่งผ่าน HTTP ธรรมดาเลย การพัฒนาในเครื่องที่ไม่มี TLS จึงจะ login ไม่ได้
 - `path: '/'` ระบุไว้อย่างชัดเจนด้วยเหตุผล — Express ต้องการให้ `path` ตรงกันทั้งตอนตั้งและตอนลบ ไม่งั้น `clearCookie()` ตอน logout จะลบ cookie ไม่ออก
 
-อายุของ token มาจาก `JWT_EXPIRES_IN` และ `REFRESH_TOKEN_EXPIRES_DAYS` — [ตัวแปรของ backend](/th/guide/structure/apps/backend/env-example)
+อายุของ token มาจาก `JWT_EXPIRES_IN` และ `REFRESH_TOKEN_EXPIRES_DAYS` — [ตัวแปรของ backend](../structure/apps/backend/env-example)
 
 ### ทำไมต้องเก็บ session ไว้ใน DB
 

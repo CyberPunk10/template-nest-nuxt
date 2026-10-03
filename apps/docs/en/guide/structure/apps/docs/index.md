@@ -25,6 +25,6 @@ The page structure is **identical** across locales: add a file to `guide/` and a
 
 ## A Dockerfile that runs nothing
 
-The `apps/docs` image starts no process: it only builds the static files that the nginx image picks up. There is no separate docs container in Compose — see [Dockerfile](/en/guide/structure/apps/docs/docker-image).
+The `apps/docs` image starts no process: it only builds the static files that the nginx image picks up. There is no separate docs container in Compose — see [Dockerfile](./docker-image).
 
-Application scripts — [package.json](/en/guide/structure/apps/docs/package-json).
+Application scripts — [package.json](./package-json).

@@ -7,9 +7,9 @@ COPY infra/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=docs /app/apps/docs/.vitepress/dist /srv/docs
 ```
 
-Первый — шаблон конфига: `envsubst` подставит в него переменные при старте контейнера. Второй — статика документации, которую собрал [apps/docs](/guide/structure/apps/docs/docker-image).
+Первый — шаблон конфига: `envsubst` подставит в него переменные при старте контейнера. Второй — статика документации, которую собрал [apps/docs](../../apps/docs/docker-image).
 
-Помимо маршрутизации прокси отвечает за кеширование ассетов, заголовки безопасности, gzip и проброс WebSocket. Разбор конфига — [Reverse proxy](/guide/reverse-proxy).
+Помимо маршрутизации прокси отвечает за кеширование ассетов, заголовки безопасности, gzip и проброс WebSocket. Разбор конфига — [Reverse proxy](../../../reverse-proxy).
 
 ## Собрать и проверить
 
@@ -20,7 +20,7 @@ docker compose build nginx
 docker compose up -d nginx
 ```
 
-Проверить, что прокси отвечает, — через встроенный [HEALTHCHECK](/guide/docker/dockerfiles#healthcheck):
+Проверить, что прокси отвечает, — через встроенный [HEALTHCHECK](../../../docker/dockerfiles#healthcheck):
 
 ```bash
 docker inspect --format='{{json .State.Health}}' template-nest-nuxt-nginx-1

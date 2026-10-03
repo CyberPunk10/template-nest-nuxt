@@ -2,14 +2,22 @@
 
 ## Quick start
 
-You need [Node.js >= 24 and pnpm](/en/guide/getting-started/setup) — the script handles the rest:
+You need [Node.js >= 24 and pnpm](./setup):
 
 ```bash
-git clone git@github.com:CyberPunk10/template-nest-nuxt.git
-cd template-nest-nuxt
+npx create-nest-nuxt my-app
+cd my-app
 pnpm install
 pnpm dev
 ```
+
+`create-nest-nuxt` asks two questions along the way:
+
+1. **Language** — English, Russian or Thai. The documentation inside the project (`apps/docs`) will be in it.
+2. **Template variant:**
+   - `main` — the minimal one: you implement authentication and the database yourself;
+   - `auth-session` — with ready-made authentication; you plug in your own database;
+   - `postgres-prisma` — with ready-made authentication and a database (PostgreSQL + Prisma).
 
 It opens at [http://localhost:3200](http://localhost:3200). Everything else on this page is about how this mode differs from Docker, and what to configure if something didn't start.
 
@@ -19,8 +27,8 @@ Where the applications run and which build they are, are independent choices. Th
 
 |          | On the host                                                                  | In containers                                            |
 | -------- | ---------------------------------------------------------------------------- | -------------------------------------------------------- |
-| **dev**  | [`pnpm dev`](/en/guide/getting-started/run-pnpm)                             | not set up                                               |
-| **prod** | [`pnpm build` + `start:prod`](/en/guide/getting-started/run-pnpm#pnpm-build) | [`pnpm docker:up`](/en/guide/getting-started/run-docker) |
+| **dev**  | [`pnpm dev`](./run-pnpm)                             | not set up                                               |
+| **prod** | [`pnpm build` + `start:prod`](./run-pnpm#pnpm-build) | [`pnpm docker:up`](./run-docker) |
 
 - Everyday work is `pnpm dev`.
 - To exercise the production build as a whole, reverse proxy included, use `pnpm docker:up`.
@@ -32,8 +40,8 @@ How you reach them differs too:
 
 ## Where to start
 
-1. [Setup](/en/guide/getting-started/setup) — Node.js, pnpm, Docker, `.env` files
-2. [Run with pnpm](/en/guide/getting-started/run-pnpm) or [with Docker](/en/guide/getting-started/run-docker)
+1. [Setup](./setup) — Node.js, pnpm, Docker, `.env` files
+2. [Run with pnpm](./run-pnpm) or [with Docker](./run-docker)
 
 ## What differs in practice
 

@@ -37,8 +37,8 @@ The project is set up so that migrations are applied on their own on every start
 
 | Start            | Who applies them                                                                                                                                 |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `pnpm dev`       | `predev.mjs`, the `migrations` step — [details](/en/guide/structure/scripts/predev)                                                              |
-| `pnpm docker:up` | the backend container on startup, before the application starts — [details](/en/guide/structure/apps/backend/docker-image#migrations-on-startup) |
+| `pnpm dev`       | `predev.mjs`, the `migrations` step — [details](../structure/scripts/predev)                                                              |
+| `pnpm docker:up` | the backend container on startup, before the application starts — [details](../structure/apps/backend/docker-image#migrations-on-startup) |
 
 In both cases it's `prisma migrate deploy`. It applies only the migrations the database doesn't have yet, asks nothing, creates no new migrations and doesn't recreate the database. It skips migrations that are already applied, so running it again changes nothing. At the same time it runs `migration.sql` as is and doesn't warn about data loss — which is why the SQL is checked before committing.
 
@@ -239,4 +239,4 @@ pnpm prisma migrate reset   # asks for confirmation
 pnpm prisma db seed         # seeding after a reset is run separately
 ```
 
-The seed creates the admin account — [details](/en/guide/database/prisma#seed-the-admin-account).
+The seed creates the admin account — [details](./prisma#seed-the-admin-account).

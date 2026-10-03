@@ -1,6 +1,6 @@
 # tsconfig.json
 
-การตรวจสอบ type ของ backend — สิ่งที่ IDE เห็น และสิ่งที่ `pnpm type-check` รัน ส่วนการ build เป็นหน้าที่ของ [`tsconfig.build.json`](/th/guide/structure/apps/backend/tsconfig-build) ซึ่ง extends ไฟล์นี้
+การตรวจสอบ type ของ backend — สิ่งที่ IDE เห็น และสิ่งที่ `pnpm type-check` รัน ส่วนการ build เป็นหน้าที่ของ [`tsconfig.build.json`](./tsconfig-build) ซึ่ง extends ไฟล์นี้
 
 ```json
 {
@@ -18,13 +18,13 @@
 }
 ```
 
-ที่เหลือ — `strict`, `skipLibCheck`, `noEmit` — มาจาก [config พื้นฐาน](/th/guide/structure/tsconfig-base)
+ที่เหลือ — `strict`, `skipLibCheck`, `noEmit` — มาจาก [config พื้นฐาน](../../tsconfig-base)
 
 ## ทำไมต้อง node16
 
 Nest โหลดโมดูลผ่าน `require` ทั้งรูปแบบโมดูลและการ resolve จึงเป็นไปตามกฎของ Node `node16` กำหนดทั้งสองอย่างด้วยค่าเดียว: มันดู field `type` ใน `package.json` ซึ่งไม่มีอยู่ — รูปแบบจึงเป็น CommonJS
 
-ทั้งสองออปชันระบุไว้ด้วยกัน เพราะ TypeScript บังคับให้สอดคล้องกัน [การกระจายออปชันเหล่านี้ตามแพ็กเกจ](/th/guide/structure/tsconfig-base)
+ทั้งสองออปชันระบุไว้ด้วยกัน เพราะ TypeScript บังคับให้สอดคล้องกัน [การกระจายออปชันเหล่านี้ตามแพ็กเกจ](../../tsconfig-base)
 
 ## Decorator
 

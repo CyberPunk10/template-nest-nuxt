@@ -10,7 +10,7 @@ packages/
 
 | Package                                        | Used by           | Build       | Type check                      |
 | ---------------------------------------------- | ----------------- | ----------- | ------------------------------- |
-| [shared](/en/guide/structure/packages/shared/) | backend, frontend | source-only | `tsc --noEmit`                  |
-| [ui](/en/guide/structure/packages/ui/)         | frontend          | source-only | `vue-tsc --noEmit` — for `.vue` |
+| [shared](./shared/) | backend, frontend | source-only | `tsc --noEmit`                  |
+| [ui](./ui/)         | frontend          | source-only | `vue-tsc --noEmit` — for `.vue` |
 
-Neither is compiled: `main` points straight at `src/index.ts`, and the consumers handle the sources themselves — Nest with `tsc`, Nuxt through Vite. Full breakdown — [Architecture](/en/guide/architecture#packages-how-they-re-consumed).
+Neither is compiled: `main` points straight at `src/index.ts`, and the consumers handle the sources themselves — Nest with `tsc`, Nuxt through Vite. Full breakdown — [Architecture](../../architecture#packages-how-they-re-consumed).

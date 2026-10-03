@@ -33,6 +33,7 @@ provide('copyCmd', copyCmd)
     <div class="home__nav-line" />
     <div class="home__body">
       <HomeCallout variant="type" />
+      <HomeQuickstart />
       <HomeShowcase />
       <HomePrinciples />
       <HomeFit />
@@ -40,7 +41,6 @@ provide('copyCmd', copyCmd)
       <HomeAuth />
       <HomeBranches />
       <HomeCallout variant="steps" />
-      <HomeQuickstart />
       <div class="home__bottom">
         <HomeCommands />
         <HomeTree />

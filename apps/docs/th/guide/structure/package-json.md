@@ -25,7 +25,7 @@ Manifest ที่ root ของ monorepo สคริปต์ในนี้�
 
 สคริปต์เหล่านี้ไม่ทับกับสคริปต์ของ application: ตัวที่ root ทำงานกับทั้ง monorepo ส่วน per-app ทำงานเฉพาะใน workspace ของตัวเอง และถูกเรียกผ่าน filter (`pnpm --filter backend dev`) หรือโดยอ้อมจากคำสั่งที่ root
 
-คำสั่งส่วนใหญ่มี [Node script](/th/guide/structure/scripts/) ใน `scripts/` อยู่เบื้องหลัง
+คำสั่งส่วนใหญ่มี [Node script](./scripts/) ใน `scripts/` อยู่เบื้องหลัง
 
 ## เวอร์ชันของเครื่องมือ
 
@@ -38,4 +38,4 @@ Manifest ที่ root ของ monorepo สคริปต์ในนี้�
 }
 ```
 
-`packageManager` ตรึงเวอร์ชัน pnpm ผ่าน Corepack ส่วน `engines` ร่วมกับ `engine-strict=true` ใน `.npmrc` ป้องกันการติดตั้ง dependency บน Node เวอร์ชันที่ไม่รองรับ — [pnpm และ Corepack](/th/guide/pnpm)
+`packageManager` ตรึงเวอร์ชัน pnpm ผ่าน Corepack ส่วน `engines` ร่วมกับ `engine-strict=true` ใน `.npmrc` ป้องกันการติดตั้ง dependency บน Node เวอร์ชันที่ไม่รองรับ — [pnpm และ Corepack](../pnpm)

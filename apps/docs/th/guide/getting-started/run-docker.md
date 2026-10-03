@@ -2,9 +2,9 @@
 
 แอปพลิเคชันรันใน container หลังจุดเข้าเดียว — เป็น image ชุดเดียวกับที่จะขึ้น deploy
 
-เป็น image แบบ production ไม่มี hot reload การแก้โค้ดจะเห็นผลก็ต่อเมื่อ build ใหม่เท่านั้น ถ้าจะทำงานกับโค้ดให้ใช้ [`pnpm dev`](/th/guide/getting-started/run-pnpm)
+เป็น image แบบ production ไม่มี hot reload การแก้โค้ดจะเห็นผลก็ต่อเมื่อ build ใหม่เท่านั้น ถ้าจะทำงานกับโค้ดให้ใช้ [`pnpm dev`](./run-pnpm)
 
-ก่อนรันครั้งแรก — [การเตรียมความพร้อม](/th/guide/getting-started/setup)
+ก่อนรันครั้งแรก — [การเตรียมความพร้อม](./setup)
 
 ## สรุปคำสั่ง
 
@@ -29,9 +29,9 @@ flag ที่ใส่หลัง `pnpm docker:up` จะถูกส่งต
 pnpm docker:up --build
 ```
 
-`pnpm docker:up` ไม่ใช่แค่ alias ของ `docker compose up`: ก่อนเริ่ม [`predocker.mjs`](/th/guide/structure/scripts/predocker) จะทำงานก่อน สร้างไฟล์ `.env` ที่ขาด ตรวจสอบพอร์ตของ proxy และสร้าง Docker network ด้วยเหตุนี้คำสั่งจึงใช้ได้ทันทีหลัง clone
+`pnpm docker:up` ไม่ใช่แค่ alias ของ `docker compose up`: ก่อนเริ่ม [`predocker.mjs`](../structure/scripts/predocker) จะทำงานก่อน สร้างไฟล์ `.env` ที่ขาด ตรวจสอบพอร์ตของ proxy และสร้าง Docker network ด้วยเหตุนี้คำสั่งจึงใช้ได้ทันทีหลัง clone
 
-เบื้องหลังคือ `docker compose --profile app up`: service ของแอปกำกับด้วย profile `app` ส่วนฐานข้อมูลไม่มี profile และถูกยกขึ้นมาเสมอ — ดู [profile](/th/guide/structure/docker-compose#profile)
+เบื้องหลังคือ `docker compose --profile app up`: service ของแอปกำกับด้วย profile `app` ส่วนฐานข้อมูลไม่มี profile และถูกยกขึ้นมาเสมอ — ดู [profile](../structure/docker-compose#profile)
 
 มีแค่ reverse proxy ที่หันออกสู่ภายนอก — ทุกอย่างเข้ามาที่พอร์ตเดียว (`NGINX_HOST_PORT` ค่าเริ่มต้น `80`):
 
@@ -39,10 +39,17 @@ pnpm docker:up --build
 - เอกสาร: [http://localhost/dev/docs/](http://localhost/dev/docs/)
 - Swagger UI: [http://localhost/api/docs](http://localhost/api/docs) (ถ้าเปิดอยู่ — ดู `SWAGGER_ENABLED`)
 
-backend กับ frontend ไม่ได้ใช้ host port ของตัวเอง: เข้าถึงจากภายนอกไม่ได้ ต้องผ่าน proxy เท่านั้น — [ทำไม](/th/guide/reverse-proxy#ทําไมพอร์ตของ-application-ถึงปิด)
+backend กับ frontend ไม่ได้ใช้ host port ของตัวเอง: เข้าถึงจากภายนอกไม่ได้ ต้องผ่าน proxy เท่านั้น — [ทำไม](../reverse-proxy#ทําไมพอร์ตของ-application-ถึงปิด)
 
 ::: warning
 การเรียก Compose ตรงๆ โดยข้าม `pnpm docker:up` ก็ทำงานได้ แต่ต้องระบุ profile และไม่มีการเตรียมให้: `docker compose up` ที่ไม่มี `--profile app` จะยกขึ้นมาแค่ฐานข้อมูล ถ้าไม่มี `.env` ที่ root จะไม่ยอม start (`no port specified`) ถ้าไม่มี `apps/*/.env` ก็ไม่ยอมเช่นกัน (`env file ... not found`) และถ้าพอร์ตถูกใช้อยู่จะได้ Docker error ธรรมดา `address already in use` โดยไม่มี dialog
+
+ถ้าไม่มี Docker network ก็ไม่ยอม start เช่นกัน: `network ... declared as external, but could not be found` — [ทำไม network ถึงเป็น external](../structure/docker-compose#network) เตรียมทุกอย่างไว้ล่วงหน้า:
+
+```bash
+pnpm env:copy
+docker network create template-nest-nuxt_app
+```
 :::
 
 ## การหยุด
@@ -69,9 +76,9 @@ docker network rm template-nest-nuxt_app
 
 ## รันทีละ service
 
-build และรัน container เดียวโดยไม่ใช้ compose — เช่นเพื่อตรวจสอบ image ตัวใดตัวหนึ่ง คำสั่งของแต่ละ service อยู่ในหมวด [Docker](/th/guide/docker/)
+build และรัน container เดียวโดยไม่ใช้ compose — เช่นเพื่อตรวจสอบ image ตัวใดตัวหนึ่ง คำสั่งของแต่ละ service อยู่ในหมวด [Docker](../docker/)
 
 ## ต่อจากนี้
 
-- [Docker](/th/guide/docker/) — image ถูกสร้างอย่างไร, `env_file` กับ `environment`, `HEALTHCHECK`, `USER node`
-- [Reverse proxy](/th/guide/reverse-proxy) — การ routing, config ของ nginx, security header
+- [Docker](../docker/) — image ถูกสร้างอย่างไร, `env_file` กับ `environment`, `HEALTHCHECK`, `USER node`
+- [Reverse proxy](../reverse-proxy) — การ routing, config ของ nginx, security header

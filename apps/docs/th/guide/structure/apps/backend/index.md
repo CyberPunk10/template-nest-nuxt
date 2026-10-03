@@ -38,6 +38,6 @@ Nest ไม่ได้บังคับว่าไฟล์ต้องอย
 
 `tsconfig.json` ใช้ `noEmit` — มีไว้ให้ IDE และคำสั่ง `type-check` ส่วนการ build เป็นหน้าที่ของ `tsconfig.build.json` ที่ตั้ง `rootDir: ./src` ไว้: ถ้าไม่มี `dist/` จะลอกโครงสร้าง `apps/backend/src/...` มาด้วย และ entry point จะย้ายออกจาก `dist/main.js`
 
-รายละเอียดเรื่อง config — [tsconfig.base.json](/th/guide/structure/tsconfig-base)
+รายละเอียดเรื่อง config — [tsconfig.base.json](../../tsconfig-base)
 
-สคริปต์ของ application — [package.json](/th/guide/structure/apps/backend/package-json)
+สคริปต์ของ application — [package.json](./package-json)

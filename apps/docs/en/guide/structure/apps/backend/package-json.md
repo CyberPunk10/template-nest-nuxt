@@ -16,4 +16,4 @@ The backend application's manifest. Its scripts work only inside their own works
 | `test:e2e`                         | `jest --config ...`  | E2E tests, own config `test/jest-e2e.json`                                         |
 | `test:e2e:throttle`                | `jest --config ...`  | Rate limiting e2e — a separate config so one test's limits don't affect the others |
 
-What lives where — [apps/backend](/en/guide/structure/apps/backend/).
+What lives where — [apps/backend](./).

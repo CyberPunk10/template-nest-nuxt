@@ -15,7 +15,7 @@ const config: LocaleEntry = {
     home: locale.home,
     sidebar: [
       {
-        text: 'Документация',
+        text: 'Документация проекта',
         items: [
           {
             text: 'Запуск проекта',
@@ -186,10 +186,9 @@ const config: LocaleEntry = {
         ],
       },
       {
-        text: 'Примеры',
+        text: 'Для мейнтейнера',
         items: [
-          { text: 'Markdown', link: '/markdown-examples' },
-          { text: 'Runtime API', link: '/api-examples' },
+          { text: 'Ветки шаблона', link: '/guide/maintainer/' },
         ],
       },
     ],

@@ -28,7 +28,7 @@ Both tokens are set with the same flags:
 - `secure` is enabled **only** in production: such a cookie is never sent over plain HTTP, so local development without TLS simply couldn't log in.
 - `path: '/'` is set explicitly for a reason — Express requires the `path` to match between setting and clearing, otherwise `clearCookie()` on logout won't remove it.
 
-Lifetimes come from `JWT_EXPIRES_IN` and `REFRESH_TOKEN_EXPIRES_DAYS` — [backend variables](/en/guide/structure/apps/backend/env-example).
+Lifetimes come from `JWT_EXPIRES_IN` and `REFRESH_TOKEN_EXPIRES_DAYS` — [backend variables](../structure/apps/backend/env-example).
 
 ### Why store sessions in the database
 

@@ -39,6 +39,6 @@ apps/frontend/
 
 `app/` — то, что попадает в браузер (и рендерится на сервере при SSR). `server/` — код, который выполняется **только** на сервере и в бандл клиента не входит.
 
-Через `server/api/backend/` проходят все запросы к API: браузер обращается к своему же origin, Nuxt форвардит их в NestJS. Поэтому у бэкенда нет CORS-проблем в dev и его не нужно публиковать наружу в Docker — разбор в [Reverse proxy](/guide/reverse-proxy).
+Через `server/api/backend/` проходят все запросы к API: браузер обращается к своему же origin, Nuxt форвардит их в NestJS. Поэтому у бэкенда нет CORS-проблем в dev и его не нужно публиковать наружу в Docker — разбор в [Reverse proxy](../../../reverse-proxy).
 
-Скрипты приложения — [package.json](/guide/structure/apps/frontend/package-json).
+Скрипты приложения — [package.json](./package-json).
