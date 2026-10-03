@@ -147,7 +147,6 @@ function shortUrl(url: string): string {
       <a
         class="service"
         :href="docsUrl"
-        target="_blank"
       >
         <span class="service__dot service__dot--static" style="background: #38bdf8" />
         <span class="service__name">{{ t('devPanel.docs') }}</span>
