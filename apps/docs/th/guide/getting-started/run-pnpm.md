@@ -1,6 +1,6 @@
 # รันด้วย pnpm
 
-โหมดหลักสำหรับการพัฒนา: application รันแบบ native แต่ละตัวมี hot reload ของตัวเอง ไม่ต้องใช้ Docker
+โหมดหลักสำหรับการพัฒนา: application รันแบบ native แต่ละตัวมี hot reload ของตัวเอง ใน Docker มีเพียง PostgreSQL ซึ่ง `pnpm dev` เปิดให้เอง
 
 ก่อนรันครั้งแรก — [การเตรียมความพร้อม](./setup)
 

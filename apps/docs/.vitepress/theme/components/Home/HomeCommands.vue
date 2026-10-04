@@ -28,6 +28,7 @@ const groups = computed<CommandGroup[]>(() => {
       commands: [
         { cmd: 'pnpm dev', desc: c.items.pnpmDev },
         { cmd: 'pnpm db:up', desc: c.items.dockerDev },
+        { cmd: 'pnpm db:migrate', desc: c.items.dbMigrate },
       ],
     },
     {
@@ -35,7 +36,7 @@ const groups = computed<CommandGroup[]>(() => {
       commands: [
         { cmd: 'pnpm build', desc: c.items.pnpmBuild },
         { cmd: 'pnpm docker:up --build', desc: c.items.dockerUp },
-        { cmd: 'docker compose down', desc: c.items.dockerDown },
+        { cmd: 'docker compose --profile app down', desc: c.items.dockerDown },
       ],
     },
     {

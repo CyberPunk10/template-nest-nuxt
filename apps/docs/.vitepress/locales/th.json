@@ -15,7 +15,8 @@
       },
       "items": {
         "pnpmDev": "เริ่มแอปพลิเคชัน",
-        "dockerDev": "โครงสร้างพื้นฐาน",
+        "dockerDev": "เปิดฐานข้อมูล",
+        "dbMigrate": "ใช้ migration",
         "pnpmBuild": "build ทั้งหมด",
         "dockerUp": "ทุก services ใน Docker",
         "dockerDown": "หยุด",
@@ -85,16 +86,18 @@
       },
       "accounts": {
         "title": "การยืนยันตัวตน",
-        "intro": "เมื่อเริ่มทำงาน backend จะสร้างผู้ดูแลระบบจาก ADMIN_EMAIL และ ADMIN_PASSWORD ใน apps/backend/.env",
+        "intro": "ผู้ดูแลระบบไม่ถูกสร้างอัตโนมัติ: seed จะสร้างจาก ADMIN_EMAIL และ ADMIN_PASSWORD ใน apps/backend/.env ให้รันหลัง pnpm dev ครั้งแรก — ตอนนั้นฐานข้อมูลพร้อมและ migration ถูกใช้แล้ว",
         "defaults": "ค่าเริ่มต้น:",
         "email": "อีเมล",
         "password": "รหัสผ่าน",
+        "seed": "สร้างผู้ดูแลระบบ (รันซ้ำได้อย่างปลอดภัย)",
         "more": "ระบบยืนยันตัวตนทำงานอย่างไร"
       },
       "map": {
         "title": "อะไรอยู่ตรงไหน",
         "items": {
           "backend": "NestJS: API, โมดูล, เซอร์วิส",
+          "prisma": "สคีมาฐานข้อมูล, migration และ seed ผู้ดูแลระบบ",
           "frontend": "Nuxt 4: หน้าเว็บ, คอมโพเนนต์, พร็อกซีไปยัง API",
           "docs": "เอกสารนี้ สร้างด้วย VitePress",
           "shared": "ไทป์และคำแปลที่ใช้ร่วมกันระหว่าง backend และ frontend",
@@ -109,7 +112,7 @@
         "items": {
           "readme": "อธิบายโปรเจกต์ใน README: คืออะไร รันอย่างไร ใครรับผิดชอบ",
           "env": "ตรวจ .env: พอร์ต ที่อยู่ และ secret ค่าจาก .env.example ใช้ได้เฉพาะตอนพัฒนา",
-          "secrets": "เปลี่ยน JWT_SECRET, REFRESH_TOKEN_SECRET และ ADMIN_PASSWORD: ใน .env.example เป็นเพียงค่าตัวอย่าง",
+          "secrets": "เปลี่ยน JWT_SECRET, REFRESH_TOKEN_SECRET, ADMIN_PASSWORD และ POSTGRES_PASSWORD: ใน .env.example เป็นเพียงค่าตัวอย่าง",
           "examples": "ลบตัวอย่างที่ไม่ใช้: โมดูล tasks ใน backend และหน้า tasks ใน frontend",
           "ci": "ตั้งค่า CI และการ deploy ให้เข้ากับโครงสร้างพื้นฐานของคุณ"
         }
@@ -153,6 +156,10 @@
           "auth": {
             "title": "การยืนยันตัวตน",
             "desc": "JWT ในคุกกี้ HttpOnly และการหมุนเวียน refresh token"
+          },
+          "database": {
+            "title": "ฐานข้อมูล",
+            "desc": "PostgreSQL, Prisma, migration และ seed"
           }
         }
       },
@@ -174,6 +181,10 @@
           "network": {
             "q": "network … could not be found",
             "a": "เครือข่าย Docker เป็นแบบ external และ pnpm docker:up เป็นผู้สร้าง ถ้ารัน docker compose up โดยตรง ต้องสร้างเอง"
+          },
+          "migrations": {
+            "q": "pnpm dev หยุดที่ขั้นตอน migrations",
+            "a": "migration ล้มเหลว (P3018, P3009) วิธีแก้ SQL และทำเครื่องหมาย migration อยู่ในหัวข้อ «เมื่อมีบางอย่างผิดพลาด»"
           }
         },
         "more": "รายละเอียด"

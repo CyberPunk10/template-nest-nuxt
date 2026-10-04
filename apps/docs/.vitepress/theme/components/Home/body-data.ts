@@ -12,6 +12,7 @@ export const services = [
 /** Папки репозитория и страницы документации о них. */
 export const projectMap = [
   { id: 'backend', path: 'apps/backend', doc: 'guide/structure/apps/backend/' },
+  { id: 'prisma', path: 'apps/backend/prisma', doc: 'guide/database/prisma' },
   { id: 'frontend', path: 'apps/frontend', doc: 'guide/structure/apps/frontend/' },
   { id: 'docs', path: 'apps/docs', doc: 'guide/structure/apps/docs/' },
   { id: 'shared', path: 'packages/shared', doc: 'guide/structure/packages/shared/' },
@@ -24,6 +25,7 @@ export const projectMap = [
 export const nextLinks = [
   { id: 'architecture', icon: 'layers', doc: 'guide/architecture' },
   { id: 'auth', icon: 'shield-check', doc: 'guide/auth/' },
+  { id: 'database', icon: 'database', doc: 'guide/database/' },
   { id: 'env', icon: 'key-round', doc: 'guide/env-variables' },
   { id: 'testing', icon: 'check-circle', doc: 'guide/testing/' },
   { id: 'docker', icon: 'boxes', doc: 'guide/docker/' },
@@ -36,6 +38,7 @@ export const troubles = [
   { id: 'port', doc: 'guide/getting-started/run-pnpm' },
   { id: 'stale', doc: 'guide/getting-started/run-docker' },
   { id: 'network', doc: 'guide/getting-started/run-docker' },
+  { id: 'migrations', doc: 'guide/database/migrations' },
 ] as const
 
 /** Генератор и шаблон, из которых создан проект. */

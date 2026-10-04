@@ -1,6 +1,6 @@
 # Running with pnpm
 
-The main development mode: applications run natively, each with its own hot reload. Docker isn't needed.
+The main development mode: applications run natively, each with its own hot reload. Only PostgreSQL runs in Docker, and `pnpm dev` starts it itself.
 
 Before the first run — [Setup](./setup).
 

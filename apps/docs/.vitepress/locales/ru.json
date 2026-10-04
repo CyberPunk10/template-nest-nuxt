@@ -15,7 +15,8 @@
       },
       "items": {
         "pnpmDev": "запустить приложения",
-        "dockerDev": "инфраструктура",
+        "dockerDev": "поднять БД",
+        "dbMigrate": "применить миграции",
         "pnpmBuild": "собрать всё",
         "dockerUp": "все сервисы в Docker",
         "dockerDown": "остановить",
@@ -85,16 +86,18 @@
       },
       "accounts": {
         "title": "Авторизация",
-        "intro": "Backend при старте сам создаёт админа из ADMIN_EMAIL и ADMIN_PASSWORD в apps/backend/.env.",
+        "intro": "Админ сам не появляется: его создаёт сид из ADMIN_EMAIL и ADMIN_PASSWORD в apps/backend/.env. Запустите его после первого pnpm dev — к этому моменту база поднята и миграции применены.",
         "defaults": "По умолчанию:",
         "email": "Email",
         "password": "Пароль",
+        "seed": "создать админа (повторный запуск ничего не сломает)",
         "more": "Как устроена авторизация"
       },
       "map": {
         "title": "Где что лежит",
         "items": {
           "backend": "NestJS: API, модули, сервисы",
+          "prisma": "Схема БД, миграции и сид админа",
           "frontend": "Nuxt 4: страницы, компоненты, прокси к API",
           "docs": "Эта документация на VitePress",
           "shared": "Общие типы и переводы для backend и frontend",
@@ -109,7 +112,7 @@
         "items": {
           "readme": "Описать проект в README: что это, как запустить, кто отвечает",
           "env": "Пройтись по .env: порты, адреса, секреты. Значения из .env.example годятся только для разработки",
-          "secrets": "Заменить JWT_SECRET, REFRESH_TOKEN_SECRET и ADMIN_PASSWORD: в .env.example это заглушки",
+          "secrets": "Заменить JWT_SECRET, REFRESH_TOKEN_SECRET, ADMIN_PASSWORD и POSTGRES_PASSWORD: в .env.example это заглушки",
           "examples": "Удалить ненужные примеры: модуль tasks в backend и страницу задач во frontend",
           "ci": "Настроить CI и деплой под свою инфраструктуру"
         }
@@ -153,6 +156,10 @@
           "auth": {
             "title": "Авторизация",
             "desc": "JWT в HttpOnly-куках, ротация refresh-токенов"
+          },
+          "database": {
+            "title": "База данных",
+            "desc": "PostgreSQL, Prisma, миграции и сид"
           }
         }
       },
@@ -174,6 +181,10 @@
           "network": {
             "q": "network … could not be found",
             "a": "Docker-сеть внешняя, её заводит pnpm docker:up. При прямом docker compose up её нужно создать вручную."
+          },
+          "migrations": {
+            "q": "pnpm dev остановился на шаге migrations",
+            "a": "Миграция не применилась (P3018, P3009). Как поправить SQL и отметить миграцию — в разделе «Когда что-то пошло не так»."
           }
         },
         "more": "Подробнее"

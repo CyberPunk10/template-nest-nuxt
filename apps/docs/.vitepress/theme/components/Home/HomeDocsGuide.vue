@@ -42,12 +42,16 @@ const commands = computed(() => [
 .docs-guide__list {
   margin: 0;
   padding-left: 18px;
+  list-style: disc;
   display: flex;
   flex-direction: column;
   gap: 6px;
   font-size: var(--home-text-sm);
   color: var(--home-text-soft);
   line-height: var(--home-leading-normal);
+}
+.docs-guide__list ::marker {
+  color: var(--home-accent);
 }
 .docs-guide__commands {
   display: flex;

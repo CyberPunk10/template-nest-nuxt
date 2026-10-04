@@ -33,7 +33,7 @@ const t = computed(() => theme.value.home!.content.map)
 }
 .map__row {
   display: grid;
-  grid-template-columns: 9.5em minmax(0, 1fr) auto;
+  grid-template-columns: 12em minmax(0, 1fr) auto;
   align-items: baseline;
   gap: 12px;
   padding: 8px 10px;

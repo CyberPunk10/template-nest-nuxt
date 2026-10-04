@@ -15,7 +15,8 @@
       },
       "items": {
         "pnpmDev": "start applications",
-        "dockerDev": "infrastructure",
+        "dockerDev": "start the database",
+        "dbMigrate": "apply migrations",
         "pnpmBuild": "build everything",
         "dockerUp": "all services in Docker",
         "dockerDown": "stop",
@@ -85,16 +86,18 @@
       },
       "accounts": {
         "title": "Authentication",
-        "intro": "On startup the backend creates an admin from ADMIN_EMAIL and ADMIN_PASSWORD in apps/backend/.env.",
+        "intro": "The admin isn't created automatically: the seed creates it from ADMIN_EMAIL and ADMIN_PASSWORD in apps/backend/.env. Run it after the first pnpm dev — by then the database is up and migrations are applied.",
         "defaults": "By default:",
         "email": "Email",
         "password": "Password",
+        "seed": "create the admin (safe to run again)",
         "more": "How authentication works"
       },
       "map": {
         "title": "Where things live",
         "items": {
           "backend": "NestJS: API, modules, services",
+          "prisma": "Database schema, migrations and the admin seed",
           "frontend": "Nuxt 4: pages, components, API proxy",
           "docs": "This documentation, built with VitePress",
           "shared": "Shared types and translations for backend and frontend",
@@ -109,7 +112,7 @@
         "items": {
           "readme": "Describe the project in README: what it is, how to run it, who owns it",
           "env": "Go through .env: ports, addresses, secrets. Values from .env.example are for development only",
-          "secrets": "Replace JWT_SECRET, REFRESH_TOKEN_SECRET and ADMIN_PASSWORD: in .env.example these are placeholders",
+          "secrets": "Replace JWT_SECRET, REFRESH_TOKEN_SECRET, ADMIN_PASSWORD and POSTGRES_PASSWORD: in .env.example these are placeholders",
           "examples": "Remove examples you don't need: the tasks module in the backend and the tasks page in the frontend",
           "ci": "Set up CI and deployment for your infrastructure"
         }
@@ -153,6 +156,10 @@
           "auth": {
             "title": "Authentication",
             "desc": "JWT in HttpOnly cookies, refresh token rotation"
+          },
+          "database": {
+            "title": "Database",
+            "desc": "PostgreSQL, Prisma, migrations and seed"
           }
         }
       },
@@ -174,6 +181,10 @@
           "network": {
             "q": "network … could not be found",
             "a": "The Docker network is external and pnpm docker:up creates it. With a plain docker compose up, create it manually."
+          },
+          "migrations": {
+            "q": "pnpm dev stopped at the migrations step",
+            "a": "A migration failed (P3018, P3009). How to fix the SQL and mark the migration is in “When something goes wrong”."
           }
         },
         "more": "Details"
