@@ -2,17 +2,17 @@
 const projectDir = 'my-app'
 
 export interface Branch {
-  id: string // ключ в home.branches (main | auth | postgresPrisma)
+  id: string // ключ в home.promo.branches (main | auth | postgresPrisma)
   name: string
 }
 
 export interface QuickstartStep {
-  id: string // ключ в home.quickstart.steps
+  id: string // ключ в home.promo.quickstart.steps
   cmd: string
 }
 
 export interface Principle {
-  id: string // ключ в home.principles
+  id: string // ключ в home.promo.principles
   icon: string
 }
 
@@ -77,7 +77,7 @@ export const stackLogos: StackLogo[] = [
 // ──────────────────────────  Авторизация  ──────────────────────────
 
 export interface AuthPoint {
-  id: string // ключ в home.auth.points
+  id: string // ключ в home.promo.auth.points
   icon: string
 }
 
@@ -97,7 +97,7 @@ export const authPoints: AuthPoint[] = [
 export type FitVerdict = 'good' | 'bad' | 'mixed'
 
 export interface FitCase {
-  id: string // ключ в home.fit.cases
+  id: string // ключ в home.promo.fit.cases
   verdict: FitVerdict
   icon: string
 }

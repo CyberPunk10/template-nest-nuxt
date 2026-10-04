@@ -8,6 +8,7 @@ import HomeCallout from './HomeCallout.vue'
 const { theme, lang } = useData()
 
 const hero = computed(() => theme.value.home!.hero)
+const promoHero = computed(() => theme.value.home!.promo.hero)
 
 // Ссылка на документацию с учётом текущей локали: ru — в корне (без префикса),
 // en/th — в своих папках. withBase добавит base '/dev/docs/'.
@@ -26,12 +27,12 @@ const demoLink = computed(() => theme.value.dashboardUrl)
     <div class="hero__glow" />
     <div class="hero__content">
       <div class="hero__inner">
-        <span class="hero__badge">{{ hero.badge }}</span>
+        <span class="hero__badge">{{ promoHero.badge }}</span>
         <h1 class="hero__title">
           {{ hero.title }}<br><span class="hero__title-accent">{{ hero.titleAccent }}</span>
         </h1>
         <HomeCallout variant="type" class="hero__thesis" />
-        <p class="hero__subtitle" v-html="hero.subtitle.replace('\n', '<br />')" />
+        <p class="hero__subtitle" v-html="promoHero.subtitle.replace('\n', '<br />')" />
         <div class="hero__actions">
           <a
             class="hero__btn hero__btn--primary"
@@ -49,7 +50,7 @@ const demoLink = computed(() => theme.value.dashboardUrl)
             target="_self"
           >
             <Icon name="lucide:circle-play" size="15" />
-            {{ hero.demo }}
+            {{ promoHero.demo }}
           </a>
         </div>
       </div>

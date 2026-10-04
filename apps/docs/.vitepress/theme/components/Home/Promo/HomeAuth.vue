@@ -7,7 +7,7 @@ import { authDocsUrl } from '../site-data'
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress),
 // без vue-i18n. theme меняется при смене языка — компонент перерисовывается.
 const { theme } = useData()
-const auth = computed(() => theme.value.home!.auth)
+const auth = computed(() => theme.value.home!.promo.auth)
 </script>
 
 <template>
