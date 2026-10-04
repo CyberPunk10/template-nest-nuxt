@@ -10,48 +10,17 @@
       "groups": {
         "dev": "Dev",
         "prod": "Prod",
-        "utils": "ยูทิลิตี้",
-        "prisma": "Prisma"
+        "utils": "ยูทิลิตี้"
       },
       "items": {
-        "pnpmDev": "เริ่มแอปพลิเคชัน",
-        "dockerDev": "โครงสร้างพื้นฐาน",
-        "pnpmBuild": "build ทั้งหมด",
-        "dockerUp": "ทุก services ใน Docker",
-        "dockerDown": "หยุด",
-        "pnpmLint": "ตรวจสอบโค้ด",
-        "pnpmTypeCheck": "ตรวจสอบ types",
-        "pnpmTest": "unit เทสต์",
-        "pnpmTestE2e": "e2e เทสต์",
-        "prismaStudio": "Prisma Studio"
+        "pnpmDev": "ทุกอย่างพร้อม hot reload: backend, frontend, เอกสาร",
+        "pnpmBuild": "production build โดยไม่ใช้ Docker",
+        "dockerUp": "บิลด์อิมเมจและรันแบบโปรดักชัน",
+        "dockerDown": "หยุดคอนเทนเนอร์"
       }
     },
     "footer": {
-      "tagline": "เทมเพลต monorepo พร้อมใช้งาน production สำหรับเริ่มต้นอย่างรวดเร็ว",
-      "projectTitle": "โปรเจกต์",
-      "startTitle": "เริ่มต้น",
-      "startHint": "สร้างโปรเจกต์ด้วยคำสั่งเดียว:",
-      "links": {
-        "github": "GitHub",
-        "issues": "Issues",
-        "license": "สัญญาอนุญาต MIT"
-      },
-      "poweredBy": "ขับเคลื่อนโดย",
-      "copyright": "โอเพนซอร์สภายใต้สัญญาอนุญาต MIT",
-      "supportTitle": "สนับสนุน",
-      "contactsTitle": "ติดต่อ",
-      "support": {
-        "intro": "เทมเพลตนี้ฟรีและโอเพนซอร์ส ช่วยให้เติบโตได้ที่นี่:",
-        "star": "กด Star บน GitHub",
-        "sponsor": "เป็นผู้สนับสนุน",
-        "crypto": "บริจาคด้วยคริปโท",
-        "cryptoHint": "คลิกที่อยู่เพื่อคัดลอก"
-      },
-      "contacts": {
-        "author": "ผู้เขียนบน GitHub",
-        "email": "Email",
-        "telegram": "Telegram"
-      }
+      "poweredBy": "ขับเคลื่อนโดย"
     },
     "content": {
       "hero": {
@@ -91,26 +60,42 @@
         "password": "รหัสผ่าน",
         "more": "ระบบยืนยันตัวตนทำงานอย่างไร"
       },
-      "map": {
-        "title": "อะไรอยู่ตรงไหน",
+      "structure": {
+        "title": "โครงสร้างโปรเจกต์",
         "items": {
           "backend": "NestJS: API, โมดูล, เซอร์วิส",
           "frontend": "Nuxt 4: หน้าเว็บ, คอมโพเนนต์, พร็อกซีไปยัง API",
           "docs": "เอกสารนี้ สร้างด้วย VitePress",
           "shared": "ไทป์และคำแปลที่ใช้ร่วมกันระหว่าง backend และ frontend",
-          "ui": "UI คอมโพเนนต์: UiButton, UiBadge, UiCard",
+          "ui": "คอมโพเนนต์พื้นฐานที่ไม่มี logic ของแอป",
           "nginx": "Reverse proxy — จุดเข้าเดียวใน Docker",
-          "scripts": "การเตรียมก่อนรัน: .env, พอร์ต, เครือข่าย Docker"
+          "scripts": "การเตรียมก่อนรัน: .env, พอร์ต, เครือข่าย Docker",
+          "root": "รากของ monorepo",
+          "apps": "แอปพลิเคชัน",
+          "packages": "แพ็กเกจที่ใช้ร่วมกัน",
+          "infra": "โครงสร้างพื้นฐาน",
+          "compose": "เซอร์วิสสำหรับ Docker",
+          "envExample": "ตัวอย่างตัวแปรสภาพแวดล้อม",
+          "packageJson": "manifest หลักของ monorepo: สคริปต์ pnpm ที่ใช้ร่วมกัน"
+        },
+        "short": {
+          "backend": "NestJS API",
+          "frontend": "แอป Nuxt",
+          "docs": "เอกสาร",
+          "shared": "ไทป์และคำแปล",
+          "ui": "คอมโพเนนต์พื้นฐาน",
+          "nginx": "Reverse proxy",
+          "scripts": "การเตรียมก่อนรัน",
+          "envExample": "ตัวอย่าง env",
+          "packageJson": "manifest หลัก"
         }
       },
       "checklist": {
         "title": "หลังสร้างโปรเจกต์",
         "intro": "สิ่งที่มักทำในช่วงแรก เพื่อให้เทมเพลตกลายเป็นโปรเจกต์ของคุณ",
         "items": {
-          "readme": "อธิบายโปรเจกต์ใน README: คืออะไร รันอย่างไร ใครรับผิดชอบ",
           "env": "ตรวจ .env: พอร์ต ที่อยู่ และ secret ค่าจาก .env.example ใช้ได้เฉพาะตอนพัฒนา",
           "secrets": "เปลี่ยน JWT_SECRET, REFRESH_TOKEN_SECRET และ ADMIN_PASSWORD: ใน .env.example เป็นเพียงค่าตัวอย่าง",
-          "examples": "ลบตัวอย่างที่ไม่ใช้: โมดูล tasks ใน backend และหน้า tasks ใน frontend",
           "ci": "ตั้งค่า CI และการ deploy ให้เข้ากับโครงสร้างพื้นฐานของคุณ"
         }
       },
@@ -134,6 +119,10 @@
             "title": "สถาปัตยกรรม",
             "desc": "แอปถูกสร้างอย่างไรและสื่อสารกันอย่างไร"
           },
+          "auth": {
+            "title": "การยืนยันตัวตน",
+            "desc": "JWT ในคุกกี้ HttpOnly และการหมุนเวียน refresh token"
+          },
           "env": {
             "title": "ตัวแปรสภาพแวดล้อม",
             "desc": "อะไรกำหนดใน .env และถูกอ่านที่ไหน"
@@ -149,10 +138,6 @@
           "proxy": {
             "title": "Reverse proxy",
             "desc": "จุดเข้าเดียวและเหตุผลที่พอร์ตถูกปิด"
-          },
-          "auth": {
-            "title": "การยืนยันตัวตน",
-            "desc": "JWT ในคุกกี้ HttpOnly และการหมุนเวียน refresh token"
           }
         }
       },
@@ -199,9 +184,7 @@
       "hero": {
         "badge": "Open-source template",
         "subtitle": "จุดเริ่มต้นสำหรับแอปพลิเคชัน full-stack พร้อม production\nติดตั้งภายในไม่กี่นาที รองรับการ scale ถึง production",
-        "demo": "ดูตัวอย่างเดโม",
-        "login": "เข้าสู่ระบบ",
-        "github": "GitHub"
+        "demo": "ดูตัวอย่างเดโม"
       },
       "showcase": {
         "title": "สร้างขึ้นจากอะไร",
@@ -455,9 +438,6 @@
           "desc": "จุดเริ่มต้นที่เหมาะสำหรับแดชบอร์ดและแผงผู้ดูแลระบบ JWT authentication ต่อยอดจากตัวแปรพื้นฐาน: email + password, httpOnly cookies, sessions ในหน่วยความจำของ process"
         }
       },
-      "tree": {
-        "title": "โครงสร้าง"
-      },
       "sponsors": {
         "title": "ผู้สนับสนุน",
         "lead": "โลโก้ของคุณอยู่ตรงนี้ได้",
@@ -465,6 +445,31 @@
         "slot": "โลโก้ของคุณตรงนี้",
         "cta": "เป็นผู้สนับสนุน",
         "contact": "พูดคุยเรื่องการลงโลโก้"
+      },
+      "footer": {
+        "tagline": "เทมเพลต monorepo พร้อมใช้งาน production สำหรับเริ่มต้นอย่างรวดเร็ว",
+        "projectTitle": "โปรเจกต์",
+        "startTitle": "เริ่มต้น",
+        "startHint": "สร้างโปรเจกต์ด้วยคำสั่งเดียว:",
+        "links": {
+          "github": "GitHub",
+          "issues": "Issues",
+          "license": "สัญญาอนุญาต MIT"
+        },
+        "supportTitle": "สนับสนุน",
+        "contactsTitle": "ติดต่อ",
+        "support": {
+          "intro": "เทมเพลตนี้ฟรีและโอเพนซอร์ส ช่วยให้เติบโตได้ที่นี่:",
+          "star": "กด Star บน GitHub",
+          "sponsor": "เป็นผู้สนับสนุน",
+          "crypto": "บริจาคด้วยคริปโท",
+          "cryptoHint": "คลิกที่อยู่เพื่อคัดลอก"
+        },
+        "contacts": {
+          "author": "ผู้เขียนบน GitHub",
+          "email": "Email",
+          "telegram": "Telegram"
+        }
       }
     }
   }

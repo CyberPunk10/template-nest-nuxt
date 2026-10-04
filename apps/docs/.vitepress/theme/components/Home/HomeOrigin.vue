@@ -2,9 +2,8 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 import HomeCopyCmd from './HomeCopyCmd.vue'
-import { originLinks } from './body-data'
 import { projectMeta } from './project-meta'
-import { installCmd } from './site-data'
+import { installCmd, repoUrl } from './site-data'
 
 const { theme } = useData()
 const t = computed(() => theme.value.home!.content.origin)
@@ -14,6 +13,12 @@ const meta = computed(() => [
   { label: t.value.meta.version, value: projectMeta.templateVersion },
   { label: t.value.meta.created, value: projectMeta.createdAt },
 ])
+
+const originLinks = [
+  { id: 'generator', url: 'https://www.npmjs.com/package/create-nest-nuxt' },
+  { id: 'template', url: repoUrl },
+  { id: 'releases', url: `${repoUrl}/releases` },
+] as const
 </script>
 
 <template>

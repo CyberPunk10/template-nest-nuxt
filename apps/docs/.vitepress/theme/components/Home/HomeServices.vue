@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
-import { services } from './body-data'
 
 const { theme } = useData()
 const t = computed(() => theme.value.home!.content.services)
+
+const services = [
+  { id: 'frontend', url: 'http://localhost:3200' },
+  { id: 'backend', url: 'http://localhost:3100' },
+  { id: 'swagger', url: 'http://localhost:3100/api/docs' },
+  { id: 'health', url: 'http://localhost:3100/health' },
+  { id: 'docs', url: 'http://localhost:5173/dev/docs/' },
+] as const
 </script>
 
 <template>
