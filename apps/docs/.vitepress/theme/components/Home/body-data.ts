@@ -23,6 +23,7 @@ export const projectMap = [
 /** Разделы документации, куда стоит заглянуть после первого запуска. */
 export const nextLinks = [
   { id: 'architecture', icon: 'layers', doc: 'guide/architecture' },
+  { id: 'auth', icon: 'shield-check', doc: 'guide/auth/' },
   { id: 'env', icon: 'key-round', doc: 'guide/env-variables' },
   { id: 'testing', icon: 'check-circle', doc: 'guide/testing/' },
   { id: 'docker', icon: 'boxes', doc: 'guide/docker/' },

@@ -83,6 +83,14 @@
           "docs": "Документация"
         }
       },
+      "accounts": {
+        "title": "Авторизация",
+        "intro": "Backend при старте сам создаёт админа из ADMIN_EMAIL и ADMIN_PASSWORD в apps/backend/.env.",
+        "defaults": "По умолчанию:",
+        "email": "Email",
+        "password": "Пароль",
+        "more": "Как устроена авторизация"
+      },
       "map": {
         "title": "Где что лежит",
         "items": {
@@ -101,6 +109,7 @@
         "items": {
           "readme": "Описать проект в README: что это, как запустить, кто отвечает",
           "env": "Пройтись по .env: порты, адреса, секреты. Значения из .env.example годятся только для разработки",
+          "secrets": "Заменить JWT_SECRET, REFRESH_TOKEN_SECRET и ADMIN_PASSWORD: в .env.example это заглушки",
           "examples": "Удалить ненужные примеры: модуль tasks в backend и страницу задач во frontend",
           "ci": "Настроить CI и деплой под свою инфраструктуру"
         }
@@ -144,6 +153,10 @@
           "husky": {
             "title": "Хуки и коммиты",
             "desc": "Проверки перед коммитом и формат сообщений"
+          },
+          "auth": {
+            "title": "Авторизация",
+            "desc": "JWT в HttpOnly-куках, ротация refresh-токенов"
           }
         }
       },

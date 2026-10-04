@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import HomeStart from './HomeStart.vue'
 import HomeServices from './HomeServices.vue'
+import HomeAccounts from './HomeAccounts.vue'
 import HomeCommands from './HomeCommands.vue'
 import HomeMap from './HomeMap.vue'
 import HomeChecklist from './HomeChecklist.vue'
@@ -16,6 +17,7 @@ import HomeOrigin from './HomeOrigin.vue'
       <HomeStart />
       <HomeServices />
     </div>
+    <HomeAccounts />
     <div class="body__row">
       <HomeCommands />
       <HomeMap />

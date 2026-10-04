@@ -83,6 +83,14 @@
           "docs": "Documentation"
         }
       },
+      "accounts": {
+        "title": "Authentication",
+        "intro": "On startup the backend creates an admin from ADMIN_EMAIL and ADMIN_PASSWORD in apps/backend/.env.",
+        "defaults": "By default:",
+        "email": "Email",
+        "password": "Password",
+        "more": "How authentication works"
+      },
       "map": {
         "title": "Where things live",
         "items": {
@@ -101,6 +109,7 @@
         "items": {
           "readme": "Describe the project in README: what it is, how to run it, who owns it",
           "env": "Go through .env: ports, addresses, secrets. Values from .env.example are for development only",
+          "secrets": "Replace JWT_SECRET, REFRESH_TOKEN_SECRET and ADMIN_PASSWORD: in .env.example these are placeholders",
           "examples": "Remove examples you don't need: the tasks module in the backend and the tasks page in the frontend",
           "ci": "Set up CI and deployment for your infrastructure"
         }
@@ -144,6 +153,10 @@
           "husky": {
             "title": "Hooks and commits",
             "desc": "Pre-commit checks and the message format"
+          },
+          "auth": {
+            "title": "Authentication",
+            "desc": "JWT in HttpOnly cookies, refresh token rotation"
           }
         }
       },
