@@ -6,7 +6,7 @@ import HomeShowcase from './HomeShowcase.vue'
 import HomeFit from './HomeFit.vue'
 import HomeAuth from './HomeAuth.vue'
 import HomeCallout from './HomeCallout.vue'
-import HomeTree from './HomeTree.vue'
+import HomeStructure from '../HomeStructure.vue'
 import HomeSponsors from './HomeSponsors.vue'
 </script>
 
@@ -20,9 +20,13 @@ import HomeSponsors from './HomeSponsors.vue'
     <HomeAuth />
     <HomeBranches />
     <HomeCallout variant="steps" />
-    <div class="home__bottom">
-      <HomeTree />
-    </div>
+    <HomeStructure class="promo__structure" />
   </div>
   <HomeSponsors />
 </template>
+
+<style scoped>
+.promo__structure {
+  max-width: 720px;
+}
+</style>

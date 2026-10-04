@@ -25,7 +25,7 @@ const copyCmd = inject<(cmd: string) => void>('copyCmd')!
   align-items: center;
   gap: 10px;
   max-width: 100%;
-  padding: 6px 10px;
+  padding: 3px 8px;
   border-radius: var(--home-radius-md);
   background: var(--home-surface-deep);
   border: 1px solid var(--home-border-2);

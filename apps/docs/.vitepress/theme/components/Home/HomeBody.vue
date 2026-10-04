@@ -2,7 +2,7 @@
 import HomeStart from './HomeStart.vue'
 import HomeServices from './HomeServices.vue'
 import HomeCommands from './HomeCommands.vue'
-import HomeMap from './HomeMap.vue'
+import HomeStructure from './HomeStructure.vue'
 import HomeChecklist from './HomeChecklist.vue'
 import HomeDocsGuide from './HomeDocsGuide.vue'
 import HomeNext from './HomeNext.vue'
@@ -18,7 +18,7 @@ import HomeOrigin from './HomeOrigin.vue'
     </div>
     <div class="body__row">
       <HomeCommands />
-      <HomeMap />
+      <HomeStructure />
     </div>
     <HomeNext />
     <div class="body__row">

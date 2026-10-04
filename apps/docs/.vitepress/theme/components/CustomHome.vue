@@ -6,6 +6,7 @@ import HomeHeroPromo from './Home/Promo/HomeHero.vue'
 import HomeBody from './Home/HomeBody.vue'
 import HomeModeSwitch from './Home/Promo/HomeModeSwitch.vue'
 import HomeFooter from './Home/HomeFooter.vue'
+import HomeFooterPromo from './Home/Promo/HomeFooter.vue'
 
 const mode = ref<'promo' | 'dev'>('promo')
 
@@ -30,7 +31,8 @@ provide('copyCmd', copyCmd)
     <div class="home__nav-line" />
     <HomeBodyPromo v-if="mode === 'promo'" />
     <HomeBody v-else />
-    <HomeFooter />
+    <HomeFooterPromo v-if="mode === 'promo'" />
+    <HomeFooter v-else />
     <HomeModeSwitch v-model="mode" />
   </div>
 </template>
@@ -59,16 +61,6 @@ provide('copyCmd', copyCmd)
   display: flex;
   flex-direction: column;
   gap: 48px;
-}
-.home__bottom {
-  display: grid;
-  grid-template-columns: minmax(0, 420px) minmax(0, 420px);
-  gap: 24px;
-  align-items: stretch;
-}
-.home__bottom > :deep(.section) {
-  display: flex;
-  flex-direction: column;
 }
 .home-panel {
   background: var(--home-surface-2);
@@ -123,10 +115,6 @@ provide('copyCmd', copyCmd)
   .home__body {
     padding: 32px 24px 48px;
     gap: 36px;
-  }
-
-  .home__bottom {
-    grid-template-columns: minmax(0, 1fr);
   }
 }
 

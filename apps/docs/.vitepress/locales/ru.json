@@ -10,48 +10,17 @@
       "groups": {
         "dev": "Dev",
         "prod": "Prod",
-        "utils": "Утилиты",
-        "prisma": "Prisma"
+        "utils": "Утилиты"
       },
       "items": {
-        "pnpmDev": "запустить приложения",
-        "dockerDev": "инфраструктура",
-        "pnpmBuild": "собрать всё",
-        "dockerUp": "все сервисы в Docker",
-        "dockerDown": "остановить",
-        "pnpmLint": "проверить код",
-        "pnpmTypeCheck": "проверить типы",
-        "pnpmTest": "unit-тесты",
-        "pnpmTestE2e": "e2e-тесты",
-        "prismaStudio": "Prisma Studio"
+        "pnpmDev": "backend, frontend и документация с hot-reload",
+        "pnpmBuild": "production-сборка без Docker",
+        "dockerUp": "образы и запуск, как на проде",
+        "dockerDown": "остановить контейнеры"
       }
     },
     "footer": {
-      "tagline": "Production-ready монорепо-шаблон для быстрого старта.",
-      "projectTitle": "Проект",
-      "startTitle": "Начать",
-      "startHint": "Создайте проект одной командой:",
-      "links": {
-        "github": "GitHub",
-        "issues": "Issues",
-        "license": "Лицензия MIT"
-      },
-      "poweredBy": "Работает на",
-      "copyright": "Открытый код под лицензией MIT.",
-      "supportTitle": "Поддержать",
-      "contactsTitle": "Контакты",
-      "support": {
-        "intro": "Шаблон бесплатный и открытый. Помогите ему развиваться:",
-        "star": "Поставьте звезду на GitHub",
-        "sponsor": "Оформите спонсорство",
-        "crypto": "Отправьте донат в крипте",
-        "cryptoHint": "Нажмите на адрес, чтобы скопировать"
-      },
-      "contacts": {
-        "author": "Автор на GitHub",
-        "email": "Email",
-        "telegram": "Telegram"
-      }
+      "poweredBy": "Работает на"
     },
     "content": {
       "hero": {
@@ -83,25 +52,41 @@
           "docs": "Документация"
         }
       },
-      "map": {
-        "title": "Где что лежит",
+      "structure": {
+        "title": "Структура проекта",
         "items": {
           "backend": "NestJS: API, модули, сервисы",
           "frontend": "Nuxt 4: страницы, компоненты, прокси к API",
           "docs": "Эта документация на VitePress",
           "shared": "Общие типы и переводы для backend и frontend",
-          "ui": "UI-компоненты: UiButton, UiBadge, UiCard",
+          "ui": "Базовые компоненты без логики приложения",
           "nginx": "Reverse proxy — единая точка входа в Docker",
-          "scripts": "Подготовка к запуску: .env, порты, Docker-сеть"
+          "scripts": "Подготовка к запуску: .env, порты, Docker-сеть",
+          "root": "Корень монорепо",
+          "apps": "Приложения",
+          "packages": "Общие пакеты",
+          "infra": "Инфраструктура",
+          "compose": "Сервисы для Docker",
+          "envExample": "Пример переменных окружения",
+          "packageJson": "Корневой манифест монорепо: общие скрипты pnpm"
+        },
+        "short": {
+          "backend": "NestJS API",
+          "frontend": "Nuxt-приложение",
+          "docs": "Документация",
+          "shared": "Типы и переводы",
+          "ui": "Базовые компоненты",
+          "nginx": "Reverse proxy",
+          "scripts": "Подготовка к запуску",
+          "envExample": "Пример переменных",
+          "packageJson": "Манифест монорепо"
         }
       },
       "checklist": {
         "title": "После создания проекта",
         "intro": "Что обычно делают в первые дни, чтобы шаблон стал вашим проектом.",
         "items": {
-          "readme": "Описать проект в README: что это, как запустить, кто отвечает",
           "env": "Пройтись по .env: порты, адреса, секреты. Значения из .env.example годятся только для разработки",
-          "examples": "Удалить ненужные примеры: модуль tasks в backend и страницу задач во frontend",
           "ci": "Настроить CI и деплой под свою инфраструктуру"
         }
       },
@@ -190,9 +175,7 @@
       "hero": {
         "badge": "Open-source template",
         "subtitle": "Production-ready стартовая точка для full-stack приложений.\nРазворачивается за минуты, масштабируется до продакшена.",
-        "demo": "Посмотреть демо",
-        "login": "Войти",
-        "github": "GitHub"
+        "demo": "Посмотреть демо"
       },
       "showcase": {
         "title": "На чём построено",
@@ -446,9 +429,6 @@
           "desc": "Идеальный старт для личных кабинетов и административных панелей. JWT-аутентификация поверх базового варианта: email + пароль, httpOnly cookies, сессии в памяти процесса."
         }
       },
-      "tree": {
-        "title": "Структура"
-      },
       "sponsors": {
         "title": "Спонсоры",
         "lead": "Здесь может быть ваш логотип",
@@ -456,6 +436,31 @@
         "slot": "Здесь может быть ваш лого",
         "cta": "Стать спонсором",
         "contact": "Обсудить размещение"
+      },
+      "footer": {
+        "tagline": "Production-ready монорепо-шаблон для быстрого старта.",
+        "projectTitle": "Проект",
+        "startTitle": "Начать",
+        "startHint": "Создайте проект одной командой:",
+        "links": {
+          "github": "GitHub",
+          "issues": "Issues",
+          "license": "Лицензия MIT"
+        },
+        "supportTitle": "Поддержать",
+        "contactsTitle": "Контакты",
+        "support": {
+          "intro": "Шаблон бесплатный и открытый. Помогите ему развиваться:",
+          "star": "Поставьте звезду на GitHub",
+          "sponsor": "Оформите спонсорство",
+          "crypto": "Отправьте донат в крипте",
+          "cryptoHint": "Нажмите на адрес, чтобы скопировать"
+        },
+        "contacts": {
+          "author": "Автор на GitHub",
+          "email": "Email",
+          "telegram": "Telegram"
+        }
       }
     }
   }
