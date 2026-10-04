@@ -16,7 +16,7 @@ const props = defineProps<{ variant: 'split' | 'steps' | 'type' }>()
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress),
 // без vue-i18n. theme меняется при смене языка — компонент перерисовывается.
 const { theme } = useData()
-const callout = computed(() => theme.value.home!.callout)
+const callout = computed(() => theme.value.home!.promo.callout)
 const v = computed(() => callout.value[props.variant])
 
 // ── Печать для варианта type ──

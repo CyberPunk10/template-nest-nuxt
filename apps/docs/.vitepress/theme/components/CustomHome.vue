@@ -70,6 +70,12 @@ provide('copyCmd', copyCmd)
   display: flex;
   flex-direction: column;
 }
+.home-panel {
+  background: var(--home-surface-2);
+  border: 1px solid var(--home-border-subtle);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
 .home-card {
   display: flex;
   flex-direction: column;

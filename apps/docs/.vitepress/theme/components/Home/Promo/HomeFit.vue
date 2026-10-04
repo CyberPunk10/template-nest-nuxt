@@ -6,7 +6,7 @@ import { fitCases, type FitVerdict } from './home-data'
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress),
 // без vue-i18n. theme меняется при смене языка — компонент перерисовывается.
 const { theme } = useData()
-const fit = computed(() => theme.value.home!.fit)
+const fit = computed(() => theme.value.home!.promo.fit)
 
 const verdictIcons: Record<FitVerdict, string> = {
   good: 'lucide:check-circle',
