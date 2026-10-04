@@ -150,10 +150,6 @@
             "title": "Reverse proxy",
             "desc": "The single entry point and why ports are closed"
           },
-          "husky": {
-            "title": "Hooks and commits",
-            "desc": "Pre-commit checks and the message format"
-          },
           "auth": {
             "title": "Authentication",
             "desc": "JWT in HttpOnly cookies, refresh token rotation"

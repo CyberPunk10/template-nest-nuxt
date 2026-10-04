@@ -28,7 +28,6 @@ export const nextLinks = [
   { id: 'testing', icon: 'check-circle', doc: 'guide/testing/' },
   { id: 'docker', icon: 'boxes', doc: 'guide/docker/' },
   { id: 'proxy', icon: 'network', doc: 'guide/reverse-proxy' },
-  { id: 'husky', icon: 'git-branch', doc: 'guide/structure/husky/' },
 ] as const
 
 /** Частые проблемы и страница, где разобрано подробнее. */

@@ -150,10 +150,6 @@
             "title": "Reverse proxy",
             "desc": "จุดเข้าเดียวและเหตุผลที่พอร์ตถูกปิด"
           },
-          "husky": {
-            "title": "Hooks และ commits",
-            "desc": "การตรวจก่อน commit และรูปแบบข้อความ"
-          },
           "auth": {
             "title": "การยืนยันตัวตน",
             "desc": "JWT ในคุกกี้ HttpOnly และการหมุนเวียน refresh token"
