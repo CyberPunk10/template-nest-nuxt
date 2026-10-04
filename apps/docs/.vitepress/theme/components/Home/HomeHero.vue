@@ -1,19 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useData, withBase } from 'vitepress'
+import { useData } from 'vitepress'
 
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress),
 // без vue-i18n. theme меняется при смене языка — компонент перерисовывается.
-const { theme, lang } = useData()
+const { theme } = useData()
 
 const hero = computed(() => theme.value.home!.hero)
-
-// Ссылка на документацию с учётом текущей локали: ru — в корне (без префикса),
-// en/th — в своих папках. withBase добавит base '/dev/docs/'.
-const docsLink = computed(() => {
-  const prefix = lang.value === 'ru' ? '' : `/${lang.value}`
-  return withBase(`${prefix}/guide/getting-started`)
-})
+const contentHero = computed(() => theme.value.home!.content.hero)
 
 const appLink = computed(() => theme.value.dashboardUrl)
 </script>
@@ -23,11 +17,11 @@ const appLink = computed(() => theme.value.dashboardUrl)
     <div class="hero__glow" />
     <div class="hero__content">
       <div class="hero__inner">
-        <span class="hero__badge">{{ hero.badge }}</span>
+        <span class="hero__badge">{{ contentHero.badge }}</span>
         <h1 class="hero__title">
           {{ hero.title }}<br><span class="hero__title-accent">{{ hero.titleAccent }}</span>
         </h1>
-        <p class="hero__subtitle" v-html="hero.subtitle.replace('\n', '<br />')" />
+        <p class="hero__subtitle" v-html="contentHero.subtitle.replace('\n', '<br />')" />
         <div class="hero__actions">
           <!-- target="_self" обязателен: иначе роутер VitePress сочтёт ссылку
                внутренней, перехватит клик и попробует найти такую страницу
@@ -38,11 +32,11 @@ const appLink = computed(() => theme.value.dashboardUrl)
             target="_self"
           >
             <Icon name="lucide:arrow-left" size="15" />
-            {{ hero.backToProject }}
+            {{ contentHero.backToProject }}
           </a>
           <a
             class="hero__btn hero__btn--primary"
-            :href="docsLink"
+            href="guide/getting-started"
           >
             <Icon name="lucide:book-open" size="15" />
             {{ hero.docs }}

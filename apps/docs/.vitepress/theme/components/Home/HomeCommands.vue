@@ -34,7 +34,7 @@ const groups = computed<CommandGroup[]>(() => {
       label: c.groups.prod,
       commands: [
         { cmd: 'pnpm build', desc: c.items.pnpmBuild },
-        { cmd: 'pnpm docker:up', desc: c.items.dockerUp },
+        { cmd: 'pnpm docker:up --build', desc: c.items.dockerUp },
         { cmd: 'docker compose down', desc: c.items.dockerDown },
       ],
     },
@@ -43,6 +43,8 @@ const groups = computed<CommandGroup[]>(() => {
       commands: [
         { cmd: 'pnpm lint', desc: c.items.pnpmLint },
         { cmd: 'pnpm type-check', desc: c.items.pnpmTypeCheck },
+        { cmd: 'pnpm test', desc: c.items.pnpmTest },
+        { cmd: 'pnpm test:e2e', desc: c.items.pnpmTestE2e },
       ],
     },
     {

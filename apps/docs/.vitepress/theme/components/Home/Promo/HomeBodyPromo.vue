@@ -6,7 +6,7 @@ import HomeShowcase from './HomeShowcase.vue'
 import HomeFit from './HomeFit.vue'
 import HomeAuth from './HomeAuth.vue'
 import HomeCallout from './HomeCallout.vue'
-import HomeTree from '../HomeTree.vue'
+import HomeTree from './HomeTree.vue'
 import HomeSponsors from './HomeSponsors.vue'
 </script>
 

@@ -6,7 +6,7 @@ import { quickstartSteps } from './home-data'
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress),
 // без vue-i18n. theme меняется при смене языка — компонент перерисовывается.
 const { theme } = useData()
-const home = computed(() => theme.value.home!)
+const home = computed(() => theme.value.home!.promo)
 
 const copied = inject<Ref<string | null>>('copied')!
 const copyCmd = inject<(cmd: string) => void>('copyCmd')!

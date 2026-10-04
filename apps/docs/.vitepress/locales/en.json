@@ -1,267 +1,9 @@
 {
   "home": {
     "hero": {
-      "badge": "Open-source template",
       "title": "NestJS + Nuxt 4",
       "titleAccent": "Monorepo Template",
-      "subtitle": "Production-ready starting point for full-stack applications.\nDeploy in minutes, scale to production.",
-      "demo": "View demo",
-      "backToProject": "Back to project",
-      "login": "Sign in",
-      "github": "GitHub",
       "docs": "Documentation"
-    },
-    "showcase": {
-      "title": "What it's built on",
-      "lead": "Mature tools with large communities and active releases only. No experimental dependencies you'll have to rip out six months from now.",
-      "optionalBadge": "option",
-      "optionalNote": "Optional modules: enabled by choice when you create a project. The base template runs without them.",
-      "items": {
-        "nest": {
-          "name": "NestJS",
-          "role": "Backend framework: modules, DI, decorators"
-        },
-        "nuxt": {
-          "name": "Nuxt 4",
-          "role": "SSR, file-based routing, auto-imports"
-        },
-        "vue": {
-          "name": "Vue 3",
-          "role": "Composition API, reactivity"
-        },
-        "typescript": {
-          "name": "TypeScript",
-          "role": "Strict mode across every package"
-        },
-        "prisma": {
-          "name": "Prisma 7",
-          "role": "Type-safe database access and migrations"
-        },
-        "postgres": {
-          "name": "PostgreSQL 17",
-          "role": "Primary data store"
-        },
-        "docker": {
-          "name": "Docker",
-          "role": "Multi-stage builds, dev and prod"
-        },
-        "pnpm": {
-          "name": "pnpm 11",
-          "role": "Monorepo workspaces"
-        }
-      }
-    },
-    "quickstart": {
-      "title": "Quick Start",
-      "steps": {
-        "create": "Create the project",
-        "install": "Install dependencies",
-        "run": "Start the applications"
-      }
-    },
-    "principles": {
-      "title": "Principles",
-      "transparency": {
-        "title": "Transparency",
-        "desc": "No magic. Every decision is explained and obvious from the code."
-      },
-      "idiomatic": {
-        "title": "Idiomatic",
-        "desc": "Follow NestJS and Nuxt conventions, don't reinvent the wheel."
-      },
-      "production": {
-        "title": "Production-ready",
-        "desc": "Docker, env validation, error handling — from day one."
-      },
-      "starter": {
-        "title": "Start for your ideas",
-        "desc": "A ready foundation — clone it and build your product instead of spending weeks on boilerplate."
-      }
-    },
-    "fit": {
-      "title": "Who it's for — and who it isn't",
-      "lead": "An honest breakdown instead of a feature list. The template commits you to a separate API server and an SSR frontend — a win where that architecture is needed, dead weight where it isn't.",
-      "summary": {
-        "title": "In short",
-        "forTitle": "Your case if you need",
-        "againstTitle": "Not your case if",
-        "for": [
-          "user sign-up and login",
-          "roles and access control",
-          "build a new user account area from scratch",
-          "a private area alongside the public one",
-          "data kept in a database",
-          "an API of your own — for web, a mobile app or integrations",
-          "a BFF in front of existing services: aggregate calls and keep secrets out of the frontend",
-          "SSR for fast first paint and SEO",
-          "build alongside an AI assistant: a proven foundation and detailed docs it picks up from the start"
-        ],
-        "against": [
-          "the site has no account area or login",
-          "content lives in files or a headless CMS",
-          "static files on a CDN are enough",
-          "you deploy to serverless or the edge",
-          "you need a plain proxy to an existing API, with no aggregation or logic of your own"
-        ]
-      },
-      "verdicts": {
-        "good": "Great fit",
-        "mixed": "Workable, but think twice",
-        "bad": "Pick something else"
-      },
-      "altLabel": "Instead:",
-      "cases": {
-        "saas": {
-          "name": "SaaS with a user account area",
-          "why": "Exactly what the template was built for: sign-up, login, sessions, roles, a public side and a protected one. The auth-session branch covers authentication, leaving you the domain logic."
-        },
-        "admin": {
-          "name": "Admin panel, CRM, internal dashboard",
-          "why": "Lots of forms, tables and access rules. NestJS ships DTO validation and guards; Nuxt gives file-based routing and middleware to gate pages. SSR is a bonus here — the panel opens fast even on a slow laptop."
-        },
-        "landing": {
-          "name": "Landing or promo page",
-          "why": "A separate API server, a database and Docker plumbing for the sake of one contact form means weeks of upkeep for nothing — plus two running processes instead of static files on a CDN.",
-          "alt": "Astro, or Nuxt in static mode with a hosted form service."
-        },
-        "mobileBackend": {
-          "name": "Backend for a mobile app",
-          "why": "The NestJS side stands on its own: REST with a Swagger schema, validation, errors in a single shape. Keep the frontend as a content admin panel or drop it entirely — the backend doesn't change either way."
-        },
-        "contentSite": {
-          "name": "Blog, docs, content site",
-          "why": "Content belongs in files or a headless CMS, not in tables you design yourself. A NestJS backend does nothing here beyond serving text.",
-          "alt": "Astro, VitePress or Nuxt Content — these very docs run on VitePress."
-        },
-        "mvp": {
-          "name": "Startup MVP",
-          "why": "The first two weeks usually go to plumbing: configs, linters, auth, Docker, deployment. That's already here and documented, so you can test the hypothesis instead of configuring a build."
-        },
-        "microservices": {
-          "name": "Microservice system",
-          "why": "A pnpm workspaces monorepo handles several services well, and NestJS supports transports beyond HTTP. But the template brings no service discovery, no queues and no tracing — that's on you to build.",
-          "alt": "Starting from this monorepo is reasonable; budget for the infrastructure work."
-        },
-        "serverless": {
-          "name": "Serverless and edge functions",
-          "why": "NestJS builds a DI container at startup, which costs real hundreds of milliseconds on a cold start. A long-lived PostgreSQL connection pool fits that model poorly too.",
-          "alt": "Hono or Nuxt's Nitro routes, with an HTTP-protocol database driver."
-        },
-        "learning": {
-          "name": "Learning full-stack TypeScript",
-          "why": "The template's rule is no magic: every non-obvious decision has a comment in the code and a page in the docs. You can see how SSR, cookie sessions, guards and migrations connect — in real code, not a todo-app tutorial."
-        },
-        "highLoad": {
-          "name": "High traffic from day one",
-          "why": "The architecture scales horizontally just fine: a stateless API with sessions in the database. But there's no cache, no rate limiting, no queues and no metrics — under serious expected load you'll need to add those deliberately.",
-          "alt": "Plan Redis, a queue and monitoring before launch, not after."
-        },
-        "legacy": {
-          "name": "A frontend for existing services",
-          "why": "Depends on what Nest does. If it aggregates calls across several services, keeps secrets out of the frontend and adds access rules of its own, that's a BFF and the template works as intended. If it forwards requests one-to-one, the extra process doesn't pay for itself.",
-          "alt": "For plain proxying — Nuxt's Nitro routes, no separate backend."
-        },
-        "internalTools": {
-          "name": "Internal company tools",
-          "why": "Dashboards, export services, support panels. Traffic is predictable, SEO doesn't matter, and what does matter — development speed and understandable auth — is already covered."
-        }
-      },
-      "note": "These verdicts aren't verdicts on you: almost every \"pick something else\" case is buildable on this template. They judge whether the complexity it brings pays for itself."
-    },
-    "callout": {
-      "split": {
-        "withoutLabel": "the first weeks usually go to",
-        "without": [
-          "monorepo, builds, linters",
-          "Docker, env, CI",
-          "routing, layers, conventions"
-        ],
-        "withLabel": "here you start with",
-        "with": [
-          "your screens",
-          "your business logic",
-          "your product"
-        ]
-      },
-      "steps": {
-        "stages": [
-          "plumbing",
-          "infrastructure",
-          "conventions",
-          "your ideas"
-        ],
-        "done": "The boring part is already done.",
-        "text": "From here on — only your ideas."
-      },
-      "type": {
-        "call": "Start by",
-        "struck": "configuring the project",
-        "kept": "building ",
-        "accent": "your ideas"
-      }
-    },
-    "auth": {
-      "title": "Authentication",
-      "lead": "The base template ships without authentication — if you want to build your own, there is nothing to rip out. Ready-made auth comes as a separate option layered on top of the base.",
-      "base": {
-        "label": "base template",
-        "title": "Without auth",
-        "desc": "A clean starting point: Nest, Nuxt and shared types. Plug in your provider or write a scheme that fits your requirements."
-      },
-      "layer": {
-        "label": "option",
-        "title": "With auth",
-        "desc": "Fully working authentication on top of the base option. Do not spend weeks on what is already written and battle-tested."
-      },
-      "pointsTitle": "What the option with auth includes",
-      "points": {
-        "tokens": {
-          "title": "JWT access + refresh.",
-          "desc": "Access lives 15 minutes and is verified without hitting the store, refresh lives 7 days and can be revoked instantly."
-        },
-        "cookies": {
-          "title": "httpOnly cookies.",
-          "desc": "Tokens are unreachable from JavaScript, SameSite=strict closes CSRF. Nothing is kept in localStorage."
-        },
-        "rotation": {
-          "title": "Rotation and reuse detection.",
-          "desc": "Every refresh issues a new token. Reusing an old one counts as theft — the session chain is cut off."
-        },
-        "sessions": {
-          "title": "Server-side sessions.",
-          "desc": "A list of active devices, sign-out on a specific one, and an instant sign-out everywhere on password change."
-        },
-        "roles": {
-          "title": "Roles and guards.",
-          "desc": "user and admin, the @Public() and @Roles() decorators, route protection on the backend and middleware on the frontend."
-        },
-        "ssr": {
-          "title": "Works with SSR.",
-          "desc": "Silent refresh before the page renders: F5 with an expired token neither kicks you to the login page nor causes a hydration mismatch."
-        },
-        "providers": {
-          "title": "Can be extended.",
-          "desc": "OAuth, OIDC or an external provider can be added on top — the current scheme does not stand in the way and needs no rewrite."
-        }
-      },
-      "note": "The scheme is JWT access + refresh with server-side rotation — the same approach most web apps with a separate API use. The alternatives and the reasoning behind the choice are covered ",
-      "noteLink": "in the docs"
-    },
-    "branches": {
-      "title": "Variants",
-      "basedOn": "based on",
-      "main": {
-        "label": "Base",
-        "desc": "Starting point without a database. Users CRUD is stored in-memory."
-      },
-      "postgresPrisma": {
-        "label": "PostgreSQL",
-        "desc": "Adds PostgreSQL and Prisma 7 on top of the Auth variant."
-      },
-      "auth": {
-        "label": "Auth",
-        "desc": "The perfect starting point for dashboards and admin panels. JWT authentication on top of the base variant: email + password, httpOnly cookies, sessions in process memory."
-      }
     },
     "commands": {
       "title": "Commands",
@@ -279,19 +21,10 @@
         "dockerDown": "stop",
         "pnpmLint": "lint code",
         "pnpmTypeCheck": "type check",
+        "pnpmTest": "unit tests",
+        "pnpmTestE2e": "e2e tests",
         "prismaStudio": "Prisma Studio"
       }
-    },
-    "tree": {
-      "title": "Structure"
-    },
-    "sponsors": {
-      "title": "Sponsors",
-      "lead": "Your logo could be here",
-      "desc": "A place for logos and ads from companies backing the project. The template is open source and built on enthusiasm — sponsorship helps dedicate time to it.",
-      "slot": "Your logo here",
-      "cta": "Become a sponsor",
-      "contact": "Discuss placement"
     },
     "footer": {
       "tagline": "Production-ready monorepo template for a fast start.",
@@ -318,6 +51,420 @@
         "author": "Author on GitHub",
         "email": "Email",
         "telegram": "Telegram"
+      }
+    },
+    "content": {
+      "hero": {
+        "badge": "Project documentation",
+        "subtitle": "How to run the project, where things live and where to look next.\nThe docs live in the repository — keep them up to date along with the code.",
+        "backToProject": "Back to project"
+      },
+      "start": {
+        "title": "First run",
+        "setup": "You need Node.js, pnpm and Docker —",
+        "setupLink": "setup",
+        "steps": {
+          "install": "install dependencies",
+          "dev": "start all apps",
+          "docker": "or in containers, like in production"
+        },
+        "more": "More:",
+        "runPnpm": "running with pnpm",
+        "runDocker": "running with Docker"
+      },
+      "services": {
+        "title": "Addresses",
+        "note": "Default ports from .env.example. In Docker everything is served on one port: http://localhost/.",
+        "items": {
+          "frontend": "App",
+          "backend": "API",
+          "swagger": "Swagger UI",
+          "health": "Backend health check",
+          "docs": "Documentation"
+        }
+      },
+      "accounts": {
+        "title": "Authentication",
+        "intro": "On startup the backend creates an admin from ADMIN_EMAIL and ADMIN_PASSWORD in apps/backend/.env.",
+        "defaults": "By default:",
+        "email": "Email",
+        "password": "Password",
+        "more": "How authentication works"
+      },
+      "map": {
+        "title": "Where things live",
+        "items": {
+          "backend": "NestJS: API, modules, services",
+          "frontend": "Nuxt 4: pages, components, API proxy",
+          "docs": "This documentation, built with VitePress",
+          "shared": "Shared types and translations for backend and frontend",
+          "ui": "UI components: UiButton, UiBadge, UiCard",
+          "nginx": "Reverse proxy — the single entry point in Docker",
+          "scripts": "Pre-launch preparation: .env, ports, Docker network"
+        }
+      },
+      "checklist": {
+        "title": "After creating the project",
+        "intro": "What is usually done in the first days to turn the template into your project.",
+        "items": {
+          "readme": "Describe the project in README: what it is, how to run it, who owns it",
+          "env": "Go through .env: ports, addresses, secrets. Values from .env.example are for development only",
+          "secrets": "Replace JWT_SECRET, REFRESH_TOKEN_SECRET and ADMIN_PASSWORD: in .env.example these are placeholders",
+          "examples": "Remove examples you don't need: the tasks module in the backend and the tasks page in the frontend",
+          "ci": "Set up CI and deployment for your infrastructure"
+        }
+      },
+      "docsGuide": {
+        "title": "Maintaining the docs",
+        "items": {
+          "where": "Pages are markdown files in apps/docs/guide/",
+          "sidebar": "Add a new page to the sidebar: apps/docs/.vitepress/config/",
+          "links": "Links between pages are relative: ./setup, ../docker/"
+        },
+        "commands": {
+          "dev": "docs only, with hot reload",
+          "build": "build, also checks for dead links"
+        },
+        "more": "How the docs are organised"
+      },
+      "next": {
+        "title": "Where to look next",
+        "items": {
+          "architecture": {
+            "title": "Architecture",
+            "desc": "How the apps are built and how they talk to each other"
+          },
+          "env": {
+            "title": "Environment variables",
+            "desc": "What goes into .env and where it is read"
+          },
+          "testing": {
+            "title": "Testing",
+            "desc": "Unit and e2e tests, how to run them"
+          },
+          "docker": {
+            "title": "Docker",
+            "desc": "Images, compose and running in containers"
+          },
+          "proxy": {
+            "title": "Reverse proxy",
+            "desc": "The single entry point and why ports are closed"
+          },
+          "auth": {
+            "title": "Authentication",
+            "desc": "JWT in HttpOnly cookies, refresh token rotation"
+          }
+        }
+      },
+      "troubleshoot": {
+        "title": "If something doesn't work",
+        "items": {
+          "predev": {
+            "q": "pnpm dev stopped with a ✗ line",
+            "a": "The line names the preparation step that failed. What to check for each step is on the predev page."
+          },
+          "port": {
+            "q": "Port is in use",
+            "a": "pnpm dev finds the process on the port and offers to stop it. The ports themselves are set in PORT in apps/*/.env."
+          },
+          "stale": {
+            "q": "Changes don't show up in Docker",
+            "a": "Containers run a production build: without --build compose reuses old images. Run pnpm docker:up --build."
+          },
+          "network": {
+            "q": "network … could not be found",
+            "a": "The Docker network is external and pnpm docker:up creates it. With a plain docker compose up, create it manually."
+          }
+        },
+        "more": "Details"
+      },
+      "origin": {
+        "title": "This project was created with create-nest-nuxt",
+        "text": "When you need another project on the same stack, you won't have to remember where this one came from. A new one takes a single command: the generator asks for the docs language and the template variant.",
+        "links": {
+          "generator": "create-nest-nuxt on npm",
+          "template": "Template on GitHub",
+          "releases": "What's new in the template"
+        },
+        "meta": {
+          "title": "Project origin",
+          "variant": "Template variant",
+          "version": "Template version",
+          "created": "Created",
+          "empty": "filled in by create-nest-nuxt"
+        }
+      }
+    },
+    "promo": {
+      "hero": {
+        "badge": "Open-source template",
+        "subtitle": "Production-ready starting point for full-stack applications.\nDeploy in minutes, scale to production.",
+        "demo": "View demo",
+        "login": "Sign in",
+        "github": "GitHub"
+      },
+      "showcase": {
+        "title": "What it's built on",
+        "lead": "Mature tools with large communities and active releases only. No experimental dependencies you'll have to rip out six months from now.",
+        "optionalBadge": "option",
+        "optionalNote": "Optional modules: enabled by choice when you create a project. The base template runs without them.",
+        "items": {
+          "nest": {
+            "name": "NestJS",
+            "role": "Backend framework: modules, DI, decorators"
+          },
+          "nuxt": {
+            "name": "Nuxt 4",
+            "role": "SSR, file-based routing, auto-imports"
+          },
+          "vue": {
+            "name": "Vue 3",
+            "role": "Composition API, reactivity"
+          },
+          "typescript": {
+            "name": "TypeScript",
+            "role": "Strict mode across every package"
+          },
+          "prisma": {
+            "name": "Prisma 7",
+            "role": "Type-safe database access and migrations"
+          },
+          "postgres": {
+            "name": "PostgreSQL 17",
+            "role": "Primary data store"
+          },
+          "docker": {
+            "name": "Docker",
+            "role": "Multi-stage builds, dev and prod"
+          },
+          "pnpm": {
+            "name": "pnpm 11",
+            "role": "Monorepo workspaces"
+          }
+        }
+      },
+      "quickstart": {
+        "title": "Quick Start",
+        "steps": {
+          "create": "Create the project",
+          "install": "Install dependencies",
+          "run": "Start the applications"
+        }
+      },
+      "principles": {
+        "title": "Principles",
+        "transparency": {
+          "title": "Transparency",
+          "desc": "No magic. Every decision is explained and obvious from the code."
+        },
+        "idiomatic": {
+          "title": "Idiomatic",
+          "desc": "Follow NestJS and Nuxt conventions, don't reinvent the wheel."
+        },
+        "production": {
+          "title": "Production-ready",
+          "desc": "Docker, env validation, error handling — from day one."
+        },
+        "starter": {
+          "title": "Start for your ideas",
+          "desc": "A ready foundation — clone it and build your product instead of spending weeks on boilerplate."
+        }
+      },
+      "fit": {
+        "title": "Who it's for — and who it isn't",
+        "lead": "An honest breakdown instead of a feature list. The template commits you to a separate API server and an SSR frontend — a win where that architecture is needed, dead weight where it isn't.",
+        "summary": {
+          "title": "In short",
+          "forTitle": "Your case if you need",
+          "againstTitle": "Not your case if",
+          "for": [
+            "user sign-up and login",
+            "roles and access control",
+            "build a new user account area from scratch",
+            "a private area alongside the public one",
+            "data kept in a database",
+            "an API of your own — for web, a mobile app or integrations",
+            "a BFF in front of existing services: aggregate calls and keep secrets out of the frontend",
+            "SSR for fast first paint and SEO",
+            "build alongside an AI assistant: a proven foundation and detailed docs it picks up from the start"
+          ],
+          "against": [
+            "the site has no account area or login",
+            "content lives in files or a headless CMS",
+            "static files on a CDN are enough",
+            "you deploy to serverless or the edge",
+            "you need a plain proxy to an existing API, with no aggregation or logic of your own"
+          ]
+        },
+        "verdicts": {
+          "good": "Great fit",
+          "mixed": "Workable, but think twice",
+          "bad": "Pick something else"
+        },
+        "altLabel": "Instead:",
+        "cases": {
+          "saas": {
+            "name": "SaaS with a user account area",
+            "why": "Exactly what the template was built for: sign-up, login, sessions, roles, a public side and a protected one. The auth-session branch covers authentication, leaving you the domain logic."
+          },
+          "admin": {
+            "name": "Admin panel, CRM, internal dashboard",
+            "why": "Lots of forms, tables and access rules. NestJS ships DTO validation and guards; Nuxt gives file-based routing and middleware to gate pages. SSR is a bonus here — the panel opens fast even on a slow laptop."
+          },
+          "landing": {
+            "name": "Landing or promo page",
+            "why": "A separate API server, a database and Docker plumbing for the sake of one contact form means weeks of upkeep for nothing — plus two running processes instead of static files on a CDN.",
+            "alt": "Astro, or Nuxt in static mode with a hosted form service."
+          },
+          "mobileBackend": {
+            "name": "Backend for a mobile app",
+            "why": "The NestJS side stands on its own: REST with a Swagger schema, validation, errors in a single shape. Keep the frontend as a content admin panel or drop it entirely — the backend doesn't change either way."
+          },
+          "contentSite": {
+            "name": "Blog, docs, content site",
+            "why": "Content belongs in files or a headless CMS, not in tables you design yourself. A NestJS backend does nothing here beyond serving text.",
+            "alt": "Astro, VitePress or Nuxt Content — these very docs run on VitePress."
+          },
+          "mvp": {
+            "name": "Startup MVP",
+            "why": "The first two weeks usually go to plumbing: configs, linters, auth, Docker, deployment. That's already here and documented, so you can test the hypothesis instead of configuring a build."
+          },
+          "microservices": {
+            "name": "Microservice system",
+            "why": "A pnpm workspaces monorepo handles several services well, and NestJS supports transports beyond HTTP. But the template brings no service discovery, no queues and no tracing — that's on you to build.",
+            "alt": "Starting from this monorepo is reasonable; budget for the infrastructure work."
+          },
+          "serverless": {
+            "name": "Serverless and edge functions",
+            "why": "NestJS builds a DI container at startup, which costs real hundreds of milliseconds on a cold start. A long-lived PostgreSQL connection pool fits that model poorly too.",
+            "alt": "Hono or Nuxt's Nitro routes, with an HTTP-protocol database driver."
+          },
+          "learning": {
+            "name": "Learning full-stack TypeScript",
+            "why": "The template's rule is no magic: every non-obvious decision has a comment in the code and a page in the docs. You can see how SSR, cookie sessions, guards and migrations connect — in real code, not a todo-app tutorial."
+          },
+          "highLoad": {
+            "name": "High traffic from day one",
+            "why": "The architecture scales horizontally just fine: a stateless API with sessions in the database. But there's no cache, no rate limiting, no queues and no metrics — under serious expected load you'll need to add those deliberately.",
+            "alt": "Plan Redis, a queue and monitoring before launch, not after."
+          },
+          "legacy": {
+            "name": "A frontend for existing services",
+            "why": "Depends on what Nest does. If it aggregates calls across several services, keeps secrets out of the frontend and adds access rules of its own, that's a BFF and the template works as intended. If it forwards requests one-to-one, the extra process doesn't pay for itself.",
+            "alt": "For plain proxying — Nuxt's Nitro routes, no separate backend."
+          },
+          "internalTools": {
+            "name": "Internal company tools",
+            "why": "Dashboards, export services, support panels. Traffic is predictable, SEO doesn't matter, and what does matter — development speed and understandable auth — is already covered."
+          }
+        },
+        "note": "These verdicts aren't verdicts on you: almost every \"pick something else\" case is buildable on this template. They judge whether the complexity it brings pays for itself."
+      },
+      "callout": {
+        "split": {
+          "withoutLabel": "the first weeks usually go to",
+          "without": [
+            "monorepo, builds, linters",
+            "Docker, env, CI",
+            "routing, layers, conventions"
+          ],
+          "withLabel": "here you start with",
+          "with": [
+            "your screens",
+            "your business logic",
+            "your product"
+          ]
+        },
+        "steps": {
+          "stages": [
+            "plumbing",
+            "infrastructure",
+            "conventions",
+            "your ideas"
+          ],
+          "done": "The boring part is already done.",
+          "text": "From here on — only your ideas."
+        },
+        "type": {
+          "call": "Start by",
+          "struck": "configuring the project",
+          "kept": "building ",
+          "accent": "your ideas"
+        }
+      },
+      "auth": {
+        "title": "Authentication",
+        "lead": "The base template ships without authentication — if you want to build your own, there is nothing to rip out. Ready-made auth comes as a separate option layered on top of the base.",
+        "base": {
+          "label": "base template",
+          "title": "Without auth",
+          "desc": "A clean starting point: Nest, Nuxt and shared types. Plug in your provider or write a scheme that fits your requirements."
+        },
+        "layer": {
+          "label": "option",
+          "title": "With auth",
+          "desc": "Fully working authentication on top of the base option. Do not spend weeks on what is already written and battle-tested."
+        },
+        "pointsTitle": "What the option with auth includes",
+        "points": {
+          "tokens": {
+            "title": "JWT access + refresh.",
+            "desc": "Access lives 15 minutes and is verified without hitting the store, refresh lives 7 days and can be revoked instantly."
+          },
+          "cookies": {
+            "title": "httpOnly cookies.",
+            "desc": "Tokens are unreachable from JavaScript, SameSite=strict closes CSRF. Nothing is kept in localStorage."
+          },
+          "rotation": {
+            "title": "Rotation and reuse detection.",
+            "desc": "Every refresh issues a new token. Reusing an old one counts as theft — the session chain is cut off."
+          },
+          "sessions": {
+            "title": "Server-side sessions.",
+            "desc": "A list of active devices, sign-out on a specific one, and an instant sign-out everywhere on password change."
+          },
+          "roles": {
+            "title": "Roles and guards.",
+            "desc": "user and admin, the @Public() and @Roles() decorators, route protection on the backend and middleware on the frontend."
+          },
+          "ssr": {
+            "title": "Works with SSR.",
+            "desc": "Silent refresh before the page renders: F5 with an expired token neither kicks you to the login page nor causes a hydration mismatch."
+          },
+          "providers": {
+            "title": "Can be extended.",
+            "desc": "OAuth, OIDC or an external provider can be added on top — the current scheme does not stand in the way and needs no rewrite."
+          }
+        },
+        "note": "The scheme is JWT access + refresh with server-side rotation — the same approach most web apps with a separate API use. The alternatives and the reasoning behind the choice are covered ",
+        "noteLink": "in the docs"
+      },
+      "branches": {
+        "title": "Variants",
+        "basedOn": "based on",
+        "main": {
+          "label": "Base",
+          "desc": "Starting point without a database. Users CRUD is stored in-memory."
+        },
+        "postgresPrisma": {
+          "label": "PostgreSQL",
+          "desc": "Adds PostgreSQL and Prisma 7 on top of the Auth variant."
+        },
+        "auth": {
+          "label": "Auth",
+          "desc": "The perfect starting point for dashboards and admin panels. JWT authentication on top of the base variant: email + password, httpOnly cookies, sessions in process memory."
+        }
+      },
+      "tree": {
+        "title": "Structure"
+      },
+      "sponsors": {
+        "title": "Sponsors",
+        "lead": "Your logo could be here",
+        "desc": "A place for logos and ads from companies backing the project. The template is open source and built on enthusiasm — sponsorship helps dedicate time to it.",
+        "slot": "Your logo here",
+        "cta": "Become a sponsor",
+        "contact": "Discuss placement"
       }
     }
   }

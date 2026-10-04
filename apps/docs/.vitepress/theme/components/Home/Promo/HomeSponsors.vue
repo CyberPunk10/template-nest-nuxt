@@ -5,7 +5,7 @@ import { sponsorUrl, contacts, freeSponsorSlots } from '../site-data'
 
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress).
 const { theme } = useData()
-const home = computed(() => theme.value.home!)
+const home = computed(() => theme.value.home!.promo)
 </script>
 
 <template>
