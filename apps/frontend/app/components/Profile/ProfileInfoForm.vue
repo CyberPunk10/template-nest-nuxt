@@ -7,7 +7,7 @@ const form = reactive({
   email: user.value?.email ?? '',
 })
 
-const status = ref<'idle' | 'saving' | 'saved' | 'error'>('idle')
+const status = ref<'idle' | 'pending' | 'success' | 'error'>('idle')
 const error = ref('')
 
 const changed = computed(() =>
@@ -16,18 +16,18 @@ const changed = computed(() =>
 
 // Любая правка после сохранения снова делает форму «несохранённой»
 watch(form, () => {
-  if (status.value === 'saved') status.value = 'idle'
+  if (status.value === 'success') status.value = 'idle'
 })
 
 async function save() {
-  status.value = 'saving'
+  status.value = 'pending'
   error.value = ''
   try {
     await updateProfile({ name: form.name.trim(), email: form.email.trim() })
     // Backend нормализует email (нижний регистр) — показываем то, что сохранилось
     form.name = user.value?.name ?? form.name
     form.email = user.value?.email ?? form.email
-    status.value = 'saved'
+    status.value = 'success'
   } catch (e) {
     const statusCode = (e as { statusCode?: number }).statusCode
     // 409 — email занят другим пользователем, раскрывать это безопасно
@@ -84,7 +84,7 @@ async function save() {
         >
       </div>
       <div class="form__footer">
-        <p v-if="status === 'saved'" class="msg msg--success">
+        <p v-if="status === 'success'" class="msg msg--success">
           <Icon name="lucide:check" size="13" />
           {{ t('profile.info.saved') }}
         </p>
@@ -92,9 +92,9 @@ async function save() {
         <button
           class="btn btn--primary"
           type="submit"
-          :disabled="!changed || status === 'saving'"
+          :disabled="!changed || status === 'pending'"
         >
-          {{ status === 'saving' ? t('profile.info.saving') : t('profile.info.save') }}
+          {{ status === 'pending' ? t('profile.info.saving') : t('profile.info.save') }}
         </button>
       </div>
     </form>
