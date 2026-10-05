@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, inject, ref, type Ref } from 'vue'
 import { useData } from 'vitepress'
-import { repoUrl, authorUrl, sponsorUrl, installCmd, contacts, cryptoWallets } from '../site-data'
+import { repoUrl, installCmd } from '../site-data'
+import { authorUrl, sponsorUrl, contacts, cryptoWallets } from './home-data'
 
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress).
 const { theme } = useData()
