@@ -1,7 +1,7 @@
 import { BACKEND_ENV, FRONTEND_ENV, DOCS_ENV, copyEnvFiles } from './copy-env.mjs'
 import { checkPorts } from './check-ports.mjs'
 import { createLogger } from './log.mjs'
-import { dbUp, dbGenerate, dbMigrate, dbSeed } from './db.mjs'
+import { checkBackendDbEnv, dbUp, dbGenerate, dbMigrate, dbSeed } from './db.mjs'
 
 const log = createLogger('predev.mjs')
 
@@ -29,7 +29,9 @@ async function main() {
 
   // Шаг 3: поднять БД — приложения запускаются локально, но Postgres нужен
   // из Docker. Повторный запуск на уже поднятом контейнере ничего не меняет.
+  // Перед этим сверяем параметры БД в двух .env — иначе backend не подключится.
   step = 'db'
+  checkBackendDbEnv()
   dbUp()
   log.ok('db: postgres is up')
 

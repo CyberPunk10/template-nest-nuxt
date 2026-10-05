@@ -7,7 +7,7 @@
 
 import { execFileSync } from 'child_process'
 import { relative } from 'path'
-import { ROOT_ENV, parseEnv } from './copy-env.mjs'
+import { BACKEND_ENV, ROOT_ENV, parseEnv } from './copy-env.mjs'
 import { ensureNetwork } from './ensure-network.mjs'
 import { createLogger } from './log.mjs'
 
@@ -27,6 +27,38 @@ function requireDbEnv() {
       + ' - copy the values from .env.example next to it',
     )
   }
+}
+
+// Параметры, которые должны совпадать у контейнера БД (корневой .env) и у backend
+// (apps/backend/.env), когда backend ходит в эту же локальную БД.
+const SHARED_DB_KEYS = ['POSTGRES_PORT', 'POSTGRES_USER', 'POSTGRES_PASSWORD', 'POSTGRES_DB']
+const LOCAL_HOSTS = ['localhost', '127.0.0.1', '::1']
+
+// Возвращает ключи, которые расходятся. Пусто — если всё совпадает или backend
+// ходит в удалённую БД: тогда разные значения законны и проверять нечего.
+export function dbEnvMismatch(rootEnv, backendEnv) {
+  if (!LOCAL_HOSTS.includes(backendEnv.POSTGRES_HOST)) return []
+  return SHARED_DB_KEYS.filter(key => rootEnv[key] !== backendEnv[key])
+}
+
+export function checkBackendDbEnv() {
+  const rootEnv = parseEnv(ROOT_ENV)
+  const backendEnv = parseEnv(BACKEND_ENV)
+  const mismatch = dbEnvMismatch(rootEnv, backendEnv)
+  if (!mismatch.length) return
+
+  const rootFile = relative(process.cwd(), ROOT_ENV)
+  const backendFile = relative(process.cwd(), BACKEND_ENV)
+
+  // Пароль не показываем — только факт, что он отличается.
+  function describe(key) {
+    if (key === 'POSTGRES_PASSWORD') return `${key} not equal.`
+    const rootValue = rootEnv[key] ?? '(empty)'
+    const backendValue = backendEnv[key] ?? '(empty)'
+    return `${key} not equal: ${rootFile} = ${rootValue}, ${backendFile} = ${backendValue}.`
+  }
+
+  throw new Error(`${mismatch.map(describe).join(' ')} Use the same values in both files.`)
 }
 
 // Запускает docker compose с переданными аргументами
