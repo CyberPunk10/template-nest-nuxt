@@ -1,6 +1,6 @@
 # การยืนยันตัวตน (Authorization)
 
-> **Branches:** `auth-session` (session ในหน่วยความจำ) และ `postgres-prisma` (session เดียวกัน แต่เก็บใน PostgreSQL ผ่าน Prisma) — รูปแบบการยืนยันตัวตนเหมือนกันทั้งสอง branch ต่างกันแค่ที่เก็บข้อมูล
+> session และผู้ใช้ถูกเก็บใน PostgreSQL ผ่าน Prisma และยังอยู่หลังรีสตาร์ต backend
 
 &nbsp;
 

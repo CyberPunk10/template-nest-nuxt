@@ -14,45 +14,17 @@
         "prisma": "Prisma"
       },
       "items": {
-        "pnpmDev": "start applications",
+        "pnpmDev": "everything with hot reload: backend, frontend, docs",
         "dockerDev": "start the database",
         "dbMigrate": "apply migrations",
-        "pnpmBuild": "build everything",
-        "dockerUp": "all services in Docker",
-        "dockerDown": "stop",
-        "pnpmLint": "lint code",
-        "pnpmTypeCheck": "type check",
-        "pnpmTest": "unit tests",
-        "pnpmTestE2e": "e2e tests",
+        "pnpmBuild": "production build without Docker",
+        "dockerUp": "build images and run as in production",
+        "dockerDown": "stop the containers",
         "prismaStudio": "Prisma Studio"
       }
     },
     "footer": {
-      "tagline": "Production-ready monorepo template for a fast start.",
-      "projectTitle": "Project",
-      "startTitle": "Get started",
-      "startHint": "Scaffold a project with one command:",
-      "links": {
-        "github": "GitHub",
-        "issues": "Issues",
-        "license": "MIT License"
-      },
-      "poweredBy": "Powered by",
-      "copyright": "Open-source under the MIT License.",
-      "supportTitle": "Support",
-      "contactsTitle": "Contacts",
-      "support": {
-        "intro": "The template is free and open source. Help it grow:",
-        "star": "Star it on GitHub",
-        "sponsor": "Become a sponsor",
-        "crypto": "Donate with crypto",
-        "cryptoHint": "Click an address to copy it"
-      },
-      "contacts": {
-        "author": "Author on GitHub",
-        "email": "Email",
-        "telegram": "Telegram"
-      }
+      "poweredBy": "Powered by"
     },
     "content": {
       "hero": {
@@ -93,27 +65,44 @@
         "seed": "create the admin (safe to run again)",
         "more": "How authentication works"
       },
-      "map": {
-        "title": "Where things live",
+      "structure": {
+        "title": "Project structure",
         "items": {
           "backend": "NestJS: API, modules, services",
           "prisma": "Database schema, migrations and the admin seed",
           "frontend": "Nuxt 4: pages, components, API proxy",
           "docs": "This documentation, built with VitePress",
           "shared": "Shared types and translations for backend and frontend",
-          "ui": "UI components: UiButton, UiBadge, UiCard",
+          "ui": "Base components without app logic",
           "nginx": "Reverse proxy — the single entry point in Docker",
-          "scripts": "Pre-launch preparation: .env, ports, Docker network"
+          "scripts": "Pre-launch preparation: .env, ports, Docker network",
+          "root": "Monorepo root",
+          "apps": "Applications",
+          "packages": "Shared packages",
+          "infra": "Infrastructure",
+          "compose": "Docker services",
+          "envExample": "Example environment variables",
+          "packageJson": "Monorepo root manifest: shared pnpm scripts"
+        },
+        "short": {
+          "backend": "NestJS API",
+          "prisma": "Schema and migrations",
+          "frontend": "Nuxt app",
+          "docs": "Documentation",
+          "shared": "Types and i18n",
+          "ui": "Base components",
+          "nginx": "Reverse proxy",
+          "scripts": "Pre-launch setup",
+          "envExample": "Env example",
+          "packageJson": "Monorepo manifest"
         }
       },
       "checklist": {
         "title": "After creating the project",
         "intro": "What is usually done in the first days to turn the template into your project.",
         "items": {
-          "readme": "Describe the project in README: what it is, how to run it, who owns it",
           "env": "Go through .env: ports, addresses, secrets. Values from .env.example are for development only",
           "secrets": "Replace JWT_SECRET, REFRESH_TOKEN_SECRET, ADMIN_PASSWORD and POSTGRES_PASSWORD: in .env.example these are placeholders",
-          "examples": "Remove examples you don't need: the tasks module in the backend and the tasks page in the frontend",
           "ci": "Set up CI and deployment for your infrastructure"
         }
       },
@@ -137,6 +126,14 @@
             "title": "Architecture",
             "desc": "How the apps are built and how they talk to each other"
           },
+          "auth": {
+            "title": "Authentication",
+            "desc": "JWT in HttpOnly cookies, refresh token rotation"
+          },
+          "database": {
+            "title": "Database",
+            "desc": "PostgreSQL, Prisma, migrations and seed"
+          },
           "env": {
             "title": "Environment variables",
             "desc": "What goes into .env and where it is read"
@@ -152,14 +149,6 @@
           "proxy": {
             "title": "Reverse proxy",
             "desc": "The single entry point and why ports are closed"
-          },
-          "auth": {
-            "title": "Authentication",
-            "desc": "JWT in HttpOnly cookies, refresh token rotation"
-          },
-          "database": {
-            "title": "Database",
-            "desc": "PostgreSQL, Prisma, migrations and seed"
           }
         }
       },
@@ -210,9 +199,7 @@
       "hero": {
         "badge": "Open-source template",
         "subtitle": "Production-ready starting point for full-stack applications.\nDeploy in minutes, scale to production.",
-        "demo": "View demo",
-        "login": "Sign in",
-        "github": "GitHub"
+        "demo": "View demo"
       },
       "showcase": {
         "title": "What it's built on",
@@ -466,9 +453,6 @@
           "desc": "The perfect starting point for dashboards and admin panels. JWT authentication on top of the base variant: email + password, httpOnly cookies, sessions in process memory."
         }
       },
-      "tree": {
-        "title": "Structure"
-      },
       "sponsors": {
         "title": "Sponsors",
         "lead": "Your logo could be here",
@@ -476,6 +460,31 @@
         "slot": "Your logo here",
         "cta": "Become a sponsor",
         "contact": "Discuss placement"
+      },
+      "footer": {
+        "tagline": "Production-ready monorepo template for a fast start.",
+        "projectTitle": "Project",
+        "startTitle": "Get started",
+        "startHint": "Scaffold a project with one command:",
+        "links": {
+          "github": "GitHub",
+          "issues": "Issues",
+          "license": "MIT License"
+        },
+        "supportTitle": "Support",
+        "contactsTitle": "Contacts",
+        "support": {
+          "intro": "The template is free and open source. Help it grow:",
+          "star": "Star it on GitHub",
+          "sponsor": "Become a sponsor",
+          "crypto": "Donate with crypto",
+          "cryptoHint": "Click an address to copy it"
+        },
+        "contacts": {
+          "author": "Author on GitHub",
+          "email": "Email",
+          "telegram": "Telegram"
+        }
       }
     }
   }

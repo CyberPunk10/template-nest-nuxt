@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
-import { troubles } from './body-data'
 
 const { theme } = useData()
 const t = computed(() => theme.value.home!.content.troubleshoot)
+
+const troubles = [
+  { id: 'predev', doc: 'guide/structure/scripts/predev' },
+  { id: 'port', doc: 'guide/getting-started/run-pnpm' },
+  { id: 'stale', doc: 'guide/getting-started/run-docker' },
+  { id: 'network', doc: 'guide/getting-started/run-docker' },
+  { id: 'migrations', doc: 'guide/database/migrations' },
+] as const
 </script>
 
 <template>

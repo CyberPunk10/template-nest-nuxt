@@ -25,15 +25,22 @@ const copyCmd = inject<(cmd: string) => void>('copyCmd')!
   align-items: center;
   gap: 10px;
   max-width: 100%;
-  padding: 6px 10px;
+  padding: 3px 8px;
   border-radius: var(--home-radius-md);
   background: var(--home-surface-deep);
   border: 1px solid var(--home-border-2);
   cursor: pointer;
-  transition: border-color 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 }
 .copy-cmd:hover {
-  border-color: var(--home-border-subtle);
+  border-color: color-mix(in srgb, var(--home-accent) 55%, transparent);
+  border-style: dashed;
+  background: color-mix(in srgb, var(--home-accent) 5%, var(--home-surface-deep));
+}
+.copy-cmd:hover .copy-cmd__icon {
+  color: var(--home-accent);
 }
 .copy-cmd__text {
   font-family: monospace;
@@ -47,6 +54,7 @@ const copyCmd = inject<(cmd: string) => void>('copyCmd')!
 .copy-cmd__icon {
   flex-shrink: 0;
   color: var(--home-text-muted);
+  transition: color 0.15s;
 }
 .copy-cmd__icon--done {
   color: var(--home-accent);

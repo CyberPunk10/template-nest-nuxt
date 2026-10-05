@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { computed, inject, type Ref } from 'vue'
+import { computed } from 'vue'
 import { useData } from 'vitepress'
+import HomeCopyCmd from './HomeCopyCmd.vue'
 
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress),
 // без vue-i18n. theme меняется при смене языка — computed пересчитывается.
 const { theme } = useData()
 const home = computed(() => theme.value.home!)
 
-const copied = inject<Ref<string | null>>('copied')!
-const copyCmd = inject<(cmd: string) => void>('copyCmd')!
-
 interface Command {
   cmd: string
-  desc: string
+  // Без подписи — для общеизвестных команд
+  desc?: string
 }
 
 interface CommandGroup {
   label: string
   commands: Command[]
+  // Вторая колонка — короткие команды без подписей
+  aside?: boolean
 }
 
 const groups = computed<CommandGroup[]>(() => {
@@ -41,15 +42,17 @@ const groups = computed<CommandGroup[]>(() => {
     },
     {
       label: c.groups.utils,
+      aside: true,
       commands: [
-        { cmd: 'pnpm lint', desc: c.items.pnpmLint },
-        { cmd: 'pnpm type-check', desc: c.items.pnpmTypeCheck },
-        { cmd: 'pnpm test', desc: c.items.pnpmTest },
-        { cmd: 'pnpm test:e2e', desc: c.items.pnpmTestE2e },
+        { cmd: 'pnpm lint' },
+        { cmd: 'pnpm type-check' },
+        { cmd: 'pnpm test' },
+        { cmd: 'pnpm test:e2e' },
       ],
     },
     {
       label: c.groups.prisma,
+      aside: true,
       commands: [
         {
           cmd: 'cd apps/backend && pnpm prisma studio',
@@ -59,33 +62,39 @@ const groups = computed<CommandGroup[]>(() => {
     },
   ]
 })
+
+const columns = computed(() => [
+  { key: 'main', groups: groups.value.filter(g => !g.aside) },
+  { key: 'aside', groups: groups.value.filter(g => g.aside) },
+])
 </script>
 
 <template>
   <section class="section">
     <h2 class="section__title">{{ home.commands.title }}</h2>
-    <div class="commands-wrap">
-      <div
-        v-for="group in groups"
-        :key="group.label"
-        class="commands-group"
-      >
-        <p class="commands__label">{{ group.label }}</p>
-        <div class="commands">
+    <div class="home-panel commands">
+      <div class="commands__body">
+        <div
+          v-for="column in columns"
+          :key="column.key"
+          class="commands__column"
+        >
           <div
-            v-for="item in group.commands"
-            :key="item.cmd"
-            class="command"
-            @click="copyCmd(item.cmd)"
+            v-for="group in column.groups"
+            :key="group.label"
+            class="commands__group"
           >
-            <code class="command__cmd">{{ item.cmd }}</code>
-            <Icon
-              :name="copied === item.cmd ? 'lucide:check' : 'lucide:copy'"
-              size="12"
-              class="command__copy"
-              :class="{ 'command__copy--done': copied === item.cmd }"
-            />
-            <span class="command__desc">{{ item.desc }}</span>
+            <p class="commands__label">{{ group.label }}</p>
+            <div class="commands__list">
+              <div
+                v-for="item in group.commands"
+                :key="item.cmd"
+                class="commands__item"
+              >
+                <span v-if="item.desc" class="commands__desc">{{ item.desc }}</span>
+                <HomeCopyCmd :cmd="item.cmd" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -93,94 +102,54 @@ const groups = computed<CommandGroup[]>(() => {
   </section>
 </template>
 
-<style>
-.commands-wrap {
-  background: var(--home-surface-2);
-  border: 1px solid var(--home-border-subtle);
-  border-radius: 10px;
-  padding: 16px 18px;
-  flex: 1;
+<style scoped>
+.commands {
+  container: commands / inline-size;
 }
-
-.commands-group {
+.commands__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  gap: 18px 32px;
+}
+.commands__column {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 14px;
+  gap: 18px;
 }
-.commands-group:last-child {
-  margin-bottom: 0;
+.commands__group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-
 .commands__label {
-  font-size: var(--home-text-xs);
-  color: var(--home-text-dim);
   margin: 0;
+  font-size: var(--home-text-xs);
+  font-weight: 600;
+  color: var(--home-text-hover);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
-
-.commands {
+.commands__list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: flex-start;
+  gap: 10px;
 }
-
-.command {
+.commands__item {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: var(--home-space-2) 10px;
-  border-radius: var(--home-radius-md);
-  background: var(--home-surface-deep);
-  border: 1px solid var(--home-border-2);
-  cursor: pointer;
-  transition: border-color 0.15s;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
 }
-.command:hover {
-  border-color: var(--home-border-subtle);
-}
-.command__cmd {
-  font-family: monospace;
-  font-size: var(--home-text-xs);
-  color: var(--home-text-primary);
-  word-break: break-all;
-}
-.command__copy {
-  flex-shrink: 0;
-  align-self: flex-start;
-  margin-top: 1px;
-  color: var(--home-border-subtle);
-  opacity: 0;
-  transition: color 0.15s;
-}
-.command:hover .command__copy {
-  opacity: 1;
-  color: var(--home-text-muted);
-}
-.command__copy--done {
-  opacity: 1 !important;
-  color: var(--home-accent) !important;
-  transition: none;
-}
-.command__desc {
-  font-size: var(--home-text-xs);
-  color: var(--home-text-dim);
-  white-space: nowrap;
-  margin-left: auto;
+.commands__desc {
+  font-size: var(--home-text-sm);
+  color: var(--home-text-soft);
+  line-height: var(--home-leading-normal);
 }
 
-/* На телефоне описание встаёт над командой: в одну строку они не помещаются */
-@media (max-width: 600px) {
-  .command {
-    flex-wrap: wrap;
-    row-gap: 4px;
-  }
-  .command__desc {
-    order: -1;
-    flex-basis: 100%;
-    margin-left: 0;
-    white-space: normal;
+@container commands (max-width: 379px) {
+  .commands__body {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 </style>

@@ -1,6 +1,6 @@
 # Authentication
 
-> **Branches:** `auth-session` (in-memory sessions) and `postgres-prisma` (same sessions, but stored in PostgreSQL via Prisma). The auth scheme is identical in both — only the storage differs.
+> Sessions and users are stored in PostgreSQL via Prisma and survive a backend restart.
 
 &nbsp;
 

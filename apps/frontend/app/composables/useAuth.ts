@@ -31,5 +31,10 @@ export function useAuth() {
     user.value = me
   }
 
-  return { user, isAdmin, login, logout, register }
+  async function updateProfile(data: Pick<AuthUser, 'name' | 'email'>) {
+    if (!user.value) return
+    user.value = await $api<AuthUser>(`/users/${user.value.id}`, { method: 'PUT', body: data })
+  }
+
+  return { user, isAdmin, login, logout, register, updateProfile }
 }

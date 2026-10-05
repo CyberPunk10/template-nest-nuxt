@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
-import { nextLinks } from './body-data'
 
 const { theme } = useData()
 const t = computed(() => theme.value.home!.content.next)
+
+const nextLinks = [
+  { id: 'architecture', icon: 'layers', doc: 'guide/architecture' },
+  { id: 'auth', icon: 'shield-check', doc: 'guide/auth/' },
+  { id: 'database', icon: 'database', doc: 'guide/database/' },
+  { id: 'env', icon: 'key-round', doc: 'guide/env-variables' },
+  { id: 'testing', icon: 'check-circle', doc: 'guide/testing/' },
+  { id: 'docker', icon: 'boxes', doc: 'guide/docker/' },
+  { id: 'proxy', icon: 'network', doc: 'guide/reverse-proxy' },
+] as const
 </script>
 
 <template>
