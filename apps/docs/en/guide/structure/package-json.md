@@ -12,6 +12,7 @@ The monorepo's root manifest. Its scripts orchestrate the whole repository: `pnp
 | `db:down`        | `node scripts/db.mjs down`              | Stops the database container, data stays in the volume                                        |
 | `db:generate`    | `node scripts/db.mjs generate`          | Generates the Prisma client — needed after schema edits; runs on its own after `pnpm install` |
 | `db:migrate`     | `node scripts/db.mjs migrate`           | Applies migrations the database doesn't have yet                                              |
+| `db:seed`        | `node scripts/db.mjs seed`              | Creates the admin from `ADMIN_EMAIL` and `ADMIN_PASSWORD` if it doesn't exist yet             |
 | `predocker:up`   | `node scripts/predocker.mjs`            | Runs automatically before `docker:up`                                                         |
 | `docker:up`      | `docker compose --profile app up`       | Brings up the whole stack in Docker: database, backend, frontend, nginx                       |
 | `build`          | `pnpm -r build`                         | Builds all workspace packages (runs `build` in each `apps/*`)                                 |

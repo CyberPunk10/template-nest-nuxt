@@ -19,6 +19,7 @@
     "db:down": "node scripts/db.mjs down",
     "db:generate": "node scripts/db.mjs generate",
     "db:migrate": "node scripts/db.mjs migrate",
+    "db:seed": "node scripts/db.mjs seed",
     "predocker:up": "node scripts/predocker.mjs",
     "docker:up": "docker compose --profile app up",
     "build": "pnpm -r build",

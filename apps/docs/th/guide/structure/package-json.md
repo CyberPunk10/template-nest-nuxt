@@ -12,6 +12,7 @@ Manifest ที่ root ของ monorepo สคริปต์ในนี้�
 | `db:down`        | `node scripts/db.mjs down`              | หยุด container ของฐานข้อมูล ข้อมูลยังอยู่ใน volume                                |
 | `db:generate`    | `node scripts/db.mjs generate`          | generate client ของ Prisma — จำเป็นหลังแก้ schema; หลัง `pnpm install` จะรันเอง |
 | `db:migrate`     | `node scripts/db.mjs migrate`           | รัน migration ที่ยังไม่มีใน DB                                                  |
+| `db:seed`        | `node scripts/db.mjs seed`              | สร้างผู้ดูแลระบบจาก `ADMIN_EMAIL` และ `ADMIN_PASSWORD` ถ้ายังไม่มี              |
 | `predocker:up`   | `node scripts/predocker.mjs`            | รันอัตโนมัติก่อน `docker:up`                                                   |
 | `docker:up`      | `docker compose --profile app up`       | เปิดทั้ง stack ใน Docker: ฐานข้อมูล, backend, frontend, nginx                  |
 | `build`          | `pnpm -r build`                         | Build workspace package ทั้งหมด (รัน `build` ใน `apps/*` แต่ละตัว)             |

@@ -30,7 +30,7 @@ const admin = { email: 'admin@example.com', password: 'password' }
       </div>
       <div class="accounts__seed">
         <span class="accounts__label">{{ t.seed }}</span>
-        <HomeCopyCmd cmd="cd apps/backend && pnpm prisma db seed" />
+        <HomeCopyCmd cmd="pnpm db:seed" />
       </div>
       <a class="accounts__more" href="guide/auth/backend">
         {{ t.more }}

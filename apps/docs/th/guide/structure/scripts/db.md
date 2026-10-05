@@ -1,6 +1,6 @@
 # db.mjs
 
-จัดการฐานข้อมูล: container, client ของ Prisma และ migration ใช้ได้ทั้งเป็น CLI (`pnpm db:*`) และเป็น module — ฟังก์ชันถูกเรียกจาก [`predev.mjs`](./predev)
+จัดการฐานข้อมูล: container, client ของ Prisma, migration และ seed ใช้ได้ทั้งเป็น CLI (`pnpm db:*`) และเป็น module — ฟังก์ชันถูกเรียกจาก [`predev.mjs`](./predev)
 
 ฐานข้อมูลถูกประกาศไว้ใน `docker-compose.yml` ไฟล์เดียวกันโดยไม่มี profile ส่วน service ของแอปอยู่ภายใต้ profile `app` ด้วยเหตุนี้คำสั่งที่ไม่ระบุ profile จึงแตะเฉพาะ `postgres` — รายละเอียดใน [docker-compose.yml](../docker-compose#profile)
 
@@ -12,6 +12,7 @@
 | `pnpm db:down`     | หยุด `postgres` ข้อมูลยังอยู่ใน volume                          |
 | `pnpm db:generate` | generate client ของ Prisma จาก schema (`prisma generate`) |
 | `pnpm db:migrate`  | รัน migration ที่ยังไม่มีใน DB (`prisma migrate deploy`)        |
+| `pnpm db:seed`     | สร้างผู้ดูแลระบบ ถ้ายังไม่มี (`prisma db seed`)                 |
 
 โดยทั่วไปไม่ค่อยต้องใช้คำสั่งเหล่านี้เดี่ยว ๆ เพราะ `pnpm dev` รันให้เอง จะมีประโยชน์ตอนที่แอปรันอยู่แล้วหรือไม่ต้องการรันแอป — เช่น เพื่อรัน migration หลัง `git pull` หรือเชื่อมต่อฐานข้อมูลด้วย client
 
@@ -36,9 +37,10 @@ docker compose down -v   # ลบฐานข้อมูลพร้อมข�
 ## การใช้เป็น module
 
 ```js
-import { dbUp, dbGenerate, dbMigrate } from './db.mjs'
+import { dbUp, dbGenerate, dbMigrate, dbSeed } from './db.mjs'
 
 dbUp()         // network + postgres + รอ healthcheck
 dbGenerate()   // prisma generate ใน apps/backend
 dbMigrate()    // prisma migrate deploy ใน apps/backend
+dbSeed()       // prisma db seed ใน apps/backend
 ```

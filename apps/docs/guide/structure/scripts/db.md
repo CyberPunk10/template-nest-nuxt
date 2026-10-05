@@ -1,6 +1,6 @@
 # db.mjs
 
-Управляет БД: контейнером, клиентом Prisma и миграциями. Работает и как CLI (`pnpm db:*`), и как модуль — функции вызываются из [`predev.mjs`](./predev).
+Управляет БД: контейнером, клиентом Prisma, миграциями и сидом. Работает и как CLI (`pnpm db:*`), и как модуль — функции вызываются из [`predev.mjs`](./predev).
 
 БД описана в общем `docker-compose.yml` без профиля, а сервисы приложения — под профилем `app`. Поэтому команда без профиля затрагивает только `postgres` — подробнее в [docker-compose.yml](../docker-compose#профили).
 
@@ -12,6 +12,7 @@
 | `pnpm db:down`     | Останавливает `postgres`, данные остаются в volume                      |
 | `pnpm db:generate` | Генерирует клиент Prisma из схемы (`prisma generate`)                   |
 | `pnpm db:migrate`  | Применяет миграции, которых ещё нет в БД (`prisma migrate deploy`)      |
+| `pnpm db:seed`     | Создаёт админа, если его ещё нет (`prisma db seed`)                     |
 
 Отдельно эти команды нужны редко: `pnpm dev` выполняет их сам. Пригодятся, когда приложения уже запущены или не нужны — например, чтобы применить миграции после `git pull` или подключиться к БД клиентом.
 
@@ -36,9 +37,10 @@ docker compose down -v   # удалит базу вместе с данными
 ## Использование как модуля
 
 ```js
-import { dbUp, dbGenerate, dbMigrate } from './db.mjs'
+import { dbUp, dbGenerate, dbMigrate, dbSeed } from './db.mjs'
 
 dbUp()         // сеть + postgres + ожидание healthcheck
 dbGenerate()   // prisma generate в apps/backend
 dbMigrate()    // prisma migrate deploy в apps/backend
+dbSeed()       // prisma db seed в apps/backend
 ```

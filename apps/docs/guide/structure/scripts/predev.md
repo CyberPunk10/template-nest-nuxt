@@ -9,6 +9,7 @@
 3. **Поднимает БД** — через `dbUp()` из [`db.mjs`](./db). Приложения при `pnpm dev` работают локально, но Postgres нужен из Docker. Повторный вызов на уже поднятом контейнере ничего не меняет.
 4. **Генерирует клиент Prisma** — через `dbGenerate()`. После `pnpm install` это уже сделал `postinstall`, но схема могла измениться позже: после правки или `git pull`.
 5. **Применяет новые миграции** — через `dbMigrate()` (`prisma migrate deploy`). Применяются только миграции, которых ещё нет в БД; новые не создаются, БД не пересоздаётся.
+6. **Создаёт админа, если его ещё нет**, — через `dbSeed()` (`prisma db seed`) из `ADMIN_EMAIL` и `ADMIN_PASSWORD` в `apps/backend/.env`. Существующего пользователя сид не трогает и пароль не перезаписывает. Только для разработки: в проде админа заводят отдельной командой.
 
 Проверяются dev-порты: `PORT` из `apps/backend/.env`, `apps/frontend/.env` и `apps/docs/.env`.
 
@@ -26,6 +27,7 @@
 [predev.mjs] ✓ db: postgres is up
 [predev.mjs] ✓ client: generated from schema.prisma
 [predev.mjs] ✓ migrations: database is up to date
+[predev.mjs] ✓ admin: in place
 ```
 
 Если шаг не выполнен — строка с ✗ и имя шага, дальше подготовка не идёт:
@@ -41,6 +43,7 @@
 | `db`         | запущен ли Docker и заданы ли `POSTGRES_*` в корневом `.env`                    | `pnpm db:up`       |
 | `client`     | ошибку Prisma выше — обычно опечатка в `schema.prisma`                          | `pnpm db:generate` |
 | `migrations` | ошибку Prisma выше и совпадают ли `POSTGRES_*` в `apps/backend/.env` с корневым | `pnpm db:migrate`  |
+| `admin`      | ошибку выше; без `ADMIN_*` в `apps/backend/.env` сид пропускается               | `pnpm db:seed`     |
 
 ## Использование
 

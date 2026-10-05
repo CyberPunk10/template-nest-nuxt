@@ -58,11 +58,11 @@
       },
       "accounts": {
         "title": "Authentication",
-        "intro": "The admin isn't created automatically: the seed creates it from ADMIN_EMAIL and ADMIN_PASSWORD in apps/backend/.env. Run it after the first pnpm dev — by then the database is up and migrations are applied.",
+        "intro": "pnpm dev creates the admin from ADMIN_EMAIL and ADMIN_PASSWORD in apps/backend/.env if it doesn't exist yet.",
         "defaults": "By default:",
         "email": "Email",
         "password": "Password",
-        "seed": "create the admin (safe to run again)",
+        "seed": "create manually — for example, after resetting the database",
         "more": "How authentication works"
       },
       "structure": {

@@ -3,9 +3,14 @@ import * as bcrypt from 'bcrypt'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../src/generated/prisma/client'
 
-// Заводит admin-аккаунт для первого запуска. Идемпотентно: upsert по email,
-// повторный запуск (например, через `prisma migrate reset`) не создаёт дублей
-// и не трогает пароль уже существующего пользователя.
+function log(message: string): void {
+  // eslint-disable-next-line no-console -- это CLI-скрипт, вывод в консоль и есть его результат
+  console.log(`[seed.ts] ${message}`)
+}
+
+// Заводит admin-аккаунт для первого запуска. Идемпотентно: если пользователь
+// с этим email уже есть, ничего не делает — повторный запуск при каждом
+// `pnpm dev` не создаёт дублей и не трогает пароль.
 async function main(): Promise<void> {
   const {
     POSTGRES_HOST,
@@ -19,7 +24,7 @@ async function main(): Promise<void> {
   } = process.env
 
   if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
-    console.log('ADMIN_EMAIL/ADMIN_PASSWORD не заданы — пропускаем seed админа.')
+    log('ADMIN_EMAIL/ADMIN_PASSWORD not set - skipping admin seed')
     return
   }
 
@@ -32,20 +37,21 @@ async function main(): Promise<void> {
 
     const existing = await prisma.user.findUnique({ where: { email } })
     if (existing) {
-      console.log(`Admin ${email} уже существует — пропускаем.`)
+      log(`admin ${email} already exists - skipping`)
       return
     }
 
     await prisma.user.create({
       data: { name: 'Admin', email, passwordHash, role: 'admin' },
     })
-    console.log(`Создан admin: ${email}`)
+    log(`admin created: ${email}`)
   } finally {
     await prisma.$disconnect()
   }
 }
 
 main().catch((e) => {
-  console.error(e)
+  // eslint-disable-next-line no-console -- см. log() выше
+  console.error('[seed.ts]', e)
   process.exit(1)
 })

@@ -1,7 +1,7 @@
 import { BACKEND_ENV, FRONTEND_ENV, DOCS_ENV, copyEnvFiles } from './copy-env.mjs'
 import { checkPorts } from './check-ports.mjs'
 import { createLogger } from './log.mjs'
-import { dbUp, dbGenerate, dbMigrate } from './db.mjs'
+import { dbUp, dbGenerate, dbMigrate, dbSeed } from './db.mjs'
 
 const log = createLogger('predev.mjs')
 
@@ -43,6 +43,13 @@ async function main() {
   step = 'migrations'
   dbMigrate()
   log.ok('migrations: database is up to date')
+
+  // Шаг 6: создать админа, если его ещё нет, — чтобы после первого запуска
+  // сразу можно было войти. Только для разработки: в проде админа заводят
+  // отдельной командой, а не при каждом старте (см. docker-entrypoint.sh).
+  step = 'admin'
+  dbSeed()
+  log.ok('admin: in place')
 }
 
 main().catch((e) => {

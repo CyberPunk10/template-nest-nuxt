@@ -9,6 +9,7 @@ Before starting, it runs these steps in order:
 3. **Brings the database up** — via `dbUp()` from [`db.mjs`](./db). Under `pnpm dev` the applications run locally, but Postgres is needed from Docker. Calling it again on an already running container changes nothing.
 4. **Generates the Prisma client** — via `dbGenerate()`. `postinstall` already did it after `pnpm install`, but the schema may have changed since: after an edit or a `git pull`.
 5. **Applies new migrations** — via `dbMigrate()` (`prisma migrate deploy`). Only migrations the database doesn't have yet are applied; no new ones are created and the database isn't recreated.
+6. **Creates the admin if it doesn't exist yet** — via `dbSeed()` (`prisma db seed`) from `ADMIN_EMAIL` and `ADMIN_PASSWORD` in `apps/backend/.env`. The seed leaves an existing user alone and doesn't overwrite its password. Development only: in production the admin is created with a separate command.
 
 The ports checked are the dev ones: `PORT` from `apps/backend/.env`, `apps/frontend/.env` and `apps/docs/.env`.
 
@@ -26,6 +27,7 @@ Each step prints a line with its result:
 [predev.mjs] ✓ db: postgres is up
 [predev.mjs] ✓ client: generated from schema.prisma
 [predev.mjs] ✓ migrations: database is up to date
+[predev.mjs] ✓ admin: in place
 ```
 
 If a step fails — a line with ✗ and the step name, and preparation stops there:
@@ -41,6 +43,7 @@ If a step fails — a line with ✗ and the step name, and preparation stops the
 | `db`         | that Docker is running and `POSTGRES_*` are set in the root `.env`                       | `pnpm db:up`       |
 | `client`     | the Prisma error above — usually a typo in `schema.prisma`                               | `pnpm db:generate` |
 | `migrations` | the Prisma error above, and that `POSTGRES_*` in `apps/backend/.env` match the root ones | `pnpm db:migrate`  |
+| `admin`      | the error above; without `ADMIN_*` in `apps/backend/.env` the seed is skipped               | `pnpm db:seed`     |
 
 ## Usage
 

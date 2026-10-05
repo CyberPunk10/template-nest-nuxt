@@ -42,7 +42,7 @@
       "devAdminHint": {
         "title": "เข้าสู่ระบบในฐานะผู้ดูแลระบบ",
         "credentials": "ข้อมูลเข้าสู่ระบบมาจากตัวแปร ADMIN_EMAIL และ ADMIN_PASSWORD ในไฟล์ apps/backend/.env",
-        "autoCreate": "ผู้ดูแลระบบที่มีข้อมูลนี้ถูกสร้างโดย seed (prisma db seed หรือ migrate reset) — ทำงานซ้ำได้โดยไม่สร้างข้อมูลซ้ำ",
+        "autoCreate": "ผู้ดูแลระบบที่มีข้อมูลนี้ถูกสร้างอัตโนมัติตอน pnpm dev ถ้ายังไม่มี หรือสร้างเองด้วยคำสั่ง pnpm db:seed",
         "noDb": "ข้อมูลถูกเก็บไว้ใน PostgreSQL และไม่หายเมื่อรีสตาร์ท backend — จะรีเซ็ตเฉพาะเมื่อสั่ง prisma migrate reset โดยตรงเท่านั้น"
       }
     },

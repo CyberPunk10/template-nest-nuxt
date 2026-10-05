@@ -42,7 +42,7 @@
       "devAdminHint": {
         "title": "Вход под администратором",
         "credentials": "Данные для входа берутся из переменных ADMIN_EMAIL и ADMIN_PASSWORD в apps/backend/.env",
-        "autoCreate": "Администратор с этими данными создаётся сидом (prisma db seed или migrate reset) — идемпотентно, повторный запуск не создаёт дублей",
+        "autoCreate": "Администратор с этими данными создаётся автоматически при pnpm dev, если его ещё нет, или вручную командой pnpm db:seed",
         "noDb": "Данные хранятся в PostgreSQL и переживают перезапуск backend — сброс происходит только при явном prisma migrate reset"
       }
     },

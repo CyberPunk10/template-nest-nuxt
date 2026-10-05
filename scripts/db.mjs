@@ -1,4 +1,4 @@
-// Управление БД: `node scripts/db.mjs up|down|generate|migrate`.
+// Управление БД: `node scripts/db.mjs up|down|generate|migrate|seed`.
 //
 // Сервисы приложения в docker-compose.yml помечены профилем `app`, поэтому
 // команда без профиля затрагивает только postgres. Модуль экспортирует
@@ -60,6 +60,13 @@ export function dbMigrate() {
   prisma(['migrate', 'deploy'])
 }
 
+// Создаёт админа из ADMIN_EMAIL и ADMIN_PASSWORD (prisma/seed.ts). Сид
+// идемпотентный: существующего пользователя не трогает, пароль не перезаписывает,
+// поэтому повторный запуск при каждом `pnpm dev` ничего не меняет.
+export function dbSeed() {
+  prisma(['db', 'seed'])
+}
+
 // Останавливает postgres. Данные остаются в volume — удалить их можно только
 // явным `docker compose down -v`, который намеренно не завёрнут в скрипт.
 export function dbDown() {
@@ -71,6 +78,7 @@ const commands = {
   down: dbDown,
   generate: dbGenerate,
   migrate: dbMigrate,
+  seed: dbSeed,
 }
 
 // Файл используется и как модуль (predev), и как CLI — команду выполняем

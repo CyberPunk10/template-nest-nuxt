@@ -58,11 +58,11 @@
       },
       "accounts": {
         "title": "การยืนยันตัวตน",
-        "intro": "ผู้ดูแลระบบไม่ถูกสร้างอัตโนมัติ: seed จะสร้างจาก ADMIN_EMAIL และ ADMIN_PASSWORD ใน apps/backend/.env ให้รันหลัง pnpm dev ครั้งแรก — ตอนนั้นฐานข้อมูลพร้อมและ migration ถูกใช้แล้ว",
+        "intro": "pnpm dev จะสร้างผู้ดูแลระบบจาก ADMIN_EMAIL และ ADMIN_PASSWORD ใน apps/backend/.env ให้เอง ถ้ายังไม่มี",
         "defaults": "ค่าเริ่มต้น:",
         "email": "อีเมล",
         "password": "รหัสผ่าน",
-        "seed": "สร้างผู้ดูแลระบบ (รันซ้ำได้อย่างปลอดภัย)",
+        "seed": "สร้างเอง — เช่น หลังรีเซ็ตฐานข้อมูล",
         "more": "ระบบยืนยันตัวตนทำงานอย่างไร"
       },
       "structure": {

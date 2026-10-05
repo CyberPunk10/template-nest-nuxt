@@ -9,6 +9,7 @@
 3. **ยกฐานข้อมูลขึ้นมา** — ผ่าน `dbUp()` จาก [`db.mjs`](./db) ตอน `pnpm dev` แอปรันในเครื่อง แต่ Postgres ต้องมาจาก Docker การเรียกซ้ำบน container ที่รันอยู่แล้วจะไม่เปลี่ยนอะไร
 4. **generate client ของ Prisma** — ผ่าน `dbGenerate()` หลัง `pnpm install` `postinstall` ทำไว้แล้ว แต่ schema อาจเปลี่ยนทีหลัง: หลังแก้หรือหลัง `git pull`
 5. **รัน migration ใหม่** — ผ่าน `dbMigrate()` (`prisma migrate deploy`) รันเฉพาะ migration ที่ยังไม่มีใน DB ไม่สร้าง migration ใหม่ และไม่สร้าง DB ใหม่
+6. **สร้างผู้ดูแลระบบ ถ้ายังไม่มี** — ผ่าน `dbSeed()` (`prisma db seed`) จาก `ADMIN_EMAIL` และ `ADMIN_PASSWORD` ใน `apps/backend/.env` seed ไม่แตะผู้ใช้ที่มีอยู่และไม่เขียนทับรหัสผ่าน ใช้เฉพาะตอนพัฒนา: บนโปรดักชันสร้างผู้ดูแลระบบด้วยคำสั่งแยก
 
 พอร์ตที่ตรวจคือ dev port: `PORT` จาก `apps/backend/.env`, `apps/frontend/.env` และ `apps/docs/.env`
 
@@ -26,6 +27,7 @@
 [predev.mjs] ✓ db: postgres is up
 [predev.mjs] ✓ client: generated from schema.prisma
 [predev.mjs] ✓ migrations: database is up to date
+[predev.mjs] ✓ admin: in place
 ```
 
 ถ้าขั้นตอนไหนไม่สำเร็จ — จะมีบรรทัดที่มี ✗ พร้อมชื่อขั้นตอน และการเตรียมการจะหยุดตรงนั้น:
@@ -41,6 +43,7 @@
 | `db`         | Docker ทำงานอยู่หรือไม่ และตั้ง `POSTGRES_*` ใน `.env` ที่ root แล้วหรือยัง                  | `pnpm db:up`       |
 | `client`     | error ของ Prisma ด้านบน — ส่วนใหญ่คือพิมพ์ผิดใน `schema.prisma`                         | `pnpm db:generate` |
 | `migrations` | error ของ Prisma ด้านบน และ `POSTGRES_*` ใน `apps/backend/.env` ตรงกับที่ root หรือไม่ | `pnpm db:migrate`  |
+| `admin`      | error ด้านบน ถ้าไม่มี `ADMIN_*` ใน `apps/backend/.env` seed จะถูกข้าม                  | `pnpm db:seed`     |
 
 ## การใช้งาน
 

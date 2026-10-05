@@ -12,6 +12,7 @@
 | `db:down`        | `node scripts/db.mjs down`              | Останавливает контейнер БД, данные остаются в volume                                       |
 | `db:generate`    | `node scripts/db.mjs generate`          | Генерирует клиент Prisma — нужен после правки схемы; после `pnpm install` запускается сам  |
 | `db:migrate`     | `node scripts/db.mjs migrate`           | Применяет миграции, которых ещё нет в БД                                                   |
+| `db:seed`        | `node scripts/db.mjs seed`              | Создаёт админа из `ADMIN_EMAIL` и `ADMIN_PASSWORD`, если его ещё нет                       |
 | `predocker:up`   | `node scripts/predocker.mjs`            | Запускается автоматически перед `docker:up`                                                |
 | `docker:up`      | `docker compose --profile app up`       | Поднимает весь стек в Docker: БД, backend, frontend, nginx                                 |
 | `build`          | `pnpm -r build`                         | Собирает все workspace-пакеты (запускает `build` в каждом `apps/*`)                        |
