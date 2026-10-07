@@ -1,4 +1,7 @@
 import { concurrently } from 'concurrently'
+import { rememberDevSession } from './dev-session.mjs'
+
+rememberDevSession()
 
 concurrently(
   [
