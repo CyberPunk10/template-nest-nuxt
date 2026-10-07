@@ -74,9 +74,15 @@ export function dbUp() {
   compose(['up', '-d', '--wait', 'postgres'])
 }
 
-// Запускает Prisma CLI в пакете backend: там лежат схема и prisma.config.ts
+// Запускает Prisma CLI в пакете backend: там лежат схема и prisma.config.ts.
+// Рамку «Update available» прячем: здесь Prisma вызывается на каждом `pnpm dev`,
+// а версии обновляют осознанно, вместе с остальными зависимостями. При ручном
+// запуске `pnpm prisma …` в apps/backend она по-прежнему видна.
 function prisma(args) {
-  execFileSync('pnpm', ['--filter', '@repo/backend', 'exec', 'prisma', ...args], { stdio: 'inherit' })
+  execFileSync('pnpm', ['--filter', '@repo/backend', 'exec', 'prisma', ...args], {
+    stdio: 'inherit',
+    env: { ...process.env, PRISMA_HIDE_UPDATE_MESSAGE: '1' },
+  })
 }
 
 // Генерирует клиент Prisma из схемы. После `pnpm install` это делает
