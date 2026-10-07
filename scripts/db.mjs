@@ -7,6 +7,7 @@
 
 import { execFileSync } from 'child_process'
 import { relative } from 'path'
+import { isPortFree } from './check-ports.mjs'
 import { BACKEND_ENV, ROOT_ENV, parseEnv } from './copy-env.mjs'
 import { ensureNetwork } from './ensure-network.mjs'
 import { createLogger } from './log.mjs'
@@ -61,17 +62,40 @@ export function checkBackendDbEnv() {
   throw new Error(`${mismatch.map(describe).join(' ')} Use the same values in both files.`)
 }
 
+// Имя сервиса БД в docker-compose.yml — переименовали там, поменяйте и здесь
+const DB_SERVICE = 'postgres'
+
 // Запускает docker compose с переданными аргументами
 function compose(args) {
   execFileSync('docker', ['compose', ...args], { stdio: 'inherit' })
 }
 
+// Запущен ли уже контейнер postgres этого проекта
+function isPostgresRunning() {
+  const output = execFileSync('docker', ['compose', 'ps', '--status', 'running', '-q', DB_SERVICE], { encoding: 'utf8' })
+  return output.trim() !== ''
+}
+
+// Порт БД может держать что-то постороннее — например, PostgreSQL, установленный
+// в системе. Docker сообщил бы об этом длинной ошибкой без подсказки, что делать.
+// Пока наш контейнер запущен, порт занят им же — тогда проверять нечего.
+async function requireFreeDbPort() {
+  if (isPostgresRunning()) return
+  const port = Number(process.env.POSTGRES_PORT ?? parseEnv(ROOT_ENV).POSTGRES_PORT)
+  if (await isPortFree(port)) return
+  throw new Error(
+    `POSTGRES_PORT ${port} is busy. Change POSTGRES_PORT in`
+    + ` ${relative(process.cwd(), ROOT_ENV)} and ${relative(process.cwd(), BACKEND_ENV)}.`,
+  )
+}
+
 // Поднимает postgres в фоне и ждёт healthcheck: без --wait Nest может начать
 // подключаться раньше, чем БД примет соединения.
-export function dbUp() {
+export async function dbUp() {
   requireDbEnv()
+  await requireFreeDbPort()
   ensureNetwork()
-  compose(['up', '-d', '--wait', 'postgres'])
+  compose(['up', '-d', '--wait', DB_SERVICE])
 }
 
 // Запускает Prisma CLI в пакете backend: там лежат схема и prisma.config.ts.
@@ -108,7 +132,7 @@ export function dbSeed() {
 // Останавливает postgres. Данные остаются в volume — удалить их можно только
 // явным `docker compose down -v`, который намеренно не завёрнут в скрипт.
 export function dbDown() {
-  compose(['stop', 'postgres'])
+  compose(['stop', DB_SERVICE])
 }
 
 const commands = {
@@ -129,7 +153,7 @@ if (command) {
     process.exit(1)
   }
   try {
-    commands[command]()
+    await commands[command]()
   } catch (e) {
     // Ошибка уже понятна сама по себе — стек трейс только мешает.
     // Вывод самих docker compose и Prisma при этом идёт напрямую в терминал.

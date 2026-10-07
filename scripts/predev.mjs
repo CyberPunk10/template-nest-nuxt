@@ -32,7 +32,7 @@ async function main() {
   // Перед этим сверяем параметры БД в двух .env — иначе backend не подключится.
   step = 'db'
   checkBackendDbEnv()
-  dbUp()
+  await dbUp()
   log.ok('db: postgres is up')
 
   // Шаг 4: сгенерировать клиент Prisma — схема могла измениться после
