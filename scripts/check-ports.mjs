@@ -3,6 +3,7 @@ import { execSync } from 'child_process'
 import { intro, select, outro, cancel, isCancel } from '@clack/prompts'
 import { relative } from 'path'
 import { parseEnv } from './copy-env.mjs'
+import { stopDevSession } from './dev-session.mjs'
 
 // Проверяет, свободен ли порт
 export function isPortFree(port) {
@@ -34,6 +35,16 @@ export function killPort(port) {
   return false
 }
 
+// Ждёт, пока порты освободятся: процессу нужно время, чтобы завершиться
+async function waitForFreePorts(ports, timeoutMs = 10_000) {
+  const deadline = Date.now() + timeoutMs
+  while (Date.now() < deadline) {
+    const free = await Promise.all(ports.map(isPortFree))
+    if (free.every(Boolean)) return
+    await new Promise(resolve => setTimeout(resolve, 250))
+  }
+}
+
 // Читает обязательную переменную порта из .env, при отсутствии или некорректном значении — падает с понятной ошибкой
 export function requirePort(envPath, key) {
   const env = parseEnv(envPath)
@@ -54,7 +65,10 @@ export function requirePort(envPath, key) {
 // services: [{ name, envPath, key }] — откуда и какую переменную порта читать для каждого.
 // Возвращает проверенные порты: [{ name, port }] — чтобы вызывающий скрипт
 // мог сообщить, на каких портах всё запустится.
-export async function checkPorts(services) {
+// stopDevSession — при конфликте сначала остановить прошлый `pnpm dev`. Нужно
+// только predev: он занимает те же порты. Перед `pnpm docker:up` работающий
+// `pnpm dev` прокси не мешает, и останавливать его незачем.
+export async function checkPorts(services, { stopDevSession: stopSession = false } = {}) {
   const ports = services.map(s => ({ ...s, port: requirePort(s.envPath, s.key) }))
   const result = ports.map(({ name, port }) => ({ name, port }))
 
@@ -77,6 +91,10 @@ export async function checkPorts(services) {
     process.exit(1)
   }
 
+  // Сначала останавливаем прошлый `pnpm dev` целиком и ждём, пока он отпустит порты.
+  // Затем добиваем то, что всё ещё держит порты: процессы, оставшиеся после
+  // закрытого терминала, или посторонние программы.
+  if (stopSession && stopDevSession()) await waitForFreePorts(busy.map(s => s.port))
   busy.forEach(s => killPort(s.port))
   outro('Ports freed')
   return result

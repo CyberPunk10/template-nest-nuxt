@@ -24,7 +24,7 @@ async function main() {
     { name: 'backend', envPath: BACKEND_ENV, key: 'PORT' },
     { name: 'frontend', envPath: FRONTEND_ENV, key: 'PORT' },
     { name: 'docs', envPath: DOCS_ENV, key: 'PORT' },
-  ])
+  ], { stopDevSession: true })
   log.ok(`ports: ${ports.map(p => `${p.name} ${p.port}`).join(' · ')}`)
 
   // Шаг 3: поднять БД — приложения запускаются локально, но Postgres нужен
