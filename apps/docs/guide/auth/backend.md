@@ -308,11 +308,11 @@ Email и пароль берутся из `ADMIN_EMAIL`/`ADMIN_PASSWORD` (см. 
 
 ### Как запустить
 
-Сид не запускается автоматически ни `migrate dev`, ни `migrate reset` — его нужно вызывать отдельно, каждый раз заново:
+Ни `migrate dev`, ни `migrate reset` сид не запускают. Его выполняет `pnpm dev` — шагом подготовки перед стартом, а вручную он вызывается так:
 
 ```bash
 pnpm prisma migrate reset   # пересоздать БД (если нужно)
-pnpm prisma db seed         # затем явно создать admin-аккаунт
+pnpm prisma db seed         # необязательно: сид выполнит и следующий pnpm dev
 ```
 
 Команда сида задаётся в `prisma.config.ts` — именно её выполняет `prisma db seed`:

@@ -6,15 +6,15 @@ A migration is an SQL file that moves the database from one schema state to the 
 
 `pnpm prisma ...` commands run from `apps/backend/`, `pnpm db:*` commands run from the root.
 
-| Task                                         | Command                                                                 |
-| -------------------------------------------- | ----------------------------------------------------------------------- |
-| Create and apply a migration                 | `pnpm prisma migrate dev --name <name>`                                 |
-| Create a migration to edit, without applying | `pnpm prisma migrate dev --name <name> --create-only`                   |
-| Apply new migrations                         | `pnpm db:migrate`                                                       |
-| Regenerate the client                        | `pnpm db:generate`                                                      |
-| What's applied and what isn't                | `pnpm prisma migrate status`                                            |
-| Mark a failed migration                      | `pnpm prisma migrate resolve --rolled-back <name>` / `--applied <name>` |
-| Recreate the local database                  | `pnpm prisma migrate reset`, then `pnpm prisma db seed`                 |
+| Task                                         | Command                                                                                                |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Create and apply a migration                 | `pnpm prisma migrate dev --name <name>`                                                                |
+| Create a migration to edit, without applying | `pnpm prisma migrate dev --name <name> --create-only`                                                  |
+| Apply new migrations                         | `pnpm db:migrate`                                                                                      |
+| Regenerate the client                        | `pnpm db:generate`                                                                                     |
+| What's applied and what isn't                | `pnpm prisma migrate status`                                                                           |
+| Mark a failed migration                      | `pnpm prisma migrate resolve --rolled-back <name>` / `--applied <name>`                                |
+| Recreate the local database                  | `pnpm prisma migrate reset`, then `pnpm prisma db seed` (the seed can be skipped — `pnpm dev` runs it) |
 
 ## How it works
 
@@ -35,8 +35,8 @@ The schema and the history are two separate sources. Only the history reaches th
 
 The project is set up so that migrations are applied on their own on every start — you don't need to apply them by hand:
 
-| Start            | Who applies them                                                                                                                                 |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Start            | Who applies them                                                                                                                          |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `pnpm dev`       | `predev.mjs`, the `migrations` step — [details](../structure/scripts/predev)                                                              |
 | `pnpm docker:up` | the backend container on startup, before the application starts — [details](../structure/apps/backend/docker-image#migrations-on-startup) |
 
@@ -236,7 +236,7 @@ Recreate the database and apply all migrations from scratch — **all data will 
 ```bash
 cd apps/backend
 pnpm prisma migrate reset   # asks for confirmation
-pnpm prisma db seed         # seeding after a reset is run separately
+pnpm prisma db seed         # optional: the next pnpm dev runs the seed too
 ```
 
 The seed creates the admin account — [details](./prisma#seed-the-admin-account).

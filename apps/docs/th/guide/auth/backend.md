@@ -308,11 +308,11 @@ script นี้ **idempotent** — รันซ้ำบน database ที่ 
 
 ### วิธีรัน
 
-ทั้ง `migrate dev` และ `migrate reset` ไม่รัน seed ให้อัตโนมัติ — ต้องเรียกแยกเองทุกครั้ง:
+ทั้ง `migrate dev` และ `migrate reset` ไม่รัน seed ส่วน `pnpm dev` รันมันเป็นขั้นตอนเตรียมก่อนเริ่ม ถ้าจะเรียกเองให้ใช้:
 
 ```bash
 pnpm prisma migrate reset   # สร้าง database ใหม่ (ถ้าจำเป็น)
-pnpm prisma db seed         # จากนั้น seed admin account อย่างชัดเจน
+pnpm prisma db seed         # ไม่บังคับ: pnpm dev ครั้งถัดไปจะรัน seed ให้ด้วย
 ```
 
 คำสั่ง seed ถูกกำหนดไว้ใน `prisma.config.ts` — นี่คือสิ่งที่ `prisma db seed` รันจริง:

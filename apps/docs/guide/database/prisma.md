@@ -63,9 +63,9 @@ Cannot find module './internal/class.js' from 'generated/prisma/client.ts'
 ```bash
 cd apps/backend
 pnpm prisma migrate reset   # пересоздать БД (если нужно)
-pnpm prisma db seed         # затем явно создать admin-аккаунт
+pnpm prisma db seed         # необязательно: сид выполнит и следующий pnpm dev
 ```
 
-Скрипт идемпотентен (upsert по email) и берёт данные из `ADMIN_EMAIL`/`ADMIN_PASSWORD` в `.env`.
+`pnpm dev` запускает сид сам — шагом подготовки перед стартом, поэтому вручную он нужен, только если админ нужен сразу. Скрипт идемпотентен: если пользователь с этим email уже есть, он ничего не делает и пароль не трогает. Данные берёт из `ADMIN_EMAIL`/`ADMIN_PASSWORD` в `.env`.
 
 Подробности (как это работает, продакшен-примечания) — в [Auth → Backend: Seed](../auth/backend#seed-создание-admin-аккаунта).

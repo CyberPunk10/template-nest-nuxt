@@ -23,6 +23,21 @@ pnpm dev
 
 Генератор спросит язык документации и вариант шаблона. Откроется на [http://localhost:3200](http://localhost:3200).
 
+## Запуск для разработки
+
+`pnpm dev` готовит всё сам: создаёт недостающие `.env`, поднимает PostgreSQL в Docker, генерирует клиент Prisma, применяет миграции и создаёт админа. Логин и пароль админа — `ADMIN_EMAIL` и `ADMIN_PASSWORD` в `apps/backend/.env` (по умолчанию `admin@example.com` / `password`).
+
+Каждый шаг пишет в консоль строку с ✓, а при ошибке — строку с ✗ и именем шага. Что проверить для каждого шага — в [таблице шагов](apps/docs/guide/structure/scripts/predev.md#что-выводит).
+
+| Ситуация                   | Что сделать                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------ |
+| Изменили `schema.prisma`   | `cd apps/backend && pnpm prisma migrate dev --name <имя>`                            |
+| Порт 5432 уже занят        | Поменять `POSTGRES_PORT` и в корневом `.env`, и в `apps/backend/.env`                |
+| Нужно пересоздать базу     | `cd apps/backend && pnpm prisma migrate reset` — админа создаст следующий `pnpm dev` |
+| Нужен админ без `pnpm dev` | `pnpm db:seed`                                                                       |
+
+Подробнее — [База данных](apps/docs/guide/database/index.md) и [Миграции](apps/docs/guide/database/migrations.md).
+
 ## Варианты
 
 - `main` — минимальный: авторизацию и БД вы реализуете сами;
@@ -68,7 +83,7 @@ pnpm dev
 | Первый запуск и запуск после правок кода | `pnpm docker:up --build`                              |
 | Запуск в фоне                            | `pnpm docker:up --build -d`                           |
 | Статус и логи                            | `docker compose ps`, `docker compose logs -f backend` |
-| Остановить                               | `Ctrl+C` или `docker compose down`                    |
+| Остановить                               | `Ctrl+C` или `docker compose --profile app down`      |
 
 Подробнее — [Запуск через Docker](apps/docs/guide/getting-started/run-docker.md).
 
@@ -93,6 +108,8 @@ pnpm dev
   - 📂 [scripts](apps/docs/guide/structure/scripts/index.md) — Node-скрипты за pnpm-командами
   - 📂 [.husky](apps/docs/guide/structure/husky/index.md) — хук перед коммитом
   - 🐳 [docker-compose.yml](apps/docs/guide/structure/docker-compose.md) · ⚙️ [.env.example](apps/docs/guide/structure/env-example.md) · 📦 [package.json](apps/docs/guide/structure/package-json.md)
+- 🗄️ [База данных](apps/docs/guide/database/index.md) — PostgreSQL и Prisma, [миграции](apps/docs/guide/database/migrations.md), [ошибки](apps/docs/guide/database/errors.md)
+- 🔐 [Авторизация](apps/docs/guide/auth/index.md) — JWT в HttpOnly-куках, ротация refresh-токенов
 - 🕸️ [Архитектура](apps/docs/guide/architecture.md) — зависимости пакетов, TypeScript-конфиги
 - ⚙️ [Переменные окружения](apps/docs/guide/env-variables.md) — порты, CORS, пустые значения
 - 🐳 [Docker](apps/docs/guide/docker/index.md) — единая точка входа, [устройство образов](apps/docs/guide/docker/dockerfiles.md)

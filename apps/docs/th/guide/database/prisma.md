@@ -63,9 +63,9 @@ Cannot find module './internal/class.js' from 'generated/prisma/client.ts'
 ```bash
 cd apps/backend
 pnpm prisma migrate reset   # สร้าง database ใหม่ (ถ้าจำเป็น)
-pnpm prisma db seed         # จากนั้น seed admin account อย่างชัดเจน
+pnpm prisma db seed         # ไม่บังคับ: pnpm dev ครั้งถัดไปจะรัน seed ให้ด้วย
 ```
 
-script นี้ idempotent (upsert ตาม email) และอ่านข้อมูลจาก `ADMIN_EMAIL`/`ADMIN_PASSWORD` ใน `.env`
+`pnpm dev` รัน seed ให้เองเป็นขั้นตอนเตรียมก่อนเริ่ม จึงต้องรันเองเฉพาะเมื่ออยากได้ admin ทันที script นี้ idempotent: ถ้ามีผู้ใช้ email นี้อยู่แล้วจะไม่ทำอะไรและไม่แตะรหัสผ่าน อ่านข้อมูลจาก `ADMIN_EMAIL`/`ADMIN_PASSWORD` ใน `.env`
 
 รายละเอียด (วิธีทำงาน, ข้อควรระวังสำหรับ production) — ดูที่ [Auth → Backend: Seed](../auth/backend#seed-สร้าง-admin-account)

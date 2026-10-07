@@ -63,9 +63,9 @@ Regular registration (`POST /auth/register`) always creates a user with the `use
 ```bash
 cd apps/backend
 pnpm prisma migrate reset   # recreate the database (if needed)
-pnpm prisma db seed         # then explicitly seed the admin account
+pnpm prisma db seed         # optional: the next pnpm dev runs the seed too
 ```
 
-The script is idempotent (upsert by email) and reads its data from `ADMIN_EMAIL`/`ADMIN_PASSWORD` in `.env`.
+`pnpm dev` runs the seed itself as a preparation step before starting, so you only need it manually when you want the admin right away. The script is idempotent: if a user with this email already exists, it does nothing and leaves the password alone. It reads its data from `ADMIN_EMAIL`/`ADMIN_PASSWORD` in `.env`.
 
 Details (how it works, production notes) — in [Auth → Backend: Seed](../auth/backend#seed-creating-the-admin-account).

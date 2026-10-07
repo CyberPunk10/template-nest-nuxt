@@ -308,11 +308,11 @@ The script is **idempotent** — running it again on an already-seeded database 
 
 ### How to run it
 
-Neither `migrate dev` nor `migrate reset` runs the seed automatically — you need to call it separately, every time:
+Neither `migrate dev` nor `migrate reset` runs the seed. `pnpm dev` runs it as a preparation step before starting; manually it is called like this:
 
 ```bash
 pnpm prisma migrate reset   # recreate the database (if needed)
-pnpm prisma db seed         # then explicitly seed the admin account
+pnpm prisma db seed         # optional: the next pnpm dev runs the seed too
 ```
 
 The seed command is defined in `prisma.config.ts` — this is exactly what `prisma db seed` executes:

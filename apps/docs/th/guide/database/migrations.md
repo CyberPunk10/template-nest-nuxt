@@ -6,15 +6,15 @@ migration คือไฟล์ SQL ที่เปลี่ยนฐานข�
 
 คำสั่ง `pnpm prisma ...` รันจาก `apps/backend/` ส่วนคำสั่ง `pnpm db:*` รันจาก root
 
-| งาน                              | คำสั่ง                                                                 |
-| -------------------------------- | ------------------------------------------------------------------- |
-| สร้างและรัน migration              | `pnpm prisma migrate dev --name <ชื่อ>`                               |
-| สร้าง migration เพื่อแก้ไข โดยยังไม่รัน | `pnpm prisma migrate dev --name <ชื่อ> --create-only`                 |
-| รัน migration ใหม่                 | `pnpm db:migrate`                                                   |
-| generate client ใหม่              | `pnpm db:generate`                                                  |
-| ดูว่าอะไรรันแล้ว อะไรยัง              | `pnpm prisma migrate status`                                        |
-| ทำเครื่องหมาย migration ที่ล้มเหลว     | `pnpm prisma migrate resolve --rolled-back <ชื่อ>` / `--applied <ชื่อ>` |
-| สร้างฐานข้อมูลในเครื่องใหม่            | `pnpm prisma migrate reset` แล้วตามด้วย `pnpm prisma db seed`         |
+| งาน                              | คำสั่ง                                                                                           |
+| -------------------------------- | --------------------------------------------------------------------------------------------- |
+| สร้างและรัน migration              | `pnpm prisma migrate dev --name <ชื่อ>`                                                         |
+| สร้าง migration เพื่อแก้ไข โดยยังไม่รัน | `pnpm prisma migrate dev --name <ชื่อ> --create-only`                                           |
+| รัน migration ใหม่                 | `pnpm db:migrate`                                                                             |
+| generate client ใหม่              | `pnpm db:generate`                                                                            |
+| ดูว่าอะไรรันแล้ว อะไรยัง              | `pnpm prisma migrate status`                                                                  |
+| ทำเครื่องหมาย migration ที่ล้มเหลว     | `pnpm prisma migrate resolve --rolled-back <ชื่อ>` / `--applied <ชื่อ>`                           |
+| สร้างฐานข้อมูลในเครื่องใหม่            | `pnpm prisma migrate reset` แล้วตามด้วย `pnpm prisma db seed` (ข้าม seed ได้ — `pnpm dev` จะรันให้) |
 
 ## ทำงานอย่างไร
 
@@ -35,8 +35,8 @@ schema กับประวัติเป็นสองแหล่งที�
 
 โปรเจกต์ตั้งค่าไว้ให้ migration รันเองทุกครั้งที่เริ่ม — ไม่ต้องรันเอง:
 
-| การเริ่ม           | ใครเป็นคนรัน                                                                                                                     |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| การเริ่ม           | ใครเป็นคนรัน                                                                                                              |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | `pnpm dev`       | `predev.mjs` ขั้นตอน `migrations` — [รายละเอียด](../structure/scripts/predev)                                              |
 | `pnpm docker:up` | container ของ backend ตอน start ก่อนแอปเริ่มทำงาน — [รายละเอียด](../structure/apps/backend/docker-image#migration-ตอน-start) |
 
@@ -236,7 +236,7 @@ Drift detected: Your database schema is not in sync with your migration history.
 ```bash
 cd apps/backend
 pnpm prisma migrate reset   # จะถามยืนยัน
-pnpm prisma db seed         # seed หลัง reset ต้องรันแยก
+pnpm prisma db seed         # ไม่บังคับ: pnpm dev ครั้งถัดไปจะรัน seed ให้ด้วย
 ```
 
 seed สร้างบัญชี admin — [รายละเอียด](./prisma#seed-admin-account)
