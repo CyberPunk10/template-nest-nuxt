@@ -21,6 +21,8 @@ concurrently(
 
 ถ้า process ใดใน 3 ตัวพัง โดย default `concurrently` จะไม่หยุดตัวอื่น (เปลี่ยนพฤติกรรมนี้ได้ผ่าน `killOthersOn` แต่ที่นี่ไม่ได้ตั้งไว้: การ develop backend ไม่ควรถูกขัดจังหวะแค่เพราะ docs มี build error ชั่วคราว)
 
+ตอนเริ่ม `dev.mjs` จะบันทึก PID ของตัวเองลงใน `node_modules/.cache/dev-session/dev-nest-nuxt.pid` (module `dev-session.mjs`) และลบไฟล์เมื่อออก `pnpm dev` ครั้งถัดไปจะใช้ไฟล์นี้หยุดการรันนี้ทั้งหมดเมื่อพอร์ตชนกัน — ดูที่ [`check-ports.mjs`](./check-ports)
+
 ## การใช้งาน
 
 ```bash
