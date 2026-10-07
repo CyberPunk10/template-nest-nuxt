@@ -9,6 +9,7 @@ scripts/
 ├── copy-env.mjs        path ของ .env, การคัดลอก, parseEnv
 ├── copy-env-cli.mjs    CLI wrapper สำหรับ pnpm env:copy
 ├── check-ports.mjs     ตรวจสอบพอร์ตที่ถูกใช้, dialog
+├── dev-session.mjs     PID ของ pnpm dev ที่รันอยู่ เพื่อหยุดทั้งหมด
 ├── ensure-network.mjs  สร้าง Docker network
 ├── log.mjs             prefix สำหรับข้อความของ script เอง
 ├── dev.mjs             รัน 3 application พร้อมกัน

@@ -21,6 +21,8 @@ Why `concurrently` specifically, and not three parallel `&` in a shell script:
 
 If one of the three processes crashes, `concurrently` doesn't stop the others by default (this can be changed via `killOthersOn`, but it isn't set here: backend development shouldn't be interrupted just because docs, say, has a temporary build error).
 
+On start `dev.mjs` writes its PID to `node_modules/.cache/dev-session/dev-nest-nuxt.pid` (the `dev-session.mjs` module) and removes the file on exit. The next `pnpm dev` uses it to stop this run entirely on a port conflict — see [`check-ports.mjs`](./check-ports).
+
 ## Usage
 
 ```bash
