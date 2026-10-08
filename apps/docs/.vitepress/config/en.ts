@@ -153,6 +153,15 @@ const config: LocaleEntry = {
               { text: 'Backend tests', link: '/en/guide/testing/backend' },
             ],
           },
+          {
+            text: 'Authentication',
+            link: '/en/guide/auth/',
+            collapsed: true,
+            items: [
+              { text: 'Backend', link: '/en/guide/auth/backend' },
+              { text: 'Frontend', link: '/en/guide/auth/frontend' },
+            ],
+          },
         ],
       },
       {

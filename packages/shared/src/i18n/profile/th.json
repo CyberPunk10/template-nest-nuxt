@@ -1,6 +1,8 @@
 {
   "demoBanner": "นี่คือหน้า demo ของ template — ฟอร์มแก้ไขใช้งานได้จริง ส่วนอื่นเป็นข้อมูลสมมติ",
-  "role": "Admin",
+  "roles": {
+    "admin": "ผู้ดูแลระบบ"
+  },
   "stats": {
     "sessions": "เซสชัน",
     "activeDays": "วันที่ใช้งาน",

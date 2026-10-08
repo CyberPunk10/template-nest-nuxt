@@ -16,8 +16,12 @@ docker build -f apps/backend/Dockerfile -t backend-preview .
 docker run -d -p 3100:3100 \
   -e PORT=3100 \
   -e CORS_ORIGIN=http://localhost:3200 \
+  -e JWT_SECRET=change-me-to-a-random-string-of-at-least-32-characters \
+  -e REFRESH_TOKEN_SECRET=change-me-to-another-random-string-of-at-least-32-chars \
   --name backend-preview backend-preview
 ```
+
+secret จำเป็นต้องมี: ถ้าไม่มี Nest จะไม่ผ่านการตรวจ env และล้มตอน start
 
 ตรวจสอบ:
 

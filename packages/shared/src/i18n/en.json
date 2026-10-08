@@ -1,13 +1,20 @@
 {
   "db": {
-    "title": "Database",
+    "title": "DB Tables",
     "subtitle": "read-only snapshot",
+    "restrictedNotice": "Showing data for the current user. The full list is admins only",
     "cols": {
       "id": "ID",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
       "title": "Title",
       "description": "Description",
       "createdAt": "Created",
       "updatedAt": "Updated"
+    },
+    "roles": {
+      "admin": "Admin"
     }
   },
   "tasks": {
@@ -21,6 +28,37 @@
     "descriptionField": "Description",
     "add": "Add",
     "error": "Couldn't complete the operation. Please try again."
+  },
+  "users": {
+    "title": "Users"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "noAccount": "No account? Sign up",
+      "devAdminHint": {
+        "title": "Signing in as admin",
+        "credentials": "Credentials come from the ADMIN_EMAIL and ADMIN_PASSWORD variables in apps/backend/.env",
+        "autoCreate": "The admin with these credentials is created automatically on every backend startup",
+        "noDb": "The auth-session branch isn't connected to a database — all data (except the configured admin) is kept in memory and reset on every backend restart"
+      }
+    },
+    "register": {
+      "title": "Sign up",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign up",
+      "haveAccount": "Already have an account? Sign in"
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "emailTaken": "This email is already in use",
+      "registerFailed": "Couldn't sign up. Please try again."
+    }
   },
   "stub": {
     "title": "Under construction",

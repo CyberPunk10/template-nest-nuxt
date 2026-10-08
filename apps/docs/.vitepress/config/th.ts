@@ -153,6 +153,15 @@ const config: LocaleEntry = {
               { text: 'การทดสอบ backend', link: '/th/guide/testing/backend' },
             ],
           },
+          {
+            text: 'การยืนยันตัวตน',
+            link: '/th/guide/auth/',
+            collapsed: true,
+            items: [
+              { text: 'Backend', link: '/th/guide/auth/backend' },
+              { text: 'Frontend', link: '/th/guide/auth/frontend' },
+            ],
+          },
         ],
       },
       {
