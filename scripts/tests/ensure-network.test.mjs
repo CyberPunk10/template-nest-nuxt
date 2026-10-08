@@ -9,7 +9,7 @@ const hasDocker = spawnSync('docker', ['info'], { stdio: 'ignore' }).status === 
 let sandbox
 afterEach(() => sandbox?.cleanup())
 
-describe('ensureNetwork', () => {
+describe('[ensure-network.test.mjs] ensureNetwork', () => {
   it('называет файл, если нет COMPOSE_NETWORK_NAME', async () => {
     sandbox = createSandbox({ '.env': 'OTHER=1\n' })
     const { ensureNetwork } = await sandbox.import('ensure-network.mjs')

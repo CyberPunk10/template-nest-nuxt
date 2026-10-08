@@ -13,7 +13,7 @@ const EXAMPLES = {
 let sandbox
 afterEach(() => sandbox?.cleanup())
 
-describe('parseEnv', () => {
+describe('[copy-env.test.mjs] parseEnv', () => {
   it('читает ключи и значения, пропуская комментарии и пустые строки', async () => {
     sandbox = createSandbox({ '.env': '# C=commented\n\nA=1\n B = two \nURL=http://x?a=b\n' })
     const { parseEnv } = await sandbox.import('copy-env.mjs')
@@ -27,7 +27,7 @@ describe('parseEnv', () => {
   })
 })
 
-describe('copyEnvFiles', () => {
+describe('[copy-env.test.mjs] copyEnvFiles', () => {
   it('создаёт каждый недостающий .env из его .env.example', async () => {
     sandbox = createSandbox(EXAMPLES)
     const { copyEnvFiles } = await sandbox.import('copy-env.mjs')

@@ -22,7 +22,7 @@ setInterval(() => {}, 1000)
 let sandbox
 afterEach(() => sandbox?.cleanup())
 
-describe('dev session', () => {
+describe('[dev-session.test.mjs] dev session', () => {
   it('запоминает запущенный pnpm dev и останавливает его вместе со всеми процессами', async () => {
     sandbox = createSandbox({ 'scripts/session.mjs': SESSION, 'scripts/child.mjs': CHILD })
     const session = sandbox.start(['scripts/session.mjs'])

@@ -65,7 +65,7 @@ const answerDialog = (args, keys) => sandbox.answer('check.mjs', args, keys, { p
 let sandbox
 afterEach(() => sandbox?.cleanup())
 
-describe('isPortFree', () => {
+describe('[check-ports.test.mjs] isPortFree', () => {
   it('отличает свободный порт от занятого', async () => {
     sandbox = createSandbox()
     const { isPortFree } = await sandbox.import('check-ports.mjs')
@@ -76,7 +76,7 @@ describe('isPortFree', () => {
   })
 })
 
-describe('requirePort', () => {
+describe('[check-ports.test.mjs] requirePort', () => {
   it('читает корректный порт', async () => {
     sandbox = createSandbox({ 'apps/backend/.env': 'PORT=3100\n' })
     const { requirePort } = await sandbox.import('check-ports.mjs')
@@ -97,7 +97,7 @@ describe('requirePort', () => {
   })
 })
 
-describe('killPort', () => {
+describe('[check-ports.test.mjs] killPort', () => {
   it('останавливает процесс, который держит порт', async () => {
     sandbox = createSandbox()
     const { isPortFree, killPort } = await sandbox.import('check-ports.mjs')
@@ -122,7 +122,7 @@ describe('killPort', () => {
   })
 })
 
-describe('checkPorts', () => {
+describe('[check-ports.test.mjs] checkPorts', () => {
   it('возвращает проверенные порты, если все свободны', async () => {
     const free = await occupyPort()
     await free.close()
@@ -133,7 +133,7 @@ describe('checkPorts', () => {
   })
 })
 
-describe('checkPorts при занятом порте', () => {
+describe('[check-ports.test.mjs] checkPorts при занятом порте', () => {
   it('«Kill» для pnpm dev: останавливает прошлую сессию целиком и освобождает порт', async () => {
     const busy = await sandboxWithBusyPort({ session: true })
     const result = await answerDialog(['--stop-session'], KEYS.enter)
