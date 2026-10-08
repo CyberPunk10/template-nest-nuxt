@@ -44,6 +44,12 @@ jobs:
       - run: git diff --exit-code
 
       - run: pnpm type-check
+
+      # Тесты скриптов из scripts/ — встроенный в Node раннер, без зависимостей.
+      # Отдельной pnpm-команды нет: тесты проверяют сам шаблон, и генератор
+      # убирает их из проекта пользователя.
+      - run: node --test "scripts/tests/*.test.mjs"
+
       - run: pnpm build
 
       - name: Audit dependencies
