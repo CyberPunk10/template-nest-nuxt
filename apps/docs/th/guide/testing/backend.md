@@ -141,8 +141,8 @@ process.env.CORS_ORIGIN ??= 'http://localhost:3200'
 
 ตอนนี้ในเทมเพลตมี:
 
-- **`tasks.service.spec.ts`** — CRUD ในหน่วยความจำ: การสร้าง `id` และ timestamp, การกรองตามเจ้าของ, การอัปเดตบางส่วนโดยไม่ลบ field อื่น, `NotFoundException` เมื่อ `id` ไม่รู้จัก และ `ForbiddenException` เมื่อเป็น task ของคนอื่น
-- **`users.service.spec.ts`** — CRUD ของผู้ใช้: `NotFoundException` เมื่อ `id` ไม่รู้จัก, `ConflictException` เมื่อ email ซ้ำ — ทั้งตอนสร้างและตอนแก้ไข
+- **`tasks.service.spec.ts`** — CRUD ผ่าน Prisma client ที่ mock ไว้: การกรองตามเจ้าของ, การอัปเดตบางส่วนโดยไม่ลบ field อื่น, `NotFoundException` เมื่อ `id` ไม่รู้จัก และ `ForbiddenException` เมื่อเป็น task ของคนอื่น
+- **`users.service.spec.ts`** — CRUD ของผู้ใช้: การแปลง code ของ Prisma เป็น HTTP exception — `P2025` → `NotFoundException`, `P2002` → `ConflictException` เมื่อ email ซ้ำ
 - **`app.controller.spec.ts`** — `/health` กับ `/dev/config` รวมถึงพฤติกรรมของ `publicUrl` ที่ต่างกันระหว่าง dev กับ production
 - **`http-exception.filter.spec.ts`** — การแปลง error ให้เป็น JSON รูปแบบเดียว และการที่ข้อความของ exception ที่ไม่คาดคิดไม่รั่วออกไปถึง client
 - **`auth.e2e-spec.ts`** — วงจรเต็ม: สมัคร, เข้าสู่ระบบ, refresh พร้อม rotate token, logout, reuse detection, การเข้าถึง route ที่ป้องกันไว้

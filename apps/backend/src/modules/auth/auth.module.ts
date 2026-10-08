@@ -5,7 +5,6 @@ import { PassportModule } from '@nestjs/passport'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { SessionCleanupService } from './session-cleanup.service'
-import { SessionsStore } from './sessions.store'
 import { LocalStrategy } from './strategies/local.strategy'
 import { JwtStrategy } from './strategies/jwt.strategy'
 import { UsersModule } from '../users/users.module'
@@ -30,7 +29,6 @@ import { UsersModule } from '../users/users.module'
     JwtStrategy,
     LocalStrategy,
     SessionCleanupService,
-    SessionsStore,
   ],
 })
 export class AuthModule {}

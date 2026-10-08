@@ -44,7 +44,7 @@ corepack enable
 
 ## 3. Docker ≥ 23 + Docker Compose ≥ 2.33
 
-Нужны только для Docker-режима — для `pnpm dev` можно пропустить.
+Нужны в обоих случаях: `pnpm docker:up` поднимает в контейнерах всё, а `pnpm dev` — только Postgres, но контейнер ему всё равно нужен.
 
 ```bash
 docker --version

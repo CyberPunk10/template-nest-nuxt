@@ -44,7 +44,7 @@ corepack enable
 
 ## 3. Docker >= 23 + Docker Compose >= 2.33
 
-จำเป็นเฉพาะโหมด Docker — ถ้าใช้ `pnpm dev` ข้ามได้
+จำเป็นทั้งสองกรณี: `pnpm docker:up` รันทุกอย่างใน container ส่วน `pnpm dev` รันแค่ Postgres — แต่ก็ยังต้องใช้ container อยู่
 
 ```bash
 docker --version

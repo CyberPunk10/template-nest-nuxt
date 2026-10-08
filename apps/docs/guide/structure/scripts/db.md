@@ -1,0 +1,56 @@
+# db.mjs
+
+Управляет БД: контейнером, клиентом Prisma, миграциями и сидом. Работает и как CLI (`pnpm db:*`), и как модуль — функции вызываются из [`predev.mjs`](./predev).
+
+БД описана в общем `docker-compose.yml` без профиля, а сервисы приложения — под профилем `app`. Поэтому команда без профиля затрагивает только `postgres` — подробнее в [docker-compose.yml](../docker-compose#профили).
+
+## Команды
+
+| Команда            | Что делает                                                              |
+| ------------------ | ----------------------------------------------------------------------- |
+| `pnpm db:up`       | Создаёт сеть при необходимости, поднимает `postgres` и ждёт healthcheck |
+| `pnpm db:down`     | Останавливает `postgres`, данные остаются в volume                      |
+| `pnpm db:generate` | Генерирует клиент Prisma из схемы (`prisma generate`)                   |
+| `pnpm db:migrate`  | Применяет миграции, которых ещё нет в БД (`prisma migrate deploy`)      |
+| `pnpm db:seed`     | Создаёт админа, если его ещё нет (`prisma db seed`)                     |
+
+Отдельно эти команды нужны редко: `pnpm dev` выполняет их сам. Пригодятся, когда приложения уже запущены или не нужны — например, чтобы применить миграции после `git pull` или подключиться к БД клиентом.
+
+## Ожидание готовности
+
+`up` идёт с флагом `--wait`: команда возвращает управление не когда контейнер создан, а когда его healthcheck стал `healthy`. Без этого Nest успевает начать подключение раньше, чем Postgres примет соединения, и падает на старте.
+
+```js
+compose(['up', '-d', '--wait', DB_SERVICE])
+```
+
+Healthcheck объявлен у сервиса `postgres` и опирается на `pg_isready`.
+
+## Занятый порт
+
+Перед подъёмом `up` проверяет, свободен ли `POSTGRES_PORT`. Если его держит что-то другое — например, PostgreSQL, установленный в системе, — команда останавливается с подсказкой:
+
+```
+POSTGRES_PORT 5432 is busy. Change POSTGRES_PORT in .env and apps/backend/.env.
+```
+
+Имя сервиса и порт Postgres внутри контейнера заданы константами `DB_SERVICE` и `DB_CONTAINER_PORT` — так же, как в `docker-compose.yml`. Меняете там — поменяйте и в `db.mjs`.
+
+## Почему `down` только останавливает
+
+`dbDown()` вызывает `docker compose stop`, а не `down`. Разница в последствиях: `down` удаляет контейнер, а `down -v` — ещё и volume вместе с данными. Удаление данных осознанно не завёрнуто в pnpm-команду, чтобы его нельзя было выполнить по инерции:
+
+```bash
+docker compose down -v   # удалит базу вместе с данными
+```
+
+## Использование как модуля
+
+```js
+import { dbUp, dbGenerate, dbMigrate, dbSeed } from './db.mjs'
+
+dbUp()         // сеть + postgres + ожидание healthcheck
+dbGenerate()   // prisma generate в apps/backend
+dbMigrate()    // prisma migrate deploy в apps/backend
+dbSeed()       // prisma db seed в apps/backend
+```

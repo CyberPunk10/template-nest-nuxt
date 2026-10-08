@@ -16,9 +16,10 @@ async function main() {
   const created = copyEnvFiles()
   log.ok(created.length ? `.env: created ${created.join(', ')} from .env.example` : '.env: files in place')
 
-  // Шаг 2: проверить хост-порты и разрешить конфликты
-  // Проверять нужно только порт reverse proxy: наружу публикуется он один,
-  // остальные сервисы живут во внутренней сети и хост-портов не занимают.
+  // Шаг 2: проверить хост-порты и разрешить конфликты.
+  // Из всех сервисов проверяем только прокси: backend и frontend хост-портов
+  // не занимают вовсе, а порт БД держит Docker — убить его через lsof нельзя,
+  // и на уже поднятой БД проверка выдавала бы ложный конфликт.
   step = 'ports'
   const ports = await checkPorts([
     { name: 'nginx', envPath: ROOT_ENV, key: 'NGINX_HOST_PORT' },

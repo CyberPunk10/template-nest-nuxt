@@ -4,7 +4,7 @@ Node script ที่อยู่เบื้องหลังคำสั่�
 
 ```
 scripts/
-├── predev.mjs          ก่อน pnpm dev: .env + พอร์ต
+├── predev.mjs          ก่อน pnpm dev: .env + พอร์ต + ฐานข้อมูล
 ├── predocker.mjs       ก่อน pnpm docker:up: .env + พอร์ต proxy + network
 ├── copy-env.mjs        path ของ .env, การคัดลอก, parseEnv
 ├── copy-env-cli.mjs    CLI wrapper สำหรับ pnpm env:copy
@@ -12,6 +12,7 @@ scripts/
 ├── dev-session.mjs     PID ของ pnpm dev ที่รันอยู่ เพื่อหยุดทั้งหมด
 ├── ensure-network.mjs  สร้าง Docker network
 ├── log.mjs             prefix สำหรับข้อความของ script เอง
+├── db.mjs              start/stop container ฐานข้อมูล
 ├── dev.mjs             รัน 3 application พร้อมกัน
 └── reinstall.mjs       ติดตั้ง dependency ใหม่ตั้งแต่ต้น
 ```

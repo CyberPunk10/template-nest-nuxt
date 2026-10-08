@@ -10,6 +10,7 @@ const troubles = [
   { id: 'port', doc: 'guide/getting-started/run-pnpm' },
   { id: 'stale', doc: 'guide/getting-started/run-docker' },
   { id: 'network', doc: 'guide/getting-started/run-docker' },
+  { id: 'migrations', doc: 'guide/database/migrations' },
 ] as const
 </script>
 

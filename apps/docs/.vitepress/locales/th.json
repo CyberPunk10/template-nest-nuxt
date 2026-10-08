@@ -10,13 +10,17 @@
       "groups": {
         "dev": "Dev",
         "prod": "Prod",
-        "utils": "ยูทิลิตี้"
+        "utils": "ยูทิลิตี้",
+        "prisma": "Prisma"
       },
       "items": {
         "pnpmDev": "ทุกอย่างพร้อม hot reload: backend, frontend, เอกสาร",
+        "dockerDev": "เปิดฐานข้อมูล",
+        "dbMigrate": "ใช้ migration",
         "pnpmBuild": "production build โดยไม่ใช้ Docker",
         "dockerUp": "บิลด์อิมเมจและรันแบบโปรดักชัน",
-        "dockerDown": "หยุดคอนเทนเนอร์"
+        "dockerDown": "หยุดคอนเทนเนอร์",
+        "prismaStudio": "Prisma Studio"
       }
     },
     "footer": {
@@ -54,16 +58,18 @@
       },
       "accounts": {
         "title": "การยืนยันตัวตน",
-        "intro": "เมื่อเริ่มทำงาน backend จะสร้างผู้ดูแลระบบจาก ADMIN_EMAIL และ ADMIN_PASSWORD ใน apps/backend/.env",
+        "intro": "pnpm dev จะสร้างผู้ดูแลระบบจาก ADMIN_EMAIL และ ADMIN_PASSWORD ใน apps/backend/.env ให้เอง ถ้ายังไม่มี",
         "defaults": "ค่าเริ่มต้น:",
         "email": "อีเมล",
         "password": "รหัสผ่าน",
+        "seed": "สร้างเอง — เช่น หลังรีเซ็ตฐานข้อมูล",
         "more": "ระบบยืนยันตัวตนทำงานอย่างไร"
       },
       "structure": {
         "title": "โครงสร้างโปรเจกต์",
         "items": {
           "backend": "NestJS: API, โมดูล, เซอร์วิส",
+          "prisma": "สคีมาฐานข้อมูล, migration และ seed ผู้ดูแลระบบ",
           "frontend": "Nuxt 4: หน้าเว็บ, คอมโพเนนต์, พร็อกซีไปยัง API",
           "docs": "เอกสารนี้ สร้างด้วย VitePress",
           "shared": "ไทป์และคำแปลที่ใช้ร่วมกันระหว่าง backend และ frontend",
@@ -80,6 +86,7 @@
         },
         "short": {
           "backend": "NestJS API",
+          "prisma": "สคีมาและ migration",
           "frontend": "แอป Nuxt",
           "docs": "เอกสาร",
           "shared": "ไทป์และคำแปล",
@@ -95,7 +102,7 @@
         "intro": "สิ่งที่มักทำในช่วงแรก เพื่อให้เทมเพลตกลายเป็นโปรเจกต์ของคุณ",
         "items": {
           "env": "ตรวจ .env: พอร์ต ที่อยู่ และ secret ค่าจาก .env.example ใช้ได้เฉพาะตอนพัฒนา",
-          "secrets": "เปลี่ยน JWT_SECRET, REFRESH_TOKEN_SECRET และ ADMIN_PASSWORD: ใน .env.example เป็นเพียงค่าตัวอย่าง",
+          "secrets": "เปลี่ยน JWT_SECRET, REFRESH_TOKEN_SECRET, ADMIN_PASSWORD และ POSTGRES_PASSWORD: ใน .env.example เป็นเพียงค่าตัวอย่าง",
           "ci": "ตั้งค่า CI และการ deploy ให้เข้ากับโครงสร้างพื้นฐานของคุณ"
         }
       },
@@ -122,6 +129,10 @@
           "auth": {
             "title": "การยืนยันตัวตน",
             "desc": "JWT ในคุกกี้ HttpOnly และการหมุนเวียน refresh token"
+          },
+          "database": {
+            "title": "ฐานข้อมูล",
+            "desc": "PostgreSQL, Prisma, migration และ seed"
           },
           "env": {
             "title": "ตัวแปรสภาพแวดล้อม",
@@ -159,6 +170,10 @@
           "network": {
             "q": "network … could not be found",
             "a": "เครือข่าย Docker เป็นแบบ external และ pnpm docker:up เป็นผู้สร้าง ถ้ารัน docker compose up โดยตรง ต้องสร้างเอง"
+          },
+          "migrations": {
+            "q": "pnpm dev หยุดที่ขั้นตอน migrations",
+            "a": "migration ล้มเหลว (P3018, P3009) วิธีแก้ SQL และทำเครื่องหมาย migration อยู่ในหัวข้อ «เมื่อมีบางอย่างผิดพลาด»"
           }
         },
         "more": "รายละเอียด"
