@@ -5,7 +5,7 @@ import { createSandbox } from './sandbox.mjs'
 let sandbox
 afterEach(() => sandbox?.cleanup())
 
-describe('copy-env-cli.mjs', () => {
+describe('[copy-env-cli.test.mjs] copy-env-cli.mjs', () => {
   it('сообщает о созданных, уже существующих и перезаписанных файлах', () => {
     sandbox = createSandbox({ '.env.example': 'A=1\n', 'apps/backend/.env.example': 'B=2\n' })
 

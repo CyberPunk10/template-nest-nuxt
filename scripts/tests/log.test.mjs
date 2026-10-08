@@ -5,7 +5,7 @@ import { createSandbox } from './sandbox.mjs'
 let sandbox
 afterEach(() => sandbox?.cleanup())
 
-describe('createLogger', () => {
+describe('[log.test.mjs] createLogger', () => {
   it('добавляет к сообщениям префикс с именем скрипта, вне терминала — без цвета', () => {
     sandbox = createSandbox({
       'scripts/demo.mjs': `import { createLogger } from './log.mjs'
