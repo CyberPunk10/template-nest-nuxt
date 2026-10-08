@@ -11,4 +11,15 @@ The documentation's manifest. Its scripts are called through a filter (`pnpm --f
 
 The filter here is the full package name `@repo/docs`, not `docs` like the other applications.
 
+## Dependencies
+
+All packages are `devDependencies`: only the built static files end up in the image.
+
+| Package | Why |
+| --- | --- |
+| `vitepress`, `vue` | The documentation generator and Vue for the theme components |
+| `dotenv` | Reads `apps/docs/.env` in `.vitepress/config.ts` |
+| `vue-tsc` | Type-checks the config and the theme components |
+| `@types/node` | Node.js types for the config |
+
 What lives where — [apps/docs](./).

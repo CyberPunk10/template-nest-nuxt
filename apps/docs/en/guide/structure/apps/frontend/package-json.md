@@ -12,4 +12,23 @@ The frontend application's manifest. Its scripts work only inside their own work
 | `lint`        | `eslint . --fix` | Linter with auto-fix                                                          |
 | `type-check`  | `nuxt typecheck` | Type-checks via `vue-tsc`                                                     |
 
+## Dependencies
+
+| Package | Why |
+| --- | --- |
+| `nuxt`, `vue`, `vue-router` | Nuxt and Vue, the base of the application |
+| `@nuxtjs/i18n` | Interface translations (ru, en, th) |
+| `@nuxtjs/color-mode` | Light and dark theme |
+| `@nuxt/icon` | The `<Icon>` component for Iconify icons |
+| `@vueuse/core` | SSR-safe wrappers around browser APIs |
+| `vue-tippy` | Tooltips (`app/plugins/tippy.ts`) |
+| `@repo/shared`, `@repo/ui` | Shared types and UI components from `packages/` |
+
+| Dev package | Why |
+| --- | --- |
+| `@iconify-json/lucide` | Lucide icons stored locally: the server serves them itself, without requests to the Iconify API |
+| `sass` | Compiles SCSS in component styles |
+| `@nuxt/eslint` | An ESLint config that knows about Nuxt auto-imports |
+| `vue-tsc` | Type-checks `.vue` files for `nuxt typecheck` |
+
 What lives where — [apps/frontend](./).
