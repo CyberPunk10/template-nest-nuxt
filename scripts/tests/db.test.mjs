@@ -19,7 +19,7 @@ const NO_DB_ENV = Object.fromEntries(Object.keys(DB_ENV).map(key => [key, '']))
 let sandbox
 afterEach(() => sandbox?.cleanup())
 
-describe('dbEnvMismatch', () => {
+describe('[db.test.mjs] dbEnvMismatch', () => {
   it('ничего не находит, если параметры совпадают', async () => {
     sandbox = createSandbox()
     const { dbEnvMismatch } = await sandbox.import('db.mjs')
@@ -42,7 +42,7 @@ describe('dbEnvMismatch', () => {
   })
 })
 
-describe('checkBackendDbEnv', () => {
+describe('[db.test.mjs] checkBackendDbEnv', () => {
   it('называет расходящиеся значения, но не показывает пароль', async () => {
     sandbox = createSandbox({
       '.env': toEnvFile(DB_ENV),
@@ -64,7 +64,7 @@ describe('checkBackendDbEnv', () => {
   })
 })
 
-describe('db.mjs up', () => {
+describe('[db.test.mjs] db.mjs up', () => {
   it('сначала называет недостающие переменные, даже если порт занят', async () => {
     const holder = await occupyPort()
     sandbox = createSandbox({ '.env': `POSTGRES_USER=app\nPOSTGRES_PORT=${holder.port}\n` })
@@ -96,7 +96,7 @@ describe('db.mjs up', () => {
   })
 })
 
-describe('db.mjs', () => {
+describe('[db.test.mjs] db.mjs', () => {
   it('отвергает неизвестную команду и перечисляет доступные', () => {
     sandbox = createSandbox()
     const result = sandbox.run('db.mjs', ['nope'])
