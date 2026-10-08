@@ -21,10 +21,20 @@
 `up` ใส่ flag `--wait` ไว้: คำสั่งจะคืนค่าเมื่อ healthcheck กลายเป็น `healthy` ไม่ใช่ตอนที่สร้าง container เสร็จ ถ้าไม่มี flag นี้ Nest จะเริ่มเชื่อมต่อก่อนที่ Postgres จะรับ connection แล้วล้มตอน start
 
 ```js
-compose(['up', '-d', '--wait', 'postgres'])
+compose(['up', '-d', '--wait', DB_SERVICE])
 ```
 
 healthcheck ถูกประกาศไว้ที่ service `postgres` และอาศัย `pg_isready`
+
+## พอร์ตถูกใช้อยู่
+
+ก่อนยก container ขึ้น `up` จะตรวจว่า `POSTGRES_PORT` ว่างหรือไม่ ถ้ามีอย่างอื่นใช้อยู่ — เช่น PostgreSQL ที่ติดตั้งในระบบ — คำสั่งจะหยุดพร้อมคำแนะนำ:
+
+```
+POSTGRES_PORT 5432 is busy. Change POSTGRES_PORT in .env and apps/backend/.env.
+```
+
+ชื่อ service และพอร์ตของ Postgres ภายใน container กำหนดเป็นค่าคงที่ `DB_SERVICE` และ `DB_CONTAINER_PORT` — ตรงกับใน `docker-compose.yml` ถ้าแก้ที่นั่น ต้องแก้ใน `db.mjs` ด้วย
 
 ## ทำไม `down` แค่หยุด
 

@@ -21,10 +21,20 @@ You rarely need these commands on their own: `pnpm dev` runs them itself. They h
 `up` passes the `--wait` flag: the command returns not when the container has been created, but when its healthcheck turns `healthy`. Without it Nest starts connecting before Postgres accepts connections and dies on startup.
 
 ```js
-compose(['up', '-d', '--wait', 'postgres'])
+compose(['up', '-d', '--wait', DB_SERVICE])
 ```
 
 The healthcheck is declared on the `postgres` service and relies on `pg_isready`.
+
+## A busy port
+
+Before starting, `up` checks that `POSTGRES_PORT` is free. If something else holds it — for example, a PostgreSQL installed on the system — the command stops with a hint:
+
+```
+POSTGRES_PORT 5432 is busy. Change POSTGRES_PORT in .env and apps/backend/.env.
+```
+
+The service name and the Postgres port inside the container are the `DB_SERVICE` and `DB_CONTAINER_PORT` constants — the same as in `docker-compose.yml`. Change them there — change them in `db.mjs` too.
 
 ## Why `down` only stops
 

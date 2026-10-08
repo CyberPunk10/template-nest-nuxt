@@ -62,26 +62,37 @@ export function checkBackendDbEnv() {
   throw new Error(`${mismatch.map(describe).join(' ')} Use the same values in both files.`)
 }
 
-// Имя сервиса БД в docker-compose.yml — переименовали там, поменяйте и здесь
+// Имя сервиса БД и порт Postgres внутри контейнера — как в docker-compose.yml.
+// Поменяли там — поменяйте и здесь.
 const DB_SERVICE = 'postgres'
+const DB_CONTAINER_PORT = '5432'
 
 // Запускает docker compose с переданными аргументами
 function compose(args) {
   execFileSync('docker', ['compose', ...args], { stdio: 'inherit' })
 }
 
-// Запущен ли уже контейнер postgres этого проекта
-function isPostgresRunning() {
-  const output = execFileSync('docker', ['compose', 'ps', '--status', 'running', '-q', DB_SERVICE], { encoding: 'utf8' })
-  return output.trim() !== ''
+// Хост-порт, на котором уже опубликован наш контейнер, или null, если он не запущен
+function publishedDbPort() {
+  try {
+    const output = execFileSync('docker', ['compose', 'port', DB_SERVICE, DB_CONTAINER_PORT], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    })
+    return Number(output.trim().split(':').pop()) || null
+  } catch {
+    return null
+  }
 }
 
 // Порт БД может держать что-то постороннее — например, PostgreSQL, установленный
 // в системе. Docker сообщил бы об этом длинной ошибкой без подсказки, что делать.
-// Пока наш контейнер запущен, порт занят им же — тогда проверять нечего.
+// Если наш контейнер уже опубликован на этом же порту, порт занят им — проверять
+// нечего. А если POSTGRES_PORT поменяли, Compose пересоздаст контейнер на новом
+// порту, и его нужно проверить.
 async function requireFreeDbPort() {
-  if (isPostgresRunning()) return
   const port = Number(process.env.POSTGRES_PORT ?? parseEnv(ROOT_ENV).POSTGRES_PORT)
+  if (publishedDbPort() === port) return
   if (await isPortFree(port)) return
   throw new Error(
     `POSTGRES_PORT ${port} is busy. Change POSTGRES_PORT in`

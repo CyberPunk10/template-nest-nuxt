@@ -13,7 +13,7 @@ Before starting, it runs these steps in order:
 
 The ports checked are the dev ones: `PORT` from `apps/backend/.env`, `apps/frontend/.env` and `apps/docs/.env`.
 
-The database port isn't on that list: the check can only kill processes on the host, and this port is held by Docker. Step 3 checks it instead, while the database container isn't running: if the port is taken by something else — for example, a PostgreSQL installed on the system — preparation stops with a hint to change `POSTGRES_PORT` in both `.env` files.
+The database port isn't checked here — step 3 checks it before starting the database: if the port is busy, preparation stops with a hint to change `POSTGRES_PORT`. Details are in [`db.mjs`](./db#a-busy-port).
 
 [`predocker.mjs`](./predocker) does the same — differing in the list of ports and in not starting the database separately: `docker compose` brings it up along with the other services.
 
