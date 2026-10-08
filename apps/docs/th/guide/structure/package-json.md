@@ -28,6 +28,23 @@ Manifest ที่ root ของ monorepo สคริปต์ในนี้�
 
 คำสั่งส่วนใหญ่มี [Node script](./scripts/) ใน `scripts/` อยู่เบื้องหลัง
 
+## Dependency
+
+แพ็กเกจทั้งหมดที่ root เป็น `devDependencies`: ใช้เฉพาะตอนพัฒนาและไม่ถูกใส่ลงใน image
+
+| แพ็กเกจ | ใช้ทำอะไร |
+| --- | --- |
+| `concurrently` | รันสาม application พร้อมกันใน `pnpm dev` ([dev.mjs](./scripts/dev)) |
+| `@clack/prompts` | หน้าต่างถามเมื่อพอร์ตชนกัน ([check-ports.mjs](./scripts/check-ports)) |
+| `eslint`, `@eslint/js` | Linter และกฎพื้นฐานสำหรับ JavaScript |
+| `typescript-eslint` | กฎและ parser ของ ESLint สำหรับ TypeScript |
+| `@stylistic/eslint-plugin` | กฎการจัดรูปแบบโค้ดแทน Prettier |
+| `globals` | รายการตัวแปร global ของ Node และ browser สำหรับ ESLint |
+| `typescript` | Compiler ที่ `typescript-eslint` ต้องใช้ |
+| `husky` | Git hook: ตั้งค่าผ่านสคริปต์ `prepare` |
+| `lint-staged` | รัน linter เฉพาะไฟล์ที่ stage ไว้ใน pre-commit hook |
+| `@commitlint/cli`, `@commitlint/config-conventional` | ตรวจข้อความ commit ตาม Conventional Commits |
+
 ## เวอร์ชันของเครื่องมือ
 
 ```json

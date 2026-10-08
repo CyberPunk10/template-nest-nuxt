@@ -28,6 +28,23 @@ These don't overlap with the application scripts: the root ones work across the 
 
 Most commands are backed by [Node scripts](./scripts/) in `scripts/`.
 
+## Dependencies
+
+All root packages are `devDependencies`: they are only needed during development and never end up in the images.
+
+| Package | Why |
+| --- | --- |
+| `concurrently` | Runs the three applications in parallel in `pnpm dev` ([dev.mjs](./scripts/dev)) |
+| `@clack/prompts` | The port conflict dialog ([check-ports.mjs](./scripts/check-ports)) |
+| `eslint`, `@eslint/js` | The linter and its base rules for JavaScript |
+| `typescript-eslint` | ESLint rules and parser for TypeScript |
+| `@stylistic/eslint-plugin` | Code formatting rules instead of Prettier |
+| `globals` | Lists of Node and browser globals for ESLint |
+| `typescript` | The compiler `typescript-eslint` can't work without |
+| `husky` | Git hooks: set up by the `prepare` script |
+| `lint-staged` | Lints only the staged files in the pre-commit hook |
+| `@commitlint/cli`, `@commitlint/config-conventional` | Checks commit messages against Conventional Commits |
+
 ## Tooling versions
 
 ```json

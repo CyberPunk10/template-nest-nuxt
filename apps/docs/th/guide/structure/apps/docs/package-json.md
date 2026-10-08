@@ -11,4 +11,15 @@ Manifest ของ application สคริปต์ทำงานเฉพา�
 
 Filter ที่นี่คือชื่อเต็มของ package `@repo/docs` ไม่ใช่ `docs` เหมือน application อื่น
 
+## Dependency
+
+แพ็กเกจทั้งหมดเป็น `devDependencies`: ใน image มีเพียงไฟล์ static ที่ build แล้ว
+
+| แพ็กเกจ | ใช้ทำอะไร |
+| --- | --- |
+| `vitepress`, `vue` | ตัวสร้างเอกสารและ Vue สำหรับ component ของ theme |
+| `dotenv` | อ่าน `apps/docs/.env` ใน `.vitepress/config.ts` |
+| `vue-tsc` | ตรวจ type ของ config และ component ของ theme |
+| `@types/node` | Type ของ Node.js สำหรับ config |
+
 อะไรอยู่ที่ไหน — [apps/docs](./)
