@@ -23,6 +23,23 @@
 
 За большинством команд стоят [Node-скрипты](./scripts/) из `scripts/`.
 
+## Зависимости
+
+Все пакеты корня — `devDependencies`: они нужны только при разработке и в образы не попадают.
+
+| Пакет | Зачем |
+| --- | --- |
+| `concurrently` | Параллельный запуск трёх приложений в `pnpm dev` ([dev.mjs](./scripts/dev)) |
+| `@clack/prompts` | Диалог при конфликте портов ([check-ports.mjs](./scripts/check-ports)) |
+| `eslint`, `@eslint/js` | Линтер и его базовые правила для JavaScript |
+| `typescript-eslint` | Правила и парсер ESLint для TypeScript |
+| `@stylistic/eslint-plugin` | Правила форматирования кода вместо Prettier |
+| `globals` | Списки глобальных переменных Node и браузера для ESLint |
+| `typescript` | Компилятор, без которого не работает `typescript-eslint` |
+| `husky` | Git-хуки: подключаются скриптом `prepare` |
+| `lint-staged` | Линтер только по застейдженным файлам в pre-commit хуке |
+| `@commitlint/cli`, `@commitlint/config-conventional` | Проверка сообщений коммитов по Conventional Commits |
+
 ## Версии инструментов
 
 ```json
