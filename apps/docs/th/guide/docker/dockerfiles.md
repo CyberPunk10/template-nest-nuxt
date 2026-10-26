@@ -63,7 +63,7 @@ runner ไม่ต้องมี `node_modules` เลย — คัดลอ�
 Base image ถูก pin ไว้ที่ระดับ minor:
 
 ```dockerfile
-FROM node:24.18-alpine
+FROM node:24.22-alpine
 FROM nginx:1.31-alpine
 ```
 
@@ -74,7 +74,7 @@ FROM nginx:1.31-alpine
 stage `runner` ของ `backend` และ `frontend` รันด้วย `USER node` — ผู้ใช้แบบ unprivileged ที่มีอยู่แล้วใน image `node:*-alpine`:
 
 ```dockerfile
-FROM node:24.18-alpine AS runner
+FROM node:24.22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 USER node

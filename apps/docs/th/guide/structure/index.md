@@ -25,12 +25,11 @@ package แต่ละตัวขึ้นต่อกันอย่างไ
 
 | ไฟล์                     | ทำอะไร                                                                                                                                   |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm-workspace.yaml`   | ประกาศว่าโฟลเดอร์ไหนเป็น workspace (`apps/*`, `packages/*`) ถ้าไม่มี pnpm จะไม่เชื่อม package เข้าด้วยกัน                                           |
+| `pnpm-workspace.yaml`   | ประกาศว่าโฟลเดอร์ไหนเป็น workspace (`apps/*`, `packages/*`) และเก็บการตั้งค่าของ pnpm `engineStrict: true` — `pnpm install` จะปฏิเสธการติดตั้งบน Node เวอร์ชันที่ไม่รองรับ แทนที่จะพังทีหลังตอน runtime |
 | `tsconfig.base.json`    | การตั้งค่า TypeScript ที่ใช้ร่วมกัน: ความเข้มงวดและการตรวจสอบ config ของแต่ละแอป extend จากไฟล์นี้                                                   |
 | `eslint.config.base.js` | ตัวกฎของ linter: rule, style, global                                                                                                     |
 | `eslint.config.js`      | re-export ของ base บรรทัดเดียว จำเป็นเพราะ ESLint มองหาไฟล์ชื่อมาตรฐานที่ root ส่วนแอปต่าง ๆ import `base` โดยตรง                                  |
 | `lint-staged.config.js` | สิ่งที่จะรันกับไฟล์ใน staged: `eslint --fix` สำหรับ js/ts/vue                                                                                    |
-| `.npmrc`                | `engine-strict=true` — `pnpm install` จะปฏิเสธการติดตั้งบน Node เวอร์ชันที่ไม่รองรับ แทนที่จะพังทีหลังตอน runtime                                      |
 | `.nvmrc`                | เวอร์ชัน Node สำหรับ `nvm use` — คู่กับ `engines` ใน `package.json` ที่ root                                                                     |
 | `.dockerignore`         | สิ่งที่ **ไม่** เข้าไปใน build context: `node_modules`, ผลลัพธ์การ build, `.env` (ยกเว้น `.example`) มีผลโดยตรงต่อขนาด image และความเร็วในการ build |
 | `pnpm-lock.yaml`        | lockfile ไฟล์เดียวสำหรับทั้ง monorepo — เป็นผลจาก workspaces เก็บเวอร์ชันที่แน่นอนของทุก dependency รวมถึงตัวที่ติดมาด้วย                                   |
