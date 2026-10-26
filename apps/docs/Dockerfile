@@ -1,5 +1,5 @@
 FROM node:24.18-alpine AS builder
-RUN corepack enable
+RUN npm install -g pnpm
 WORKDIR /app
 
 COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
