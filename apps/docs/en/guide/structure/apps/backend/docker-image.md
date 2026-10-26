@@ -16,8 +16,12 @@ Run the container on port 3100:
 docker run -d -p 3100:3100 \
   -e PORT=3100 \
   -e CORS_ORIGIN=http://localhost:3200 \
+  -e JWT_SECRET=change-me-to-a-random-string-of-at-least-32-characters \
+  -e REFRESH_TOKEN_SECRET=change-me-to-another-random-string-of-at-least-32-chars \
   --name backend-preview backend-preview
 ```
+
+The secrets are required: without them Nest fails env validation and dies on startup.
 
 Check:
 

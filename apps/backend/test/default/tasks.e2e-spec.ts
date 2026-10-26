@@ -7,6 +7,7 @@ import { setupApp } from '../../src/setup-app'
 
 describe('TasksController (e2e)', () => {
   let app: INestApplication<App>
+  let cookies: string
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -18,6 +19,18 @@ describe('TasksController (e2e)', () => {
     app = setupApp(moduleFixture.createNestApplication())
 
     await app.init()
+
+    // /tasks закрыт JwtAuthGuard: регистрируем пользователя и переиспользуем
+    // выданные куки во всех запросах теста.
+    const auth = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send({ name: 'Tasks Tester', email: 'tasks-e2e@example.com', password: 'password123' })
+      .expect(201)
+
+    // supertest типизирует headers как Record<string, string>, но set-cookie —
+    // массив строк. Берём из каждой только пару «имя=значение», без атрибутов.
+    const raw = auth.headers['set-cookie'] as unknown as string[]
+    cookies = raw.map(c => c.split(';')[0]).join('; ')
   })
 
   // Задачи лежат в памяти сервиса, поэтому приложение поднимается заново
@@ -26,8 +39,17 @@ describe('TasksController (e2e)', () => {
     await app.close()
   })
 
+  // Обёртки над supertest: подставляют куки авторизации в каждый запрос.
   const create = (body: Record<string, unknown>) =>
-    request(app.getHttpServer()).post('/tasks').send(body)
+    request(app.getHttpServer()).post('/tasks').set('Cookie', cookies).send(body)
+
+  const getTasks = () => request(app.getHttpServer()).get('/tasks').set('Cookie', cookies)
+
+  const putTask = (id: string) =>
+    request(app.getHttpServer()).put(`/tasks/${id}`).set('Cookie', cookies)
+
+  const deleteTask = (id: string) =>
+    request(app.getHttpServer()).delete(`/tasks/${id}`).set('Cookie', cookies)
 
   describe('POST /tasks', () => {
     it('создаёт задачу и отдаёт 201', async () => {
@@ -80,16 +102,22 @@ describe('TasksController (e2e)', () => {
 
   describe('GET /tasks', () => {
     it('возвращает пустой список, пока задач нет', () => {
-      return request(app.getHttpServer()).get('/tasks').expect(200).expect([])
+      return getTasks().expect(200).expect([])
     })
 
+    // Проверяем состав, а не порядок: обе задачи создаются в одну миллисекунду,
+    // и сортировка по createdAt между ними неустойчива. Сам порядок «от новых
+    // к старым» покрыт unit-тестом, где время подменяется фейковым таймером.
     it('возвращает созданные задачи', async () => {
       await create({ title: 'Первая' })
       await create({ title: 'Вторая' })
 
-      const response = await request(app.getHttpServer()).get('/tasks').expect(200)
+      const response = await getTasks().expect(200)
 
-      expect(response.body.map((t: { title: string }) => t.title)).toEqual(['Первая', 'Вторая'])
+      expect(response.body.map((t: { title: string }) => t.title).sort()).toEqual([
+        'Вторая',
+        'Первая',
+      ])
     })
   })
 
@@ -97,8 +125,7 @@ describe('TasksController (e2e)', () => {
     it('обновляет задачу', async () => {
       const { body: task } = await create({ title: 'Было' })
 
-      const response = await request(app.getHttpServer())
-        .put(`/tasks/${task.id}`)
+      const response = await putTask(task.id)
         .send({ title: 'Стало' })
         .expect(200)
 
@@ -111,8 +138,7 @@ describe('TasksController (e2e)', () => {
     it('не затирает поля, которых нет в теле запроса', async () => {
       const { body: task } = await create({ title: 'Было', description: 'Описание' })
 
-      const response = await request(app.getHttpServer())
-        .put(`/tasks/${task.id}`)
+      const response = await putTask(task.id)
         .send({ description: 'Новое описание' })
         .expect(200)
 
@@ -122,8 +148,7 @@ describe('TasksController (e2e)', () => {
     it('пустое тело оставляет задачу нетронутой', async () => {
       const { body: task } = await create({ title: 'Без изменений' })
 
-      const response = await request(app.getHttpServer())
-        .put(`/tasks/${task.id}`)
+      const response = await putTask(task.id)
         .send({})
         .expect(200)
 
@@ -133,8 +158,7 @@ describe('TasksController (e2e)', () => {
     it('обрезает пробелы по краям title', async () => {
       const { body: task } = await create({ title: 'Было' })
 
-      const response = await request(app.getHttpServer())
-        .put(`/tasks/${task.id}`)
+      const response = await putTask(task.id)
         .send({ title: '  Стало  ' })
         .expect(200)
 
@@ -142,15 +166,13 @@ describe('TasksController (e2e)', () => {
     })
 
     it('отдаёт 404 для несуществующей задачи', () => {
-      return request(app.getHttpServer())
-        .put('/tasks/3f1e4c9a-0b7d-4e2f-8a11-5c6d7e8f9a0b')
+      return putTask('3f1e4c9a-0b7d-4e2f-8a11-5c6d7e8f9a0b')
         .send({ title: 'Неважно' })
         .expect(404)
     })
 
     it('отдаёт 400, если id не UUID — ParseUUIDPipe', () => {
-      return request(app.getHttpServer())
-        .put('/tasks/не-uuid')
+      return putTask('не-uuid')
         .send({ title: 'Неважно' })
         .expect(400)
     })
@@ -160,19 +182,18 @@ describe('TasksController (e2e)', () => {
     it('удаляет задачу и отдаёт 204', async () => {
       const { body: task } = await create({ title: 'На удаление' })
 
-      await request(app.getHttpServer()).delete(`/tasks/${task.id}`).expect(204)
+      await deleteTask(task.id).expect(204)
 
-      await request(app.getHttpServer()).get('/tasks').expect(200).expect([])
+      await getTasks().expect(200).expect([])
     })
 
     it('отдаёт 404 для несуществующей задачи', () => {
-      return request(app.getHttpServer())
-        .delete('/tasks/3f1e4c9a-0b7d-4e2f-8a11-5c6d7e8f9a0b')
+      return deleteTask('3f1e4c9a-0b7d-4e2f-8a11-5c6d7e8f9a0b')
         .expect(404)
     })
 
     it('отдаёт 400, если id не UUID — ParseUUIDPipe', () => {
-      return request(app.getHttpServer()).delete('/tasks/не-uuid').expect(400)
+      return deleteTask('не-uuid').expect(400)
     })
   })
 })

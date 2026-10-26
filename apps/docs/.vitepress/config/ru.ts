@@ -155,6 +155,15 @@ const config: LocaleEntry = {
               { text: 'Тесты backend', link: '/guide/testing/backend' },
             ],
           },
+          {
+            text: 'Авторизация',
+            link: '/guide/auth/',
+            collapsed: true,
+            items: [
+              { text: 'Бэкенд', link: '/guide/auth/backend' },
+              { text: 'Фронтенд', link: '/guide/auth/frontend' },
+            ],
+          },
         ],
       },
       {

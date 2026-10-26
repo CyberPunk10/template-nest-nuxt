@@ -3,7 +3,7 @@ import DevPanelViewport from './DevPanelViewport.vue'
 import { useDevLinks } from './composables/useDevLinks'
 
 // меняется вручную при переключении на другую ветку шаблона
-const appBranch = 'main'
+const appBranch = 'auth-session'
 
 const { t } = useI18n()
 

@@ -52,6 +52,14 @@
           "docs": "Documentation"
         }
       },
+      "accounts": {
+        "title": "Authentication",
+        "intro": "On startup the backend creates an admin from ADMIN_EMAIL and ADMIN_PASSWORD in apps/backend/.env.",
+        "defaults": "By default:",
+        "email": "Email",
+        "password": "Password",
+        "more": "How authentication works"
+      },
       "structure": {
         "title": "Project structure",
         "items": {
@@ -87,6 +95,7 @@
         "intro": "What is usually done in the first days to turn the template into your project.",
         "items": {
           "env": "Go through .env: ports, addresses, secrets. Values from .env.example are for development only",
+          "secrets": "Replace JWT_SECRET, REFRESH_TOKEN_SECRET and ADMIN_PASSWORD: in .env.example these are placeholders",
           "ci": "Set up CI and deployment for your infrastructure"
         }
       },
@@ -110,6 +119,10 @@
             "title": "Architecture",
             "desc": "How the apps are built and how they talk to each other"
           },
+          "auth": {
+            "title": "Authentication",
+            "desc": "JWT in HttpOnly cookies, refresh token rotation"
+          },
           "env": {
             "title": "Environment variables",
             "desc": "What goes into .env and where it is read"
@@ -125,10 +138,6 @@
           "proxy": {
             "title": "Reverse proxy",
             "desc": "The single entry point and why ports are closed"
-          },
-          "husky": {
-            "title": "Hooks and commits",
-            "desc": "Pre-commit checks and the message format"
           }
         }
       },

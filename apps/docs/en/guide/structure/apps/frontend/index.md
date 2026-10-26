@@ -9,14 +9,16 @@ apps/frontend/
 │   ├── components/             Vue components (auto-imported)
 │   ├── composables/            composables (auto-imported)
 │   ├── layouts/                page wrappers
+│   ├── middleware/             route middleware: auth.global.ts
 │   ├── pages/                  file-based routing
 │   ├── plugins/                code that runs at app init
 │   ├── utils/                  helpers (auto-imported)
 │   └── app.vue                 root component
 ├── server/                     server side (Nitro)
-│   └── api/
-│       ├── backend/            BFF proxy to NestJS
-│       └── health.get.ts
+│   ├── api/
+│   │   ├── backend/            BFF proxy to NestJS
+│   │   └── health.get.ts
+│   └── middleware/             auth.ts — carries cookies during SSR
 ├── i18n/                       @nuxtjs/i18n setup
 ├── public/                     served as-is: favicon, robots.txt
 └── nuxt.config.ts
@@ -24,14 +26,14 @@ apps/frontend/
 
 ## What file placement gives you
 
-| Directory | Convention |
-| --- | --- |
-| `pages/` | The filename becomes the route: `pages/tasks.vue` → `/tasks` |
-| `components/` | Available in templates without an import. Nesting becomes part of the name: `components/App/Sidebar.vue` → `<AppSidebar>` |
-| `composables/`, `utils/` | Exports are available everywhere without an import |
-| `plugins/` | Run at startup. A numeric prefix sets the order (`01.api.ts`), a `.client` suffix means browser-only |
-| `layouts/` | `default.vue` applies to every page unless stated otherwise |
-| `public/` | Served from the root: `public/robots.txt` → `/robots.txt`, untouched by the bundler |
+| Directory                | Convention                                                                                                                |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `pages/`                 | The filename becomes the route: `pages/tasks.vue` → `/tasks`                                                              |
+| `components/`            | Available in templates without an import. Nesting becomes part of the name: `components/App/Sidebar.vue` → `<AppSidebar>` |
+| `composables/`, `utils/` | Exports are available everywhere without an import                                                                        |
+| `plugins/`               | Run at startup. A numeric prefix sets the order (`01.api.ts`), a `.client` suffix means browser-only                      |
+| `layouts/`               | `default.vue` applies to every page unless stated otherwise                                                               |
+| `public/`                | Served from the root: `public/robots.txt` → `/robots.txt`, untouched by the bundler                                       |
 
 ## app/ and server/ are different environments
 

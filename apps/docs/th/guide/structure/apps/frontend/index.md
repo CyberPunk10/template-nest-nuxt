@@ -9,14 +9,16 @@ apps/frontend/
 │   ├── components/             Vue component (auto-import)
 │   ├── composables/            composable (auto-import)
 │   ├── layouts/                ตัวครอบหน้าเพจ
+│   ├── middleware/             route middleware: auth.global.ts
 │   ├── pages/                  routing ตามไฟล์
 │   ├── plugins/                โค้ดที่รันตอน init แอป
 │   ├── utils/                  ฟังก์ชันช่วย (auto-import)
 │   └── app.vue                 root component
 ├── server/                     ฝั่ง server (Nitro)
-│   └── api/
-│       ├── backend/            BFF proxy ไป NestJS
-│       └── health.get.ts
+│   ├── api/
+│   │   ├── backend/            BFF proxy ไป NestJS
+│   │   └── health.get.ts
+│   └── middleware/             auth.ts — ส่งต่อ cookie ตอน SSR
 ├── i18n/                       การตั้งค่า @nuxtjs/i18n
 ├── public/                     เสิร์ฟตามเดิม: favicon, robots.txt
 └── nuxt.config.ts
@@ -24,14 +26,14 @@ apps/frontend/
 
 ## ตำแหน่งไฟล์ให้อะไรบ้าง
 
-| โฟลเดอร์ | Convention |
-| --- | --- |
-| `pages/` | ชื่อไฟล์กลายเป็น route: `pages/tasks.vue` → `/tasks` |
-| `components/` | ใช้ใน template ได้เลยโดยไม่ต้อง import ระดับโฟลเดอร์กลายเป็นส่วนหนึ่งของชื่อ: `components/App/Sidebar.vue` → `<AppSidebar>` |
-| `composables/`, `utils/` | export ใช้ได้ทุกที่โดยไม่ต้อง import |
-| `plugins/` | รันตอน start ตัวเลขนำหน้ากำหนดลำดับ (`01.api.ts`) ส่วน `.client` คือรันเฉพาะบน browser |
-| `layouts/` | `default.vue` ใช้กับทุกหน้า ถ้าไม่ได้ระบุเป็นอย่างอื่น |
-| `public/` | เสิร์ฟจาก root: `public/robots.txt` → `/robots.txt` โดย bundler ไม่แตะ |
+| โฟลเดอร์                  | Convention                                                                                                      |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `pages/`                 | ชื่อไฟล์กลายเป็น route: `pages/tasks.vue` → `/tasks`                                                                |
+| `components/`            | ใช้ใน template ได้เลยโดยไม่ต้อง import ระดับโฟลเดอร์กลายเป็นส่วนหนึ่งของชื่อ: `components/App/Sidebar.vue` → `<AppSidebar>` |
+| `composables/`, `utils/` | export ใช้ได้ทุกที่โดยไม่ต้อง import                                                                                   |
+| `plugins/`               | รันตอน start ตัวเลขนำหน้ากำหนดลำดับ (`01.api.ts`) ส่วน `.client` คือรันเฉพาะบน browser                                    |
+| `layouts/`               | `default.vue` ใช้กับทุกหน้า ถ้าไม่ได้ระบุเป็นอย่างอื่น                                                                      |
+| `public/`                | เสิร์ฟจาก root: `public/robots.txt` → `/robots.txt` โดย bundler ไม่แตะ                                             |
 
 ## app/ กับ server/ คนละสภาพแวดล้อม
 

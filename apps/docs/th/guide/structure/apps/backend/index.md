@@ -6,17 +6,20 @@
 apps/backend/
 ├── src/
 │   ├── common/
-│   │   └── filters/            exception filter ระดับ global
+│   │   ├── filters/            exception filter ระดับ global
+│   │   └── transforms/         transformer สำหรับ DTO
 │   ├── config/
 │   │   └── env.validation.ts   Joi schema ของตัวแปรสภาพแวดล้อม
 │   ├── modules/
-│   │   └── tasks/              ตัวอย่าง module: CRUD ของ task
+│   │   ├── auth/               สมัคร, เข้าสู่ระบบ, refresh, session
+│   │   ├── tasks/              CRUD ของ task
+│   │   └── users/              ผู้ใช้
 │   ├── app.controller.ts       /, /health, /dev/config
 │   ├── app.module.ts           root module
 │   ├── app.service.ts
 │   ├── setup-app.ts            การตั้งค่า global ที่ใช้ร่วมกันระหว่าง main กับ e2e
 │   └── main.ts                 bootstrap: CORS, Swagger, ValidationPipe
-├── test/                       e2e test (jest config แยกต่างหาก)
+├── test/                       e2e test: default/ กับ throttle/ แต่ละชุดมี config ของตัวเอง
 ├── nest-cli.json
 ├── tsconfig.json               สำหรับ IDE และ type-check (noEmit)
 └── tsconfig.build.json         สำหรับ nest build — ให้ dist/ ที่สะอาด

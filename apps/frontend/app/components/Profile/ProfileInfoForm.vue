@@ -1,7 +1,42 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const { user, updateProfile } = useAuth()
 
-const form = reactive({ name: 'John Doe', email: 'john@example.com' })
+const form = reactive({
+  name: user.value?.name ?? '',
+  email: user.value?.email ?? '',
+})
+
+const status = ref<'idle' | 'pending' | 'success' | 'error'>('idle')
+const error = ref('')
+
+const changed = computed(() =>
+  form.name.trim() !== user.value?.name || form.email.trim().toLowerCase() !== user.value?.email,
+)
+
+// Любая правка после сохранения снова делает форму «несохранённой»
+watch(form, () => {
+  if (status.value === 'success') status.value = 'idle'
+})
+
+async function save() {
+  status.value = 'pending'
+  error.value = ''
+  try {
+    await updateProfile({ name: form.name.trim(), email: form.email.trim() })
+    // Backend нормализует email (нижний регистр) — показываем то, что сохранилось
+    form.name = user.value?.name ?? form.name
+    form.email = user.value?.email ?? form.email
+    status.value = 'success'
+  } catch (e) {
+    const statusCode = (e as { statusCode?: number }).statusCode
+    // 409 — email занят другим пользователем, раскрывать это безопасно
+    error.value = statusCode === 409
+      ? t('auth.errors.emailTaken')
+      : t('profile.info.errorFallback')
+    status.value = 'error'
+  }
+}
 </script>
 
 <template>
@@ -14,7 +49,7 @@ const form = reactive({ name: 'John Doe', email: 'john@example.com' })
       />
       {{ t('profile.info.title') }}
     </h2>
-    <form class="form">
+    <form class="form" @submit.prevent="save">
       <div class="field">
         <label class="field__label">{{ t('profile.info.name') }}</label>
         <input
@@ -49,8 +84,17 @@ const form = reactive({ name: 'John Doe', email: 'john@example.com' })
         >
       </div>
       <div class="form__footer">
-        <button class="btn btn--primary" type="submit">
-          {{ t('profile.info.save') }}
+        <p v-if="status === 'success'" class="msg msg--success">
+          <Icon name="lucide:check" size="13" />
+          {{ t('profile.info.saved') }}
+        </p>
+        <p v-else-if="status === 'error'" class="msg msg--error">{{ error }}</p>
+        <button
+          class="btn btn--primary"
+          type="submit"
+          :disabled="!changed || status === 'pending'"
+        >
+          {{ status === 'pending' ? t('profile.info.saving') : t('profile.info.save') }}
         </button>
       </div>
     </form>

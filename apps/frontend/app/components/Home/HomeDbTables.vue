@@ -1,28 +1,48 @@
 <script setup lang="ts">
-interface GlobalTask {
+interface Task {
   id: string
   title: string
-  description?: string
+  description: string | null
   createdAt: string
   updatedAt: string
 }
 
-const { t, locale } = useI18n()
+interface GlobalTask extends Task {
+  user: { name: string }
+}
 
-const { data: allTasks } = await useApi<GlobalTask[]>('/tasks', {
-  key: QUERY_KEYS.allTasks,
-  default: () => [],
-})
+const { t, locale } = useI18n()
+const { isAdmin, user: currentUser } = useAuth()
+
+// Админ видит всех, остальные — только себя. Свой профиль уже есть в useAuth(),
+// поэтому запрос за ним не нужен: /users/:id вернул бы те же самые поля.
+let users: Ref<AuthUser[]>
+if (isAdmin.value) {
+  ({ data: users } = await useApi<AuthUser[]>('/users', { default: () => [] }))
+} else {
+  users = computed(() => (currentUser.value ? [currentUser.value] : []))
+}
+
+const { data: tasks } = isAdmin.value
+  ? await useApi<GlobalTask[]>('/tasks/all', {
+      key: QUERY_KEYS.allTasks,
+      default: () => [],
+    })
+  : await useApi<Task[]>('/tasks', {
+      default: () => [],
+    })
 
 function shortId(id: string): string {
   return id.slice(0, 8)
 }
 
 function formatDate(value: string): string {
-  return new Date(value).toLocaleDateString(locale.value, {
+  return new Date(value).toLocaleString(locale.value, {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   })
 }
 </script>
@@ -35,28 +55,63 @@ function formatDate(value: string): string {
 
     <div class="section">
       <div class="section__header">
-        <span class="section__title">{{ t('tasks.title') }}</span>
-        <span class="section__badge">{{ allTasks?.length ?? 0 }}</span>
+        <span class="section__title">{{ t('users.title') }}</span>
+        <span class="section__badge">{{ users?.length ?? 0 }}</span>
       </div>
+      <p v-if="!isAdmin" class="section__notice">{{ t('db.restrictedNotice') }}</p>
+      <div class="table">
+        <div class="table__grid table__grid--users">
+          <div class="table__head">
+            <span class="col">{{ t('db.cols.id') }}</span>
+            <span class="col">{{ t('db.cols.name') }}</span>
+            <span class="col">{{ t('db.cols.email') }}</span>
+            <span class="col">{{ t('db.cols.role') }}</span>
+            <span class="col col--right">{{ t('db.cols.createdAt') }}</span>
+            <span class="col col--right">{{ t('db.cols.updatedAt') }}</span>
+          </div>
+          <div
+            v-for="item in users"
+            :key="item.id"
+            class="table__row"
+          >
+            <span class="col col--id" :title="item.id">{{ shortId(item.id) }}</span>
+            <span class="col col--name">{{ item.name }}</span>
+            <span class="col" :title="item.email">{{ item.email }}</span>
+            <span class="col col--muted">{{ item.role }}</span>
+            <span class="col col--date">{{ formatDate(item.createdAt) }}</span>
+            <span class="col col--date">{{ formatDate(item.updatedAt) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section__header">
+        <span class="section__title">{{ t('tasks.title') }}</span>
+        <span class="section__badge">{{ tasks?.length ?? 0 }}</span>
+      </div>
+      <p v-if="!isAdmin" class="section__notice">{{ t('db.restrictedNotice') }}</p>
       <div class="table">
         <div class="table__grid table__grid--tasks">
           <div class="table__head">
             <span class="col">{{ t('db.cols.id') }}</span>
             <span class="col">{{ t('db.cols.title') }}</span>
             <span class="col">{{ t('db.cols.description') }}</span>
+            <span class="col">{{ t('db.cols.author') }}</span>
             <span class="col col--right">{{ t('db.cols.createdAt') }}</span>
             <span class="col col--right">{{ t('db.cols.updatedAt') }}</span>
           </div>
           <div
-            v-for="item in allTasks"
+            v-for="item in tasks"
             :key="item.id"
             class="table__row"
           >
             <span class="col col--id" :title="item.id">{{ shortId(item.id) }}</span>
             <span class="col col--name">{{ item.title }}</span>
-            <span class="col col--muted" :title="item.description ?? ''">
+            <span class="col col" :title="item.description ?? ''">
               {{ item.description || '—' }}
             </span>
+            <span class="col col--name col--muted">{{ isAdmin ? (item as GlobalTask).user.name : currentUser?.name }}</span>
             <span class="col col--date">{{ formatDate(item.createdAt) }}</span>
             <span class="col col--date">{{ formatDate(item.updatedAt) }}</span>
           </div>
@@ -94,7 +149,7 @@ function formatDate(value: string): string {
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
   overflow: hidden;
-  background: #0d1424;
+  background: var(--surface-panel);
 
   &__header {
     display: flex;
@@ -121,6 +176,15 @@ function formatDate(value: string): string {
     border-radius: 20px;
     padding: 1px 8px;
   }
+
+  &__notice {
+    margin: 0;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: var(--status-warning);
+    background: var(--status-warning-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+  }
 }
 
 .table {
@@ -133,11 +197,30 @@ function formatDate(value: string): string {
     // поэтому при узком контейнере она не сжимается ниже него и включается скролл
     width: 100%;
 
-    // id · title · description · created · updated
+    // широкая колонка = minmax(10rem, 1fr): забирает остаток, но не уже 10rem —
+    // на этом минимуме длинный текст переносится на вторую строку
+    // id · name · email · role · created · updated
+    &--users {
+      grid-template-columns:
+        90px
+        minmax(6rem, 0.6fr)
+        minmax(10rem, 1fr)
+        minmax(8rem, 0.8fr)
+        130px
+        130px;
+      min-width: 44rem;
+    }
+
+    // id · title · description · author · created · updated
     &--tasks {
-      // 76 + 128 + 160 + 100 + 100 ≈ 36rem
-      grid-template-columns: 76px minmax(8rem, 0.8fr) minmax(10rem, 1fr) 100px 100px;
-      min-width: 36rem;
+      grid-template-columns:
+        90px
+        minmax(8rem, 0.8fr)
+        minmax(10rem, 1fr)
+        minmax(8rem, 0.8fr)
+        130px
+        130px;
+      min-width: 46rem;
     }
   }
 
@@ -170,7 +253,7 @@ function formatDate(value: string): string {
 .col {
   padding: 8px 6px;
   font-size: var(--text-sm);
-  color: #cbd5e1;
+  color: var(--text-primary);
   // длинный текст переносится на следующую строку внутри ячейки
   overflow-wrap: anywhere;
   word-break: break-word;

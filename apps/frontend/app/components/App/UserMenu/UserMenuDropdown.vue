@@ -19,8 +19,14 @@ const submenuTitle = computed(() => (openSubmenu.value ? t(`userMenu.${openSubme
 
 const showsSubmenuInPlace = computed(() => props.context === 'header')
 
-function handleLogout() {
-  console.log('Logout: not implemented in main — see auth-session branch or add your own')
+const { logout } = useAuth()
+
+async function handleLogout() {
+  try {
+    await logout()
+  } catch (e) {
+    console.log('logout error', e)
+  }
 }
 </script>
 

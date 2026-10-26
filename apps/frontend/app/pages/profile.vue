@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const { user, isAdmin } = useAuth()
 
-const avatar = 'J'
-const user = { name: 'John Doe', email: 'john@example.com', id: 'a1b2c3d4' }
+const avatar = computed(() => user.value?.name.charAt(0).toUpperCase() ?? '?')
 
 const stats = computed(() => [
   { label: t('profile.stats.sessions'), value: '24' },
@@ -42,8 +42,9 @@ const sessions = computed(() => [
 
     <ProfileHero
       :avatar="avatar"
-      :name="user.name"
-      :email="user.email"
+      :name="user?.name"
+      :email="user?.email"
+      :is-admin="isAdmin"
     />
 
     <div class="body">
@@ -57,7 +58,7 @@ const sessions = computed(() => [
         <div class="col">
           <ProfileSecurity />
           <ProfileSessions :sessions="sessions" />
-          <ProfileAccount :user-id="user.id" />
+          <ProfileAccount :user-id="user?.id" />
         </div>
       </div>
 
