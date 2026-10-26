@@ -50,10 +50,10 @@ Manifest ที่ root ของ monorepo สคริปต์ในนี้�
 ```json
 "packageManager": "pnpm@12.15.0",
 "engines": {
-  "node": ">=24",
+  "node": ">=24.22.1",
   "pnpm": ">=12",
   "npm": "please-use-pnpm"
 }
 ```
 
-`packageManager` ตรึงเวอร์ชัน pnpm ไว้ ในโปรเจกต์นี้ pnpm จะสลับไปใช้เวอร์ชันนั้นเอง ส่วน `engines` ร่วมกับ `engine-strict=true` ใน `.npmrc` ป้องกันการติดตั้ง dependency บน Node เวอร์ชันที่ไม่รองรับ
+`packageManager` ตรึงเวอร์ชัน pnpm ไว้ ในโปรเจกต์นี้ pnpm จะสลับไปใช้เวอร์ชันนั้นเอง ส่วน `engines` ร่วมกับ `engineStrict: true` ใน `pnpm-workspace.yaml` ป้องกันการติดตั้ง dependency บน Node เวอร์ชันที่ไม่รองรับ

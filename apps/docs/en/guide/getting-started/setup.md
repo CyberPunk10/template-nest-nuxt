@@ -2,13 +2,13 @@
 
 What to install and prepare once, before the first run.
 
-## 1. Node.js >= 24
+## 1. Node.js >= 24.22.1
 
 ```bash
 node -v
 ```
 
-The version is pinned in `.nvmrc` and in `engines` of the root `package.json`. `.npmrc` sets `engine-strict=true`, so `pnpm install` **refuses** to install on a wrong Node version instead of installing silently and breaking at runtime later.
+The version is pinned in `.nvmrc` and in `engines` of the root `package.json`. `engineStrict: true` in `pnpm-workspace.yaml` makes `pnpm install` **refuse** to install on a wrong Node version instead of installing silently and breaking at runtime later.
 
 ::: details How to install (nvm)
 ```bash
@@ -18,8 +18,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
 Then, in the project root (where `.nvmrc` lives):
 
 ```bash
-nvm install 24
-nvm use 24
+nvm install   # version from .nvmrc
+nvm use
 ```
 
 Details — [nvm-sh/nvm](https://github.com/nvm-sh/nvm).

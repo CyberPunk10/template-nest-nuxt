@@ -65,7 +65,7 @@ CMD: node .output/server/index.mjs
 Базовые образы запинены до minor-версии:
 
 ```dockerfile
-FROM node:24.18-alpine
+FROM node:24.22-alpine
 FROM nginx:1.31-alpine
 ```
 
@@ -76,7 +76,7 @@ FROM nginx:1.31-alpine
 `backend` и `frontend` runner-этапы запускаются от `USER node` — встроенного непривилегированного пользователя, который уже есть в образе `node:*-alpine`:
 
 ```dockerfile
-FROM node:24.18-alpine AS runner
+FROM node:24.22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 USER node

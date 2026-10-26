@@ -1,4 +1,4 @@
-FROM node:24.18-alpine AS base
+FROM node:24.22-alpine AS base
 RUN npm install -g pnpm
 
 FROM base AS builder
@@ -12,7 +12,7 @@ COPY . .
 RUN pnpm --filter @repo/frontend build
 
 # ---- production image ----
-FROM node:24.18-alpine AS runner
+FROM node:24.22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3200
