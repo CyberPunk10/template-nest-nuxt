@@ -18,6 +18,8 @@ pnpm update -r    # same thing as the pnpm deps:sync script
 
 `-r` means across all workspace packages. The command raises packages to the latest versions their ranges allow and writes the new values to `package.json`. The lockfile is extended, not recalculated from scratch. For `^` that means minor and patch versions, for `~` patch versions only.
 
+pnpm skips versions published less than a day ago — a guard against supply-chain attacks: a compromised version is usually caught and pulled within a day. So a release that has just come out is picked up the next day. The threshold is the [`minimumReleaseAge`](https://pnpm.io/settings#minimumreleaseage) setting in `pnpm-workspace.yaml`, in minutes.
+
 Update a single package:
 
 ```bash
