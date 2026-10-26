@@ -3,7 +3,7 @@
 Единственный сервис, публикующий порт наружу. Собственной сборки у образа нет: берёт готовый `nginx:1.31-alpine` и кладёт в него два набора файлов.
 
 ```dockerfile
-COPY infra/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
+COPY infra/nginx/nginx.conf.tpl /etc/nginx/templates/default.conf.template
 COPY --from=docs /app/apps/docs/.vitepress/dist /srv/docs
 ```
 
