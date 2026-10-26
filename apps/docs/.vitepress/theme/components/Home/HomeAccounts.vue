@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
+import HomeCopyCmd from './HomeCopyCmd.vue'
 
 const { theme } = useData()
 const t = computed(() => theme.value.home!.content.accounts)
@@ -27,6 +28,10 @@ const admin = { email: 'admin@example.com', password: 'password' }
           </div>
         </dl>
       </div>
+      <div class="accounts__seed">
+        <span class="accounts__label">{{ t.seed }}</span>
+        <HomeCopyCmd cmd="pnpm db:seed" />
+      </div>
       <a class="accounts__more" href="guide/auth/backend">
         {{ t.more }}
         <Icon name="lucide:arrow-right" size="12" />
@@ -52,6 +57,12 @@ const admin = { email: 'admin@example.com', password: 'password' }
   flex-wrap: wrap;
   align-items: baseline;
   gap: 8px 16px;
+}
+.accounts__seed {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
 }
 .accounts__label {
   font-size: var(--home-text-sm);

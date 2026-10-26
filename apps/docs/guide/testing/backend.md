@@ -139,8 +139,8 @@ process.env.CORS_ORIGIN ??= 'http://localhost:3200'
 
 Сейчас в шаблоне:
 
-- **`tasks.service.spec.ts`** — CRUD в памяти: генерация `id` и меток времени, фильтрация по владельцу, частичное обновление без затирания полей, `NotFoundException` на неизвестный `id` и `ForbiddenException` на чужую задачу
-- **`users.service.spec.ts`** — CRUD пользователей: `NotFoundException` на неизвестный `id`, `ConflictException` при дублирующемся email — и при создании, и при обновлении
+- **`tasks.service.spec.ts`** — CRUD через замоканный Prisma-клиент: фильтрация по владельцу, частичное обновление без затирания полей, `NotFoundException` на неизвестный `id` и `ForbiddenException` на чужую задачу
+- **`users.service.spec.ts`** — CRUD пользователей: приведение кодов Prisma к HTTP-исключениям — `P2025` → `NotFoundException`, `P2002` → `ConflictException` при дублирующемся email
 - **`app.controller.spec.ts`** — `/health` и `/dev/config`, включая разное поведение `publicUrl` в dev и production
 - **`http-exception.filter.spec.ts`** — приведение ошибок к единому JSON и то, что текст неожиданного исключения не утекает клиенту
 - **`auth.e2e-spec.ts`** — полный цикл: регистрация, вход, refresh с ротацией токена, logout, reuse detection, доступ к защищённым роутам

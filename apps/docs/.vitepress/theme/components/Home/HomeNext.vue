@@ -8,6 +8,7 @@ const t = computed(() => theme.value.home!.content.next)
 const nextLinks = [
   { id: 'architecture', icon: 'layers', doc: 'guide/architecture' },
   { id: 'auth', icon: 'shield-check', doc: 'guide/auth/' },
+  { id: 'database', icon: 'database', doc: 'guide/database/' },
   { id: 'env', icon: 'key-round', doc: 'guide/env-variables' },
   { id: 'testing', icon: 'check-circle', doc: 'guide/testing/' },
   { id: 'docker', icon: 'boxes', doc: 'guide/docker/' },

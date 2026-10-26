@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { Request } from 'express'
-import { Role } from '../../users/role.enum'
+import { Role } from '../../../generated/prisma/enums'
 import { ROLES_KEY } from '../decorators/roles.decorator'
 import { JwtPayload } from '../strategies/jwt.strategy'
 

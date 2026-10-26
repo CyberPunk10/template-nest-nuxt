@@ -75,6 +75,7 @@ Inside the network the applications still listen on ports, but they're addressed
 | `PORT`            | `apps/*/.env` | The process port under `pnpm dev`         |
 | `*_INTERNAL_PORT` | `.env` (root) | The process port inside the container     |
 | `NGINX_HOST_PORT` | `.env` (root) | The only outward-facing port under Docker |
+| `POSTGRES_PORT`   | `.env` (root) | Database host port — local access         |
 
 The documentation has no `*_INTERNAL_PORT`: under Docker its static files sit inside the proxy image, so there's no separate process. In dev, VitePress runs its own server — hence `PORT=5173`.
 

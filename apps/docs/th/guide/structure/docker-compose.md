@@ -1,15 +1,36 @@
 # docker compose
 
-`docker-compose.yml` ยก `nginx`, `backend` และ `frontend` ขึ้นมาใน network เดียวกัน
+`docker-compose.yml` ประกาศ `postgres`, `nginx`, `backend` และ `frontend` ไว้ใน network เดียวกัน
 
 เอกสารไม่ได้เป็น service แยก: `docs-builder` build static ของมัน แล้ว `nginx` ตัวเดียวกันเป็นคนเสิร์ฟ — รายละเอียดใน [apps/docs](./apps/docs/docker-image)
+
+## Profile
+
+ไฟล์มีไฟล์เดียว แต่ต้องยก service คนละชุดจากมัน — profile คือคำตอบของเรื่องนี้:
+
+| สิ่งที่ต้องการ | คำสั่ง | สิ่งที่ถูกยกขึ้นมา |
+| --- | --- | --- |
+| เฉพาะฐานข้อมูล (สำหรับ `pnpm dev`) | `pnpm db:up` | `postgres` |
+| stack ทั้งหมด | `pnpm docker:up` | `postgres`, `backend`, `frontend`, `nginx` |
+
+```yaml
+postgres:
+  image: postgres:17-alpine   # ไม่มี profiles — ถูกยกขึ้นมาเสมอ
+
+backend:
+  profiles: [app]             # ขึ้นเฉพาะเมื่อใช้ --profile app
+```
+
+`postgres` ตั้งใจไม่ใส่ profile เพราะฐานข้อมูลจำเป็นเสมอ ดังนั้น `docker compose up` จะแตะเฉพาะมัน ส่วน stack ของแอปต้องระบุ `--profile app` อย่างชัดเจน
+
+โหมด dev ของแอปใน container ก็เพิ่มด้วยวิธีเดียวกัน: อีกหนึ่ง profile ในไฟล์เดิม ไม่ต้องมี compose ไฟล์ที่สอง
 
 ## เริ่มรัน
 
 วิธีปกติคือคำสั่งมาตรฐานของ Compose:
 
 ```bash
-docker compose up
+docker compose --profile app up
 ```
 
 แต่บน clone ใหม่มันจะยังไม่ทำงานทันที: ยังไม่มีไฟล์ `.env` และ Docker network อีกทั้งพอร์ตของ proxy อาจถูกใช้อยู่
@@ -20,9 +41,9 @@ docker compose up
 pnpm docker:up
 ```
 
-ก่อนเริ่มมันจะเรียก [`predocker.mjs`](./scripts/predocker) ซึ่งสร้างไฟล์ `.env` ที่ขาด ตรวจพอร์ตของ proxy และสร้าง network — จากนั้นส่งต่อให้ `docker compose up` ตัวเดิม ด้วยเหตุนี้หลัง clone เสร็จจึงใช้คำสั่งเดียวก็พอ
+ก่อนเริ่มมันจะเรียก [`predocker.mjs`](./scripts/predocker) ซึ่งสร้างไฟล์ `.env` ที่ขาด ตรวจพอร์ตของ proxy และสร้าง network — จากนั้นส่งต่อให้ `docker compose --profile app up` ตัวเดิม ด้วยเหตุนี้หลัง clone เสร็จจึงใช้คำสั่งเดียวก็พอ
 
-เมื่อเตรียม environment ไว้แล้ว ก็ไม่ต่างกัน: ใช้ `docker compose` ตรงๆ ได้ คำสั่งรัน **จาก root ของ monorepo** ส่วน flag `--build` จะ build image ใหม่ก่อนเริ่ม
+เมื่อเตรียม environment ไว้แล้ว ก็ไม่ต่างกัน: ใช้ `docker compose` ตรงๆ ได้ — เพียงอย่าลืม `--profile app` ไม่งั้นจะขึ้นมาแค่ฐานข้อมูล คำสั่งรัน **จาก root ของ monorepo** ส่วน flag `--build` จะ build image ใหม่ก่อนเริ่ม
 
 หลังจากรันแล้ว ทุกอย่างเข้าถึงได้ที่พอร์ตเดียว:
 
@@ -42,7 +63,7 @@ docker network create template-nest-nuxt_app
 
 ชื่อ network มาจาก `COMPOSE_NETWORK_NAME` ในไฟล์ `.env` ที่ root — ทั้ง `docker-compose.yml` และ `ensure-network.mjs` อ่านจากที่เดียวกัน ถ้าไม่ได้ตั้งค่าตัวแปรนี้ ทั้งสองฝั่งจะแจ้งให้ทราบอย่างชัดเจน
 
-ทำไมถึงเป็น external แทนที่จะให้ Compose สร้าง: มี container จาก compose ไฟล์ **อื่น** มาต่อกับ network นี้ด้วย — เช่น `docker-compose.dev.yml` ที่มี postgres บน branch ที่ใช้ฐานข้อมูล ไม่มีไฟล์ไหนเป็นเจ้าของ network แต่เพียงผู้เดียว จึงต้องสร้างจากข้างนอก ไม่งั้นลำดับการ start จะกลายเป็นเรื่องสำคัญ
+ทำไมถึงเป็น external แทนที่จะให้ Compose สร้าง: อาจมี container จาก compose ไฟล์ **อื่น** หรือโปรเจกต์อื่นมาต่อกับ network นี้ด้วย ไม่มีไฟล์ไหนเป็นเจ้าของ network แต่เพียงผู้เดียว จึงต้องสร้างจากข้างนอก ไม่งั้นลำดับการ start จะกลายเป็นเรื่องสำคัญ
 
 ## การหยุด
 
@@ -57,7 +78,9 @@ docker network rm template-nest-nuxt_app
 ```
 
 ::: warning
-`docker compose down --remove-orphans` จะลบ container จาก compose ไฟล์ข้างเคียงที่ต่อกับ network เดียวกันด้วย — เช่น postgres บน branch ที่ใช้ฐานข้อมูล ข้อมูลยังอยู่ใน volume แต่ต้อง start container ขึ้นมาใหม่
+`docker compose down --remove-orphans` จะลบ container จาก compose ไฟล์ข้างเคียงที่ต่อกับ network เดียวกันด้วย ข้อมูลยังอยู่ใน volume แต่ต้อง start container ขึ้นมาใหม่
+
+`docker compose down` แบบไม่มี profile จะหยุด `postgres` ไปด้วย — มันมองไม่เห็น service ที่มี profile แต่ฐานข้อมูลไม่มี profile ถ้าต้องการปิดเฉพาะแอปแล้วให้ฐานข้อมูลยังรันอยู่: `docker compose --profile app stop nginx backend frontend`
 :::
 
 ## ไฟล์ .env ทุกไฟล์จำเป็นต้องมี
@@ -92,7 +115,7 @@ frontend:
     NUXT_BACKEND_URL: http://backend:3100   # override localhost:3100 จาก .env
 ```
 
-กลไกเดียวกันนี้ใช้สลับการรันแบบ Docker ไปเป็นโหมด production:
+กลไกเดียวกันนี้ใช้กำหนดโหมดของ build — ตอนนี้คือ production:
 
 ```yaml
 backend:
@@ -133,3 +156,22 @@ BACKEND_INTERNAL_PORT=3100
 ```
 
 ส่วน `PORT` ใน `apps/backend/.env` ไม่มีผลกับ Docker: บรรทัด `environment: PORT` จะทับมันตอน start เพราะ `environment` ใน Compose ชนะ `env_file` เสมอ ตัว `PORT` นั้นมีไว้เพื่ออย่างอื่น — สำหรับการรันผ่าน `pnpm dev` ที่ Docker ไม่เกี่ยวข้อง
+
+### ทำไม ENV ใน Dockerfile ไม่เพียงพอ
+
+port ถูกตั้งไว้ที่นั่นแล้ว:
+
+```dockerfile
+ENV PORT=3100
+```
+
+ดูเหมือนว่าแค่นี้ก็พอ และ `environment` ใน compose ก็เกินความจำเป็น แต่ลำดับความสำคัญของตัวแปรเป็นแบบนี้:
+
+```
+ENV ใน Dockerfile  →  env_file  →  environment
+      อ่อนกว่า                        แข็งกว่า
+```
+
+`env_file: apps/backend/.env` เขียนทับ `ENV` ถ้าไม่มีบรรทัด `environment: PORT` ค่าจาก `.env` ส่วนตัวของนักพัฒนาจะเข้าไปในคอนเทนเนอร์ — และไฟล์นั้นมีไว้สำหรับ `pnpm dev` จะเป็นค่าอะไรก็ได้: เปลี่ยนเป็น 3300 ในเครื่องตัวเอง แล้ว Docker ก็พัง
+
+นั่นคือ `environment: PORT` ป้องกัน `env_file` ไม่ใช่ป้องกัน Dockerfile ส่วน `ENV PORT` เองก็ยังมีประโยชน์: มีมันแล้ว image ทำงานได้โดยไม่ต้องมี compose — `docker run` จะรันขึ้นที่ 3100 โดยไม่ต้องมีตัวแปรแม้แต่ตัวเดียว

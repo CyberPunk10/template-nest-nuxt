@@ -25,8 +25,8 @@ The format deliberately mirrors the `concurrently` prefixes (`[Nest]`, `[Nuxt]`)
 Escape codes are emitted only when the output goes to a terminal. Redirected into a file or running in CI they would turn into `ESC[35m` noise, so `process.stdout.isTTY` is checked. The `NO_COLOR` variable disables colour explicitly — a widely followed convention.
 
 ```bash
-pnpm docker:up                 # prefix in colour
-pnpm docker:up > log.txt       # with no escape codes
-NO_COLOR=1 pnpm docker:up      # the same, forced
+pnpm db:up                 # prefix in colour
+pnpm db:up > log.txt       # with no escape codes
+NO_COLOR=1 pnpm db:up      # the same, forced
 ```
 

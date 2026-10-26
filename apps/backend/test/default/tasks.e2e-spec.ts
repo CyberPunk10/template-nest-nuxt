@@ -4,10 +4,15 @@ import request from 'supertest'
 import { App } from 'supertest/types'
 import { AppModule } from '../../src/app.module'
 import { setupApp } from '../../src/setup-app'
+import { PrismaService } from '../../src/modules/prisma/prisma.service'
 
 describe('TasksController (e2e)', () => {
   let app: INestApplication<App>
+  let prisma: PrismaService
   let cookies: string
+
+  // Единственный пользователь этого набора — удаляем только его.
+  const TEST_EMAIL = 'tasks-e2e@example.com'
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -19,12 +24,17 @@ describe('TasksController (e2e)', () => {
     app = setupApp(moduleFixture.createNestApplication())
 
     await app.init()
+    prisma = moduleFixture.get(PrismaService)
+
+    // Пользователь остаётся в БД после прогона, а повторная регистрация даёт 409.
+    // Задачи удаляются вместе с ним — onDelete: Cascade.
+    await prisma.user.deleteMany({ where: { email: TEST_EMAIL } })
 
     // /tasks закрыт JwtAuthGuard: регистрируем пользователя и переиспользуем
     // выданные куки во всех запросах теста.
     const auth = await request(app.getHttpServer())
       .post('/auth/register')
-      .send({ name: 'Tasks Tester', email: 'tasks-e2e@example.com', password: 'password123' })
+      .send({ name: 'Tasks Tester', email: TEST_EMAIL, password: 'password123' })
       .expect(201)
 
     // supertest типизирует headers как Record<string, string>, но set-cookie —
@@ -33,9 +43,10 @@ describe('TasksController (e2e)', () => {
     cookies = raw.map(c => c.split(';')[0]).join('; ')
   })
 
-  // Задачи лежат в памяти сервиса, поэтому приложение поднимается заново
-  // перед каждым тестом — иначе они протекают между тестами.
+  // Приложение поднимается заново перед каждым тестом: так у каждого свой
+  // пользователь и свой набор задач, и они не протекают между тестами.
   afterEach(async () => {
+    await prisma.user.deleteMany({ where: { email: TEST_EMAIL } })
     await app.close()
   })
 

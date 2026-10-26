@@ -5,9 +5,7 @@ import { App } from 'supertest/types'
 import { AppModule } from '../../src/app.module'
 import { setupApp } from '../../src/setup-app'
 import * as bcrypt from 'bcrypt'
-import { SessionsStore } from '../../src/modules/auth/sessions.store'
-import { UsersService } from '../../src/modules/users/users.service'
-import { Role } from '../../src/modules/users/role.enum'
+import { PrismaService } from '../../src/modules/prisma/prisma.service'
 
 // supertest типизирует headers как Record<string, string>, но set-cookie —
 // массив строк. Приводим через unknown и нормализуем вручную.
@@ -42,8 +40,7 @@ function extractRefreshFromHeader(cookieHeader: string): string {
 
 describe('Auth (e2e)', () => {
   let app: INestApplication<App>
-  let sessions: SessionsStore
-  let users: UsersService
+  let prisma: PrismaService
 
   beforeAll(async () => {
     const moduleFixture = await Test.createTestingModule({
@@ -55,16 +52,27 @@ describe('Auth (e2e)', () => {
     app = setupApp(moduleFixture.createNestApplication())
 
     await app.init()
-    sessions = moduleFixture.get(SessionsStore)
-    users = moduleFixture.get(UsersService)
+    prisma = moduleFixture.get(PrismaService)
   })
 
   // Email-адреса, используемые в тестах — удаляем только их
-  const TEST_EMAILS = ['test@example.com', 'other@example.com']
+  const TEST_EMAILS = ['test@example.com', 'other@example.com', 'admin-test@example.com']
 
   async function cleanupTestData() {
-    await sessions.clear()
-    await users.removeByEmails(TEST_EMAILS)
+    await prisma.session.deleteMany({ where: { user: { email: { in: TEST_EMAILS } } } })
+    await prisma.user.deleteMany({ where: { email: { in: TEST_EMAILS } } })
+  }
+
+  // Создаёт admin-пользователя напрямую в БД (минуя обычную регистрацию, которая
+  // всегда выдаёт role: user) и логинится, чтобы получить куки с role: admin в JWT.
+  async function createAdminCookies(): Promise<string> {
+    const email = 'admin-test@example.com'
+    const password = 'password123'
+    const passwordHash = await bcrypt.hash(password, 4)
+    await prisma.user.create({ data: { name: 'Admin', email, passwordHash, role: 'admin' } })
+
+    const res = await request(app.getHttpServer()).post('/auth/login').send({ email, password })
+    return buildCookieHeader(res.headers['set-cookie'])
   }
 
   afterAll(async () => {
@@ -90,18 +98,6 @@ describe('Auth (e2e)', () => {
   async function loginCookies(): Promise<string> {
     const res = await registerRequest()
     expect(res.status).toBe(201)
-    return buildCookieHeader(res.headers['set-cookie'])
-  }
-
-  // Регистрация не даёт Role.Admin никому — создаём admin-пользователя напрямую
-  // через сервис (так же, как это делает UsersSeedService), затем логинимся через HTTP.
-  async function registerAdmin(email = 'test@example.com'): Promise<string> {
-    const password = 'password123'
-    const passwordHash = await bcrypt.hash(password, 4)
-    await users.createWithRole({ name: 'Admin', email, password: passwordHash }, Role.Admin)
-
-    const res = await request(app.getHttpServer()).post('/auth/login').send({ email, password })
-    expect(res.status).toBe(200)
     return buildCookieHeader(res.headers['set-cookie'])
   }
 
@@ -230,11 +226,12 @@ describe('Auth (e2e)', () => {
     it('возвращает 401 с просроченным токеном', async () => {
       const originalCookies = await loginCookies()
 
-      // Переводим expiresAt сессии в прошлое напрямую в сторе
-      const [session] = await sessions.findAllByUserId(
-        (await users.findByEmail(DEFAULT_USER.email))!.id,
-      )
-      await sessions.expire(session.id)
+      // Переводим expiresAt сессии в прошлое напрямую в БД. where обязателен:
+      // без него просрочиваются все сессии в базе, включая чужие.
+      await prisma.session.updateMany({
+        where: { user: { email: DEFAULT_USER.email } },
+        data: { expiresAt: new Date(0) },
+      })
 
       const res = await request(app.getHttpServer())
         .post('/auth/refresh')
@@ -342,9 +339,9 @@ describe('Auth (e2e)', () => {
         .set('Cookie', extractRefreshFromHeader(cookies))
       expect(refreshRes.status).toBe(401)
 
-      // Сессий этого пользователя в сторе не осталось
-      const remaining = await sessions.findAllByUserId(userId)
-      expect(remaining).toHaveLength(0)
+      // Сессий этого пользователя в БД не осталось
+      const sessions = await prisma.session.findMany({ where: { userId } })
+      expect(sessions).toHaveLength(0)
     })
 
     it('идемпотентен — повторный logout не бросает ошибку', async () => {
@@ -365,7 +362,8 @@ describe('Auth (e2e)', () => {
 
   describe('Users (e2e)', () => {
     it('GET /users возвращает 200 и не содержит passwordHash', async () => {
-      const cookies = await registerAdmin()
+      // GET /users — admin-only (@Roles(Role.admin))
+      const cookies = await createAdminCookies()
 
       const res = await request(app.getHttpServer()).get('/users').set('Cookie', cookies)
 
@@ -429,7 +427,8 @@ describe('Auth (e2e)', () => {
 
     describe('доступ к чужому профилю', () => {
       it('обычный пользователь получает 403 на GET /users/:id чужого профиля', async () => {
-        await registerRequest({ email: 'test@example.com' })
+        const resAlice = await registerRequest({ email: 'test@example.com' })
+        const aliceId = resAlice.body.id
         const resBob = await registerRequest({
           name: 'Bob',
           email: 'other@example.com',
@@ -437,17 +436,15 @@ describe('Auth (e2e)', () => {
         })
         const bobCookies = buildCookieHeader(resBob.headers['set-cookie'])
 
-        const alice = await users.findByEmail('test@example.com')
-
         const res = await request(app.getHttpServer())
-          .get(`/users/${alice?.id}`)
+          .get(`/users/${aliceId}`)
           .set('Cookie', bobCookies)
 
         expect(res.status).toBe(403)
       })
 
       it('admin получает 200 на GET /users/:id чужого профиля', async () => {
-        const adminCookies = await registerAdmin()
+        const adminCookies = await createAdminCookies()
         const resBob = await registerRequest({
           name: 'Bob',
           email: 'other@example.com',
@@ -464,7 +461,7 @@ describe('Auth (e2e)', () => {
       })
 
       it('admin получает 403 на PUT /users/:id чужого профиля', async () => {
-        const adminCookies = await registerAdmin()
+        const adminCookies = await createAdminCookies()
         const resBob = await registerRequest({
           name: 'Bob',
           email: 'other@example.com',
@@ -481,7 +478,7 @@ describe('Auth (e2e)', () => {
       })
 
       it('admin получает 403 на DELETE /users/:id чужого профиля', async () => {
-        const adminCookies = await registerAdmin()
+        const adminCookies = await createAdminCookies()
         const resBob = await registerRequest({
           name: 'Bob',
           email: 'other@example.com',

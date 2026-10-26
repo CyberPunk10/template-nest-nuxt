@@ -13,7 +13,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { CurrentUser } from '../auth/decorators/current-user.decorator'
 import { Roles } from '../auth/decorators/roles.decorator'
 import { JwtPayload } from '../auth/strategies/jwt.strategy'
-import { Role } from './role.enum'
+import { Role } from '../../generated/prisma/enums'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { SafeUser, UsersService } from './users.service'
 
@@ -25,7 +25,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Получить всех пользователей (только admin)' })
   @ApiResponse({ status: 200, description: 'Список пользователей' })
   @ApiResponse({ status: 403, description: 'Требуется роль admin' })
-  @Roles(Role.Admin)
+  @Roles(Role.admin)
   @Get()
   findAll(): Promise<SafeUser[]> {
     return this.usersService.findAll()
@@ -79,7 +79,7 @@ export class UsersController {
   // Admin может просматривать чужие профили (поддержка/модерация), но не менять
   // и не удалять их через self-service роуты — только владелец управляет своими данными.
   private assertSelfOrAdmin(id: string, user: JwtPayload): void {
-    if (user.role === Role.Admin) return
+    if (user.role === Role.admin) return
     this.assertSelf(id, user)
   }
 }

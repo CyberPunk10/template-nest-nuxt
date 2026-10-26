@@ -1,94 +1,88 @@
 import { ConflictException, NotFoundException } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
+import { Prisma } from '../../generated/prisma/client'
+import { PrismaService } from '../prisma/prisma.service'
 import { UsersService } from './users.service'
+
+const mockUser = {
+  id: 'uuid-1',
+  name: 'Alice',
+  email: 'alice@example.com',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}
+
+const prismaMock = {
+  user: {
+    findMany: jest.fn(),
+    findUnique: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  },
+}
+
+function makePrismaError(code: string) {
+  return new Prisma.PrismaClientKnownRequestError('mock', {
+    code,
+    clientVersion: '0.0.0',
+  })
+}
 
 describe('UsersService', () => {
   let service: UsersService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersService],
+      providers: [UsersService, { provide: PrismaService, useValue: prismaMock }],
     }).compile()
 
     service = module.get<UsersService>(UsersService)
+    jest.clearAllMocks()
   })
 
   it('findAll — возвращает список пользователей', async () => {
-    await service.create({ name: 'Alice', email: 'alice@example.com', password: 'supersecret' })
+    prismaMock.user.findMany.mockResolvedValue([mockUser])
     const result = await service.findAll()
-    expect(result).toHaveLength(1)
-    expect(result[0].email).toBe('alice@example.com')
-  })
-
-  it('create — создаёт пользователя', async () => {
-    const result = await service.create({
-      name: 'Alice',
-      email: 'alice@example.com',
-      password: 'supersecret',
-    })
-    expect(result.name).toBe('Alice')
-    expect(result.email).toBe('alice@example.com')
-    expect(result).not.toHaveProperty('passwordHash')
-  })
-
-  it('create — выбрасывает ConflictException при дублирующемся email', async () => {
-    await service.create({ name: 'Alice', email: 'taken@example.com', password: 'supersecret' })
-    await expect(
-      service.create({ name: 'Bob', email: 'taken@example.com', password: 'supersecret' }),
-    ).rejects.toThrow(ConflictException)
+    expect(result).toEqual([mockUser])
+    expect(prismaMock.user.findMany).toHaveBeenCalledTimes(1)
   })
 
   it('findOne — возвращает пользователя по id', async () => {
-    const created = await service.create({
-      name: 'Alice',
-      email: 'alice@example.com',
-      password: 'supersecret',
-    })
-    const result = await service.findOne(created.id)
-    expect(result).toEqual(created)
+    prismaMock.user.findUnique.mockResolvedValue(mockUser)
+    const result = await service.findOne('uuid-1')
+    expect(result).toEqual(mockUser)
   })
 
   it('findOne — выбрасывает NotFoundException если не найден', async () => {
+    prismaMock.user.findUnique.mockResolvedValue(null)
     await expect(service.findOne('uuid-999')).rejects.toThrow(NotFoundException)
   })
 
   it('update — обновляет пользователя', async () => {
-    const created = await service.create({
-      name: 'Alice',
-      email: 'alice@example.com',
-      password: 'supersecret',
-    })
-    const result = await service.update(created.id, { name: 'Bob' })
+    const updated = { ...mockUser, name: 'Bob' }
+    prismaMock.user.update.mockResolvedValue(updated)
+    const result = await service.update('uuid-1', { name: 'Bob' })
     expect(result.name).toBe('Bob')
   })
 
-  it('update — выбрасывает NotFoundException если не найден', async () => {
+  it('update — выбрасывает NotFoundException если не найден (P2025)', async () => {
+    prismaMock.user.update.mockRejectedValue(makePrismaError('P2025'))
     await expect(service.update('uuid-999', { name: 'Bob' })).rejects.toThrow(NotFoundException)
   })
 
-  it('update — выбрасывает ConflictException при дублирующемся email', async () => {
-    await service.create({ name: 'Alice', email: 'alice@example.com', password: 'supersecret' })
-    const bob = await service.create({
-      name: 'Bob',
-      email: 'bob@example.com',
-      password: 'supersecret',
-    })
-    await expect(service.update(bob.id, { email: 'alice@example.com' })).rejects.toThrow(
-      ConflictException,
-    )
+  it('update — выбрасывает ConflictException при дублирующемся email (P2002)', async () => {
+    prismaMock.user.update.mockRejectedValue(makePrismaError('P2002'))
+    await expect(service.update('uuid-1', { email: 'taken@example.com' }))
+      .rejects.toThrow(ConflictException)
   })
 
   it('remove — удаляет пользователя', async () => {
-    const created = await service.create({
-      name: 'Alice',
-      email: 'alice@example.com',
-      password: 'supersecret',
-    })
-    await expect(service.remove(created.id)).resolves.toBeUndefined()
-    await expect(service.findOne(created.id)).rejects.toThrow(NotFoundException)
+    prismaMock.user.delete.mockResolvedValue(mockUser)
+    await expect(service.remove('uuid-1')).resolves.toBeUndefined()
   })
 
-  it('remove — выбрасывает NotFoundException если не найден', async () => {
+  it('remove — выбрасывает NotFoundException если не найден (P2025)', async () => {
+    prismaMock.user.delete.mockRejectedValue(makePrismaError('P2025'))
     await expect(service.remove('uuid-999')).rejects.toThrow(NotFoundException)
   })
 })

@@ -10,13 +10,17 @@
       "groups": {
         "dev": "Dev",
         "prod": "Prod",
-        "utils": "Utilities"
+        "utils": "Utilities",
+        "prisma": "Prisma"
       },
       "items": {
         "pnpmDev": "everything with hot reload: backend, frontend, docs",
+        "dockerDev": "start the database",
+        "dbMigrate": "apply migrations",
         "pnpmBuild": "production build without Docker",
         "dockerUp": "build images and run as in production",
-        "dockerDown": "stop the containers"
+        "dockerDown": "stop the containers",
+        "prismaStudio": "Prisma Studio"
       }
     },
     "footer": {
@@ -54,16 +58,18 @@
       },
       "accounts": {
         "title": "Authentication",
-        "intro": "On startup the backend creates an admin from ADMIN_EMAIL and ADMIN_PASSWORD in apps/backend/.env.",
+        "intro": "pnpm dev creates the admin from ADMIN_EMAIL and ADMIN_PASSWORD in apps/backend/.env if it doesn't exist yet.",
         "defaults": "By default:",
         "email": "Email",
         "password": "Password",
+        "seed": "create manually — for example, after resetting the database",
         "more": "How authentication works"
       },
       "structure": {
         "title": "Project structure",
         "items": {
           "backend": "NestJS: API, modules, services",
+          "prisma": "Database schema, migrations and the admin seed",
           "frontend": "Nuxt 4: pages, components, API proxy",
           "docs": "This documentation, built with VitePress",
           "shared": "Shared types and translations for backend and frontend",
@@ -80,6 +86,7 @@
         },
         "short": {
           "backend": "NestJS API",
+          "prisma": "Schema and migrations",
           "frontend": "Nuxt app",
           "docs": "Documentation",
           "shared": "Types and i18n",
@@ -95,7 +102,7 @@
         "intro": "What is usually done in the first days to turn the template into your project.",
         "items": {
           "env": "Go through .env: ports, addresses, secrets. Values from .env.example are for development only",
-          "secrets": "Replace JWT_SECRET, REFRESH_TOKEN_SECRET and ADMIN_PASSWORD: in .env.example these are placeholders",
+          "secrets": "Replace JWT_SECRET, REFRESH_TOKEN_SECRET, ADMIN_PASSWORD and POSTGRES_PASSWORD: in .env.example these are placeholders",
           "ci": "Set up CI and deployment for your infrastructure"
         }
       },
@@ -122,6 +129,10 @@
           "auth": {
             "title": "Authentication",
             "desc": "JWT in HttpOnly cookies, refresh token rotation"
+          },
+          "database": {
+            "title": "Database",
+            "desc": "PostgreSQL, Prisma, migrations and seed"
           },
           "env": {
             "title": "Environment variables",
@@ -159,6 +170,10 @@
           "network": {
             "q": "network … could not be found",
             "a": "The Docker network is external and pnpm docker:up creates it. With a plain docker compose up, create it manually."
+          },
+          "migrations": {
+            "q": "pnpm dev stopped at the migrations step",
+            "a": "A migration failed (P3018, P3009). How to fix the SQL and mark the migration is in “When something goes wrong”."
           }
         },
         "more": "Details"

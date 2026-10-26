@@ -1,186 +1,159 @@
 import { ForbiddenException, NotFoundException } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
-import { plainToInstance } from 'class-transformer'
-import { UsersService } from '../users/users.service'
-import { UpdateTaskDto } from './dto/update-task.dto'
+import { PrismaService } from '../prisma/prisma.service'
 import { TasksService } from './tasks.service'
+
+const mockTask = {
+  id: 'task-1',
+  title: 'Task 1',
+  description: null,
+  userId: 'user-1',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}
+
+const prismaMock = {
+  task: {
+    findMany: jest.fn(),
+    findUnique: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  },
+}
 
 describe('TasksService', () => {
   let service: TasksService
-  let users: UsersService
 
-  // Хранилище in-memory живёт в самом сервисе, поэтому для каждого теста
-  // нужен свежий экземпляр — иначе задачи протекают между тестами.
+  // Сервис — тонкая обёртка над Prisma, поэтому в тестах подменяем PrismaService
+  // моком: проверяем, какой запрос сервис строит и как обрабатывает ответ.
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TasksService, UsersService],
+      providers: [TasksService, { provide: PrismaService, useValue: prismaMock }],
     }).compile()
 
     service = module.get<TasksService>(TasksService)
-    users = module.get<UsersService>(UsersService)
+    jest.clearAllMocks()
   })
 
-  afterEach(() => {
-    jest.useRealTimers()
-  })
-
-  it('create — создаёт задачу для указанного пользователя', async () => {
-    const task = await service.create({ title: 'Task 1' }, 'user-1')
-    expect(task.title).toBe('Task 1')
-    expect(task.userId).toBe('user-1')
-  })
-
-  it('create — заполняет id и временные метки', async () => {
-    const task = await service.create({ title: 'Купить кофе' }, 'user-1')
-
-    expect(task.id).toMatch(/^[0-9a-f-]{36}$/)
-    expect(task.createdAt).toBeInstanceOf(Date)
-    expect(task.updatedAt).toEqual(task.createdAt)
-  })
-
-  it('create — выдаёт разные id разным задачам', async () => {
-    const first = await service.create({ title: 'Первая' }, 'user-1')
-    const second = await service.create({ title: 'Вторая' }, 'user-1')
-
-    expect(first.id).not.toBe(second.id)
-  })
-
-  it('findAll — возвращает пустой список, пока задач нет', async () => {
-    expect(await service.findAll('user-1')).toEqual([])
-  })
-
-  it('findAll — возвращает только задачи текущего пользователя', async () => {
-    await service.create({ title: 'Alice task' }, 'user-1')
-    await service.create({ title: 'Bob task' }, 'user-2')
-
-    const aliceTasks = await service.findAll('user-1')
-    expect(aliceTasks).toHaveLength(1)
-    expect(aliceTasks[0].title).toBe('Alice task')
-  })
-
-  it('findAll — возвращает задачи от новых к старым', async () => {
-    // Метки ставятся через new Date() — без подмены времени обе задачи
-    // попадут в одну миллисекунду, и порядок сортировки будет неопределённым.
-    jest.useFakeTimers().setSystemTime(new Date('2026-01-01T00:00:00Z'))
-    await service.create({ title: 'Первая' }, 'user-1')
-    jest.setSystemTime(new Date('2026-01-01T00:00:01Z'))
-    await service.create({ title: 'Вторая' }, 'user-1')
-
-    const titles = (await service.findAll('user-1')).map(t => t.title)
-    expect(titles).toEqual(['Вторая', 'Первая'])
-  })
-
-  it('findOne — возвращает задачу владельцу', async () => {
-    const task = await service.create({ title: 'Task 1' }, 'user-1')
-    const found = service.findOne(task.id, 'user-1')
-    expect(found.id).toBe(task.id)
-  })
-
-  it('findOne — выбрасывает NotFoundException если задача не найдена', () => {
-    expect(() => service.findOne('nonexistent-id', 'user-1')).toThrow(NotFoundException)
-  })
-
-  it('findOne — выбрасывает ForbiddenException при обращении к чужой задаче', async () => {
-    const task = await service.create({ title: 'Alice task' }, 'user-1')
-    expect(() => service.findOne(task.id, 'user-2')).toThrow(ForbiddenException)
-  })
-
-  it('update — обновляет задачу владельца', async () => {
-    const task = await service.create({ title: 'Old title' }, 'user-1')
-    const updated = await service.update(task.id, { title: 'New title' }, 'user-1')
-    expect(updated.title).toBe('New title')
-  })
-
-  it('update — меняет только переданные поля', async () => {
-    const task = await service.create({ title: 'Было', description: 'Описание' }, 'user-1')
-
-    const updated = await service.update(task.id, { title: 'Стало' }, 'user-1')
-
-    expect(updated.title).toBe('Стало')
-    expect(updated.description).toBe('Описание')
-  })
-
-  // В бою сервис получает не литерал, а экземпляр DTO от ValidationPipe
-  // с transform: true. У такого объекта непереданные необязательные поля
-  // присутствуют как undefined — на литерале (тест выше) эта разница
-  // не видна, поэтому DTO строим ровно так же, как это делает пайп.
-  it('update — не затирает поля, отсутствующие в DTO от ValidationPipe', async () => {
-    const task = await service.create({ title: 'Было', description: 'Описание' }, 'user-1')
-    const dto = plainToInstance(UpdateTaskDto, { description: 'Новое описание' })
-
-    const updated = await service.update(task.id, dto, 'user-1')
-
-    expect(updated.title).toBe('Было')
-    expect(updated.description).toBe('Новое описание')
-  })
-
-  it('update — пустой DTO оставляет поля нетронутыми', async () => {
-    const task = await service.create({ title: 'Было', description: 'Описание' }, 'user-1')
-
-    const updated = await service.update(task.id, plainToInstance(UpdateTaskDto, {}), 'user-1')
-
-    expect(updated).toMatchObject({ title: 'Было', description: 'Описание' })
-  })
-
-  it('update — сдвигает updatedAt, не трогая createdAt', async () => {
-    const task = await service.create({ title: 'Задача' }, 'user-1')
-    // Метки ставятся через new Date() — без подмены времени два вызова
-    // подряд попадут в одну миллисекунду, и сдвиг будет незаметен.
-    jest.useFakeTimers().setSystemTime(task.createdAt.getTime() + 1000)
-
-    const updated = await service.update(task.id, { title: 'Изменено' }, 'user-1')
-
-    expect(updated.createdAt).toEqual(task.createdAt)
-    expect(updated.updatedAt.getTime()).toBeGreaterThan(task.createdAt.getTime())
-  })
-
-  it('update — выбрасывает NotFoundException для неизвестного id', async () => {
-    await expect(service.update('нет-такой', { title: 'x' }, 'user-1')).rejects.toThrow(
-      NotFoundException,
-    )
-  })
-
-  it('update — выбрасывает ForbiddenException при попытке изменить чужую задачу', async () => {
-    const task = await service.create({ title: 'Alice task' }, 'user-1')
-    await expect(service.update(task.id, { title: 'Hacked' }, 'user-2')).rejects.toThrow(
-      ForbiddenException,
-    )
-  })
-
-  it('remove — удаляет задачу владельца', async () => {
-    const task = await service.create({ title: 'Task 1' }, 'user-1')
-    await service.remove(task.id, 'user-1')
-    expect(() => service.findOne(task.id, 'user-1')).toThrow(NotFoundException)
-  })
-
-  it('remove — не задевает соседние задачи', async () => {
-    const first = await service.create({ title: 'Остаётся' }, 'user-1')
-    const second = await service.create({ title: 'Удаляется' }, 'user-1')
-
-    await service.remove(second.id, 'user-1')
-
-    expect(await service.findAll('user-1')).toEqual([first])
-  })
-
-  it('remove — выбрасывает NotFoundException для неизвестного id', async () => {
-    await expect(service.remove('нет-такой', 'user-1')).rejects.toThrow(NotFoundException)
-  })
-
-  it('remove — выбрасывает ForbiddenException при попытке удалить чужую задачу', async () => {
-    const task = await service.create({ title: 'Alice task' }, 'user-1')
-    await expect(service.remove(task.id, 'user-2')).rejects.toThrow(ForbiddenException)
+  it('findAll — возвращает задачи указанного пользователя', async () => {
+    prismaMock.task.findMany.mockResolvedValue([mockTask])
+    const result = await service.findAll('user-1')
+    expect(result).toEqual([mockTask])
+    expect(prismaMock.task.findMany).toHaveBeenCalledWith({
+      where: { userId: 'user-1' },
+      orderBy: { createdAt: 'desc' },
+    })
   })
 
   it('findAllGlobal — возвращает задачи всех пользователей с именем владельца', async () => {
-    const alice = await users.create({
-      name: 'Alice',
-      email: 'alice@example.com',
-      password: 'supersecret',
-    })
-    await service.create({ title: 'Alice task' }, alice.id)
-
+    const withUser = { ...mockTask, user: { name: 'Alice' } }
+    prismaMock.task.findMany.mockResolvedValue([withUser])
     const result = await service.findAllGlobal()
-    expect(result).toHaveLength(1)
-    expect(result[0].user.name).toBe('Alice')
+    expect(result).toEqual([withUser])
+    expect(prismaMock.task.findMany).toHaveBeenCalledWith({
+      orderBy: { createdAt: 'desc' },
+      include: { user: { select: { name: true } } },
+    })
+  })
+
+  it('findOne — возвращает задачу владельцу', async () => {
+    prismaMock.task.findUnique.mockResolvedValue(mockTask)
+    const result = await service.findOne('task-1', 'user-1')
+    expect(result).toEqual(mockTask)
+  })
+
+  it('findOne — выбрасывает NotFoundException если задача не найдена', async () => {
+    prismaMock.task.findUnique.mockResolvedValue(null)
+    await expect(service.findOne('nonexistent-id', 'user-1')).rejects.toThrow(NotFoundException)
+  })
+
+  it('findOne — выбрасывает ForbiddenException при обращении к чужой задаче', async () => {
+    prismaMock.task.findUnique.mockResolvedValue(mockTask)
+    await expect(service.findOne('task-1', 'user-2')).rejects.toThrow(ForbiddenException)
+  })
+
+  it('create — создаёт задачу для указанного пользователя', async () => {
+    prismaMock.task.create.mockResolvedValue(mockTask)
+    const result = await service.create({ title: 'Task 1' }, 'user-1')
+    expect(result).toEqual(mockTask)
+    expect(prismaMock.task.create).toHaveBeenCalledWith({
+      data: { title: 'Task 1', userId: 'user-1' },
+    })
+  })
+
+  it('create — передаёт description, когда он задан', async () => {
+    const withDescription = { ...mockTask, description: 'Описание' }
+    prismaMock.task.create.mockResolvedValue(withDescription)
+
+    await service.create({ title: 'Task 1', description: 'Описание' }, 'user-1')
+
+    expect(prismaMock.task.create).toHaveBeenCalledWith({
+      data: { title: 'Task 1', description: 'Описание', userId: 'user-1' },
+    })
+  })
+
+  it('update — обновляет задачу владельца', async () => {
+    const updated = { ...mockTask, title: 'New title' }
+    prismaMock.task.findUnique.mockResolvedValue(mockTask)
+    prismaMock.task.update.mockResolvedValue(updated)
+    const result = await service.update('task-1', { title: 'New title' }, 'user-1')
+    expect(result.title).toBe('New title')
+    expect(prismaMock.task.update).toHaveBeenCalledWith({
+      where: { id: 'task-1' },
+      data: { title: 'New title' },
+    })
+  })
+
+  // Prisma трактует undefined как «поле не передано» и не включает его в SET,
+  // поэтому dto от ValidationPipe (где непереданные поля присутствуют как
+  // undefined) можно отдавать в data напрямую — существующие значения целы.
+  it('update — не затирает поля, которых нет в DTO', async () => {
+    prismaMock.task.findUnique.mockResolvedValue(mockTask)
+    prismaMock.task.update.mockResolvedValue(mockTask)
+
+    await service.update('task-1', { title: undefined, description: 'Новое' }, 'user-1')
+
+    expect(prismaMock.task.update).toHaveBeenCalledWith({
+      where: { id: 'task-1' },
+      data: { title: undefined, description: 'Новое' },
+    })
+  })
+
+  it('update — выбрасывает NotFoundException для неизвестного id', async () => {
+    prismaMock.task.findUnique.mockResolvedValue(null)
+
+    await expect(service.update('nonexistent-id', { title: 'x' }, 'user-1')).rejects.toThrow(
+      NotFoundException,
+    )
+    expect(prismaMock.task.update).not.toHaveBeenCalled()
+  })
+
+  it('update — выбрасывает ForbiddenException при попытке изменить чужую задачу', async () => {
+    prismaMock.task.findUnique.mockResolvedValue(mockTask)
+    await expect(service.update('task-1', { title: 'Hacked' }, 'user-2')).rejects.toThrow(
+      ForbiddenException,
+    )
+    expect(prismaMock.task.update).not.toHaveBeenCalled()
+  })
+
+  it('remove — удаляет задачу владельца', async () => {
+    prismaMock.task.findUnique.mockResolvedValue(mockTask)
+    prismaMock.task.delete.mockResolvedValue(mockTask)
+    await expect(service.remove('task-1', 'user-1')).resolves.toBeUndefined()
+    expect(prismaMock.task.delete).toHaveBeenCalledWith({ where: { id: 'task-1' } })
+  })
+
+  it('remove — выбрасывает NotFoundException для неизвестного id', async () => {
+    prismaMock.task.findUnique.mockResolvedValue(null)
+
+    await expect(service.remove('nonexistent-id', 'user-1')).rejects.toThrow(NotFoundException)
+    expect(prismaMock.task.delete).not.toHaveBeenCalled()
+  })
+
+  it('remove — выбрасывает ForbiddenException при попытке удалить чужую задачу', async () => {
+    prismaMock.task.findUnique.mockResolvedValue(mockTask)
+    await expect(service.remove('task-1', 'user-2')).rejects.toThrow(ForbiddenException)
+    expect(prismaMock.task.delete).not.toHaveBeenCalled()
   })
 })

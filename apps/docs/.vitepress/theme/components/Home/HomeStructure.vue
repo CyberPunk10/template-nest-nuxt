@@ -14,6 +14,7 @@ const structureTree = [
   { id: 'root', prefix: '', name: 'my-app/', kind: 'root', doc: 'guide/structure/' },
   { id: 'apps', prefix: '├── ', name: 'apps/', kind: 'dir', doc: 'guide/structure/apps/' },
   { id: 'backend', prefix: '│   ├── ', name: 'backend/', kind: 'app', doc: 'guide/structure/apps/backend/' },
+  { id: 'prisma', prefix: '│   │   └── ', name: 'prisma/', kind: 'pkg', doc: 'guide/structure/apps/backend/prisma/' },
   { id: 'frontend', prefix: '│   ├── ', name: 'frontend/', kind: 'app', doc: 'guide/structure/apps/frontend/' },
   { id: 'docs', prefix: '│   └── ', name: 'docs/', kind: 'app', doc: 'guide/structure/apps/docs/' },
   { id: 'packages', prefix: '├── ', name: 'packages/', kind: 'dir', doc: 'guide/structure/packages/' },
