@@ -38,7 +38,7 @@ Convention ของ monorepo กำหนดให้ `apps/` เป็นท�
 
 ## config ทำอะไรบ้าง
 
-`infra/nginx/nginx.conf.template` ไม่ได้ดูแลแค่ routing
+`infra/nginx/nginx.conf.tpl` ไม่ได้ดูแลแค่ routing
 
 **เอกสารเป็น static** `/dev/docs/` เสิร์ฟจาก disk ผ่าน `alias` ไม่ได้ proxy ไปยัง service แยก:
 
@@ -93,7 +93,7 @@ map $http_upgrade $connection_upgrade {
 
 ## Template กับ envsubst
 
-`nginx.conf.template` ไม่ใช่ config ที่พร้อมใช้ entrypoint ที่มากับ image `nginx:alpine` จะรัน `*.template` ใน `/etc/nginx/templates/` ผ่าน `envsubst` แล้ววางผลลัพธ์ที่ `/etc/nginx/conf.d/` ก่อน nginx จะ start
+`nginx.conf.tpl` ไม่ใช่ config ที่พร้อมใช้ entrypoint ที่มากับ image `nginx:alpine` จะรัน `*.template` ใน `/etc/nginx/templates/` ผ่าน `envsubst` แล้ววางผลลัพธ์ที่ `/etc/nginx/conf.d/` ก่อน nginx จะ start
 
 จุดที่ต้องระวัง: `envsubst` แทนที่ `$ตัวแปร` **ทุกตัว** รวมถึงของ nginx เองอย่าง `$uri`, `$host`, `$http_upgrade` พวกนี้ไม่ได้ตั้งไว้ใน environment จึงจะกลายเป็นค่าว่างและทำให้ config พัง ป้องกันด้วย filter:
 

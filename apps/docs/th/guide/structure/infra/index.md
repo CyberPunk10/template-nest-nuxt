@@ -5,7 +5,7 @@ Infrastructure ที่ไม่ใช่แอปพลิเคชัน
 ```
 infra/
 └── nginx/
-    ├── nginx.conf.template
+    ├── nginx.conf.tpl
     └── Dockerfile
 ```
 

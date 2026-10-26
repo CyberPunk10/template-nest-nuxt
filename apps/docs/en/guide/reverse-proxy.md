@@ -38,7 +38,7 @@ Monorepo convention reserves `apps/` for applications and `packages/` for reusab
 
 ## What the config does
 
-`infra/nginx/nginx.conf.template` handles more than routing.
+`infra/nginx/nginx.conf.tpl` handles more than routing.
 
 **Documentation as static files.** `/dev/docs/` is served from disk via `alias` rather than proxied to a separate service:
 
@@ -93,7 +93,7 @@ The `map` is needed because a constant `Connection: upgrade` isn't an option —
 
 ## Template and envsubst
 
-`nginx.conf.template` is not a ready-made config. The `nginx:alpine` image's built-in entrypoint runs `*.template` files from `/etc/nginx/templates/` through `envsubst` and writes the result into `/etc/nginx/conf.d/` before nginx starts.
+`nginx.conf.tpl` is not a ready-made config. The `nginx:alpine` image's built-in entrypoint runs `*.template` files from `/etc/nginx/templates/` through `envsubst` and writes the result into `/etc/nginx/conf.d/` before nginx starts.
 
 The pitfall: `envsubst` substitutes **every** `$variable`, including nginx's own `$uri`, `$host`, `$http_upgrade`. Those aren't set in the environment, so they'd become empty strings and break the config. A filter prevents that:
 
