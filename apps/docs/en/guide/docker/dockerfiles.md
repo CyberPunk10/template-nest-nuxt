@@ -63,7 +63,7 @@ CMD: node .output/server/index.mjs
 Base images are pinned to a minor version:
 
 ```dockerfile
-FROM node:24.18-alpine
+FROM node:24.22-alpine
 FROM nginx:1.31-alpine
 ```
 
@@ -74,7 +74,7 @@ Not the floating `node:24-alpine`/`nginx:alpine` — otherwise builds on differe
 The `backend` and `frontend` runner stages run as `USER node` — the built-in unprivileged user that already exists in the `node:*-alpine` image:
 
 ```dockerfile
-FROM node:24.18-alpine AS runner
+FROM node:24.22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 USER node

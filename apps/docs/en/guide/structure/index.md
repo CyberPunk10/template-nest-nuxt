@@ -25,12 +25,11 @@ How the packages depend on each other — see [Architecture](../architecture).
 
 | File                    | Purpose                                                                                                                                           |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm-workspace.yaml`   | Declares which directories are workspaces (`apps/*`, `packages/*`). Without it pnpm won't link the packages together                              |
+| `pnpm-workspace.yaml`   | Declares which directories are workspaces (`apps/*`, `packages/*`) and holds pnpm settings. `engineStrict: true` — `pnpm install` refuses to install on an unsupported Node version instead of breaking later at runtime |
 | `tsconfig.base.json`    | Shared TypeScript settings: strictness and checks. Extended by the app configs                                                                    |
 | `eslint.config.base.js` | The lint rules themselves: rules, style, globals                                                                                                  |
 | `eslint.config.js`      | A one-line re-export of the base. Needed because ESLint looks for a standard filename at the root, while the apps import `base` directly          |
 | `lint-staged.config.js` | What to run on staged files: `eslint --fix` for js/ts/vue                                                                                         |
-| `.npmrc`                | `engine-strict=true` — `pnpm install` refuses to install on an unsupported Node version instead of breaking later at runtime                      |
 | `.nvmrc`                | The Node version for `nvm use` — the counterpart to `engines` in the root `package.json`                                                          |
 | `.dockerignore`         | What **doesn't** go into the build context: `node_modules`, build output, `.env` (except `.example`). Directly affects image size and build speed |
 | `pnpm-lock.yaml`        | A single lockfile for the whole monorepo — a consequence of workspaces. Exact versions of every dependency, transitive ones included              |

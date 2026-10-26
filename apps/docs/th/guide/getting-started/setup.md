@@ -2,13 +2,13 @@
 
 สิ่งที่ต้องติดตั้งและเตรียมครั้งเดียว ก่อนรันครั้งแรก
 
-## 1. Node.js >= 24
+## 1. Node.js >= 24.22.1
 
 ```bash
 node -v
 ```
 
-เวอร์ชันถูกกำหนดไว้ใน `.nvmrc` และใน `engines` ของ `package.json` ที่ root ส่วน `.npmrc` ตั้ง `engine-strict=true` ไว้ ทำให้ `pnpm install` **ปฏิเสธ** การติดตั้งบน Node เวอร์ชันที่ไม่ตรง แทนที่จะติดตั้งเงียบๆ แล้วไปพังตอน runtime ทีหลัง
+เวอร์ชันถูกกำหนดไว้ใน `.nvmrc` และใน `engines` ของ `package.json` ที่ root ส่วน `engineStrict: true` ใน `pnpm-workspace.yaml` ทำให้ `pnpm install` **ปฏิเสธ** การติดตั้งบน Node เวอร์ชันที่ไม่ตรง แทนที่จะติดตั้งเงียบๆ แล้วไปพังตอน runtime ทีหลัง
 
 ::: details วิธีติดตั้ง (nvm)
 ```bash
@@ -18,8 +18,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
 จากนั้นที่ root ของโปรเจกต์ (ที่มีไฟล์ `.nvmrc`):
 
 ```bash
-nvm install 24
-nvm use 24
+nvm install   # เวอร์ชันจาก .nvmrc
+nvm use
 ```
 
 รายละเอียด — [nvm-sh/nvm](https://github.com/nvm-sh/nvm)

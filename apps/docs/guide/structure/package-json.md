@@ -45,10 +45,10 @@
 ```json
 "packageManager": "pnpm@12.15.0",
 "engines": {
-  "node": ">=24",
+  "node": ">=24.22.1",
   "pnpm": ">=12",
   "npm": "please-use-pnpm"
 }
 ```
 
-`packageManager` фиксирует версию pnpm: в этом проекте pnpm сам переключается на неё. `engines` вместе с `engine-strict=true` в `.npmrc` не даёт поставить зависимости на неподходящей версии Node.
+`packageManager` фиксирует версию pnpm: в этом проекте pnpm сам переключается на неё. `engines` вместе с `engineStrict: true` в `pnpm-workspace.yaml` не даёт поставить зависимости на неподходящей версии Node.

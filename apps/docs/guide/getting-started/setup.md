@@ -2,13 +2,13 @@
 
 Что нужно установить и подготовить один раз перед первым запуском.
 
-## 1. Node.js ≥ 24
+## 1. Node.js ≥ 24.22.1
 
 ```bash
 node -v
 ```
 
-Версия закреплена в `.nvmrc` и `engines` корневого `package.json`. `.npmrc` содержит `engine-strict=true` — `pnpm install` **откажется** ставить зависимости на неподходящей версии Node вместо тихой установки, которая могла бы сломаться на рантайме позже.
+Версия закреплена в `.nvmrc` и `engines` корневого `package.json`. `engineStrict: true` в `pnpm-workspace.yaml` — `pnpm install` **откажется** ставить зависимости на неподходящей версии Node вместо тихой установки, которая могла бы сломаться на рантайме позже.
 
 ::: details Как установить (nvm)
 ```bash
@@ -18,8 +18,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
 Затем в корне проекта (там лежит `.nvmrc`):
 
 ```bash
-nvm install 24
-nvm use 24
+nvm install   # версия из .nvmrc
+nvm use
 ```
 
 Подробности — [nvm-sh/nvm](https://github.com/nvm-sh/nvm).
