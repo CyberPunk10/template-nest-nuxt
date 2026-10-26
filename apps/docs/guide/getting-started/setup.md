@@ -18,8 +18,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
 Затем в корне проекта (там лежит `.nvmrc`):
 
 ```bash
-nvm install 24
-nvm use 24
+nvm install   # версия из .nvmrc
+nvm use
 ```
 
 Подробности — [nvm-sh/nvm](https://github.com/nvm-sh/nvm).

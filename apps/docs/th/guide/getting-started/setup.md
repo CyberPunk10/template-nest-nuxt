@@ -18,8 +18,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
 จากนั้นที่ root ของโปรเจกต์ (ที่มีไฟล์ `.nvmrc`):
 
 ```bash
-nvm install 24
-nvm use 24
+nvm install   # เวอร์ชันจาก .nvmrc
+nvm use
 ```
 
 รายละเอียด — [nvm-sh/nvm](https://github.com/nvm-sh/nvm)
