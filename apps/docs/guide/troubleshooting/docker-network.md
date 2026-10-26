@@ -20,7 +20,7 @@ docker info
 network template-nest-nuxt_app declared as external, but could not be found
 ```
 
-Сеть создаёт [`predocker.mjs`](../structure/scripts/predocker) перед `pnpm docker:up`. При прямом `docker compose up` этот шаг пропускается. Запускайте через `pnpm docker:up` или создайте сеть вручную:
+Сеть создают [`predocker.mjs`](../structure/scripts/predocker) перед `pnpm docker:up` и [`db.mjs`](../structure/scripts/db) перед запуском Postgres в `pnpm dev`. При прямом `docker compose up` этот шаг пропускается. Запускайте через `pnpm docker:up` или создайте сеть вручную:
 
 ```bash
 docker network create template-nest-nuxt_app
