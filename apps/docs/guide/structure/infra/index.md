@@ -5,7 +5,7 @@
 ```
 infra/
 └── nginx/
-    ├── nginx.conf.template
+    ├── nginx.conf.tpl
     └── Dockerfile
 ```
 

@@ -38,7 +38,7 @@ docker compose exec backend wget -qO- http://localhost:3100/health
 
 ## Что делает конфиг
 
-`infra/nginx/nginx.conf.template` отвечает не только за маршрутизацию.
+`infra/nginx/nginx.conf.tpl` отвечает не только за маршрутизацию.
 
 **Документация как статика.** `/dev/docs/` nginx отдаёт с диска через `alias` — проксировать некуда, за этим путём нет работающего процесса:
 
@@ -95,7 +95,7 @@ map $http_upgrade $connection_upgrade {
 
 ## Шаблон и envsubst
 
-Файл `nginx.conf.template` — не готовый конфиг. Встроенный entrypoint образа `nginx:alpine` прогоняет `*.template` из `/etc/nginx/templates/` через `envsubst` и кладёт результат в `/etc/nginx/conf.d/` до старта nginx.
+Файл `nginx.conf.tpl` — не готовый конфиг. Встроенный entrypoint образа `nginx:alpine` прогоняет `*.template` из `/etc/nginx/templates/` через `envsubst` и кладёт результат в `/etc/nginx/conf.d/` до старта nginx.
 
 Подводный камень: `envsubst` подставляет **все** `$переменные`, включая nginx-овские `$uri`, `$host`, `$http_upgrade`. Они не заданы в окружении, поэтому превратились бы в пустые строки и сломали конфиг. Спасает фильтр:
 

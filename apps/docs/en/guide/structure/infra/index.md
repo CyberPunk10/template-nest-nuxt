@@ -5,7 +5,7 @@ Infrastructure that isn't an application.
 ```
 infra/
 └── nginx/
-    ├── nginx.conf.template
+    ├── nginx.conf.tpl
     └── Dockerfile
 ```
 

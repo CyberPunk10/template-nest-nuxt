@@ -3,7 +3,7 @@
 service เดียวที่เปิดพอร์ตออกสู่ภายนอก image ไม่มี build ของตัวเอง: หยิบ `nginx:1.31-alpine` ที่พร้อมใช้มา แล้วใส่ไฟล์สองชุดเข้าไป
 
 ```dockerfile
-COPY infra/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
+COPY infra/nginx/nginx.conf.tpl /etc/nginx/templates/default.conf.template
 COPY --from=docs /app/apps/docs/.vitepress/dist /srv/docs
 ```
 

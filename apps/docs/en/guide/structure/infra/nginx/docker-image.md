@@ -3,7 +3,7 @@
 The only service that publishes a port to the outside. The image has no build of its own: it takes a ready `nginx:1.31-alpine` and puts two sets of files into it.
 
 ```dockerfile
-COPY infra/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
+COPY infra/nginx/nginx.conf.tpl /etc/nginx/templates/default.conf.template
 COPY --from=docs /app/apps/docs/.vitepress/dist /srv/docs
 ```
 
