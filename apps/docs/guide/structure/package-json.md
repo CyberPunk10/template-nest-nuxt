@@ -43,12 +43,12 @@
 ## Версии инструментов
 
 ```json
-"packageManager": "pnpm@11.27.1",
+"packageManager": "pnpm@12.15.0",
 "engines": {
   "node": ">=24",
-  "pnpm": ">=11",
+  "pnpm": ">=12",
   "npm": "please-use-pnpm"
 }
 ```
 
-`packageManager` фиксирует версию pnpm через Corepack, `engines` вместе с `engine-strict=true` в `.npmrc` не даёт поставить зависимости на неподходящей версии Node — [pnpm и Corepack](../pnpm).
+`packageManager` фиксирует версию pnpm: в этом проекте pnpm сам переключается на неё. `engines` вместе с `engine-strict=true` в `.npmrc` не даёт поставить зависимости на неподходящей версии Node.

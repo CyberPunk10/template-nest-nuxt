@@ -169,7 +169,18 @@ const config: LocaleEntry = {
       {
         text: 'Дополнительная информация',
         items: [
-          { text: 'pnpm и Corepack', link: '/guide/pnpm' },
+          { text: 'Обновление зависимостей', link: '/guide/dependencies' },
+          {
+            text: 'Частые проблемы',
+            link: '/guide/troubleshooting/',
+            collapsed: true,
+            items: [
+              { text: 'Не та версия pnpm', link: '/guide/troubleshooting/pnpm' },
+              { text: 'Порт занят', link: '/guide/troubleshooting/ports' },
+              { text: 'Не создана Docker-сеть', link: '/guide/troubleshooting/docker-network' },
+              { text: 'Нет файлов .env', link: '/guide/troubleshooting/env-files' },
+            ],
+          },
         ],
       },
       {

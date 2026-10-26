@@ -221,7 +221,7 @@
             "role": "บิลด์แบบ multi-stage ทั้ง dev และ prod"
           },
           "pnpm": {
-            "name": "pnpm 11",
+            "name": "pnpm 12",
             "role": "Workspaces สำหรับโมโนรีโป"
           }
         }

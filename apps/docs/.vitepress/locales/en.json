@@ -221,7 +221,7 @@
             "role": "Multi-stage builds, dev and prod"
           },
           "pnpm": {
-            "name": "pnpm 11",
+            "name": "pnpm 12",
             "role": "Monorepo workspaces"
           }
         }

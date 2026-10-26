@@ -5,7 +5,7 @@
 ![NestJS](https://img.shields.io/badge/NestJS-11-E0234E?style=flat-square&logo=nestjs&logoColor=white)
 ![Nuxt](https://img.shields.io/badge/Nuxt-4-00DC82?style=flat-square&logo=nuxt&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![pnpm](https://img.shields.io/badge/pnpm-11-F69220?style=flat-square&logo=pnpm&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-12-F69220?style=flat-square&logo=pnpm&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-%E2%89%A527.5.1-2496ED?style=flat-square&logo=docker&logoColor=white)
 ![Docker Compose](https://img.shields.io/badge/Compose-%E2%89%A55.5.0-2496ED?style=flat-square&logo=docker&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-24-339933?style=flat-square&logo=node.js&logoColor=white)
@@ -96,6 +96,5 @@ pnpm dev
 - ⚙️ [Переменные окружения](apps/docs/guide/env-variables.md) — порты, CORS, пустые значения
 - 🐳 [Docker](apps/docs/guide/docker/index.md) — единая точка входа, [устройство образов](apps/docs/guide/docker/dockerfiles.md)
 - 🔀 [Reverse proxy](apps/docs/guide/reverse-proxy.md)
-- 📦 [pnpm и Corepack](apps/docs/guide/pnpm.md)
 
 ---
