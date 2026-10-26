@@ -1,5 +1,5 @@
 FROM node:24.18-alpine AS base
-RUN corepack enable
+RUN npm install -g pnpm
 
 FROM base AS builder
 WORKDIR /app

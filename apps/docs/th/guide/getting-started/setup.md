@@ -25,21 +25,20 @@ nvm use 24
 รายละเอียด — [nvm-sh/nvm](https://github.com/nvm-sh/nvm)
 :::
 
-## 2. pnpm >= 11 ผ่าน Corepack
+## 2. pnpm >= 12
 
 ```bash
 pnpm --version
 ```
 
-เวอร์ชัน pnpm ถูกกำหนดไว้ใน `packageManager` ของ `package.json` ที่ root — วิธีที่แนะนำคือใช้ [Corepack](https://nodejs.org/api/corepack.html) ใน Node.js 24 มีมาให้ในตัว ตั้งแต่ Node.js 25 ต้องติดตั้งแยก
+เวอร์ชัน pnpm ที่แน่นอนถูกกำหนดไว้ใน `packageManager` ของ `package.json` ที่ root ใช้ pnpm 12 ขึ้นไปตัวไหนก็ได้ ในโฟลเดอร์โปรเจกต์ pnpm จะสลับไปใช้เวอร์ชันที่กำหนดไว้เอง และดาวน์โหลดมาในการรันครั้งแรก
 
-::: details วิธีติดตั้ง (Corepack)
+::: details วิธีติดตั้ง
 ```bash
-npm install -g corepack   # เฉพาะ Node.js 25+: ไม่มี Corepack มาในตัว
-corepack enable
+npm install -g pnpm
 ```
 
-หลังจากนั้น `pnpm` ในโปรเจกต์นี้จะเป็นเวอร์ชันที่ระบุใน `packageManager` ถ้ามี pnpm ตัวอื่นติดตั้งแบบ global อยู่แล้ว มันอาจดักการเรียกก่อน Corepack shim แล้วใช้เวอร์ชันอื่นแทน ตรวจสอบด้วย `pnpm --version` และถ้าไม่ตรงกับ `packageManager` ให้ดู [pnpm และ Corepack](../pnpm)
+วิธีอื่น ๆ — [pnpm.io/installation](https://pnpm.io/installation) ในโฟลเดอร์โปรเจกต์ `pnpm --version` ควรแสดงเวอร์ชันตาม `packageManager`
 :::
 
 ## 3. Docker >= 23 + Docker Compose >= 2.33

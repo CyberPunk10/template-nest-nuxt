@@ -180,7 +180,18 @@ const config: LocaleEntry = {
       {
         text: 'Additional Information',
         items: [
-          { text: 'pnpm and Corepack', link: '/en/guide/pnpm' },
+          { text: 'Updating dependencies', link: '/en/guide/dependencies' },
+          {
+            text: 'Common problems',
+            link: '/en/guide/troubleshooting/',
+            collapsed: true,
+            items: [
+              { text: 'Wrong pnpm version', link: '/en/guide/troubleshooting/pnpm' },
+              { text: 'Port in use', link: '/en/guide/troubleshooting/ports' },
+              { text: 'Docker network not created', link: '/en/guide/troubleshooting/docker-network' },
+              { text: 'Missing .env files', link: '/en/guide/troubleshooting/env-files' },
+            ],
+          },
         ],
       },
     ],

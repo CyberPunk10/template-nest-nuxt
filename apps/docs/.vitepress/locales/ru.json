@@ -236,7 +236,7 @@
             "role": "Multi-stage сборки, dev и prod"
           },
           "pnpm": {
-            "name": "pnpm 11",
+            "name": "pnpm 12",
             "role": "Workspaces монорепо"
           }
         }

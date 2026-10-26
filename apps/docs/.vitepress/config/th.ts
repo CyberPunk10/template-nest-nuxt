@@ -180,7 +180,18 @@ const config: LocaleEntry = {
       {
         text: 'ข้อมูลเพิ่มเติม',
         items: [
-          { text: 'pnpm และ Corepack', link: '/th/guide/pnpm' },
+          { text: 'การอัปเดต dependency', link: '/th/guide/dependencies' },
+          {
+            text: 'ปัญหาที่พบบ่อย',
+            link: '/th/guide/troubleshooting/',
+            collapsed: true,
+            items: [
+              { text: 'เวอร์ชัน pnpm ไม่ถูกต้อง', link: '/th/guide/troubleshooting/pnpm' },
+              { text: 'พอร์ตถูกใช้งานอยู่', link: '/th/guide/troubleshooting/ports' },
+              { text: 'ไม่ได้สร้างเครือข่าย Docker', link: '/th/guide/troubleshooting/docker-network' },
+              { text: 'ไม่มีไฟล์ .env', link: '/th/guide/troubleshooting/env-files' },
+            ],
+          },
         ],
       },
     ],

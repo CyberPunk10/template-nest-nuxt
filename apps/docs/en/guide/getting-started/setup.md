@@ -25,21 +25,20 @@ nvm use 24
 Details — [nvm-sh/nvm](https://github.com/nvm-sh/nvm).
 :::
 
-## 2. pnpm >= 11 via Corepack
+## 2. pnpm >= 12
 
 ```bash
 pnpm --version
 ```
 
-The pnpm version is pinned in `packageManager` of the root `package.json` — the recommended way to get it is [Corepack](https://nodejs.org/api/corepack.html). It is built into Node.js 24; from Node.js 25 on it is installed separately.
+The exact pnpm version is pinned in `packageManager` of the root `package.json`. Any installed pnpm 12 or newer will do: inside the project folder it switches to the pinned version on its own and downloads it on first run.
 
-::: details How to install (Corepack)
+::: details How to install
 ```bash
-npm install -g corepack   # Node.js 25+ only: Corepack isn't bundled there
-corepack enable
+npm install -g pnpm
 ```
 
-From then on, `pnpm` in this project is the version listed in `packageManager`. If another pnpm is installed globally, it may intercept the call before the Corepack shim and substitute a different version. Check with `pnpm --version`, and if it differs from `packageManager`, see [pnpm and Corepack](../pnpm).
+Other options — [pnpm.io/installation](https://pnpm.io/installation). Inside the project folder `pnpm --version` should show the version from `packageManager`.
 :::
 
 ## 3. Docker >= 23 + Docker Compose >= 2.33

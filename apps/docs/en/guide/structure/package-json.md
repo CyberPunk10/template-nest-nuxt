@@ -48,12 +48,12 @@ All root packages are `devDependencies`: they are only needed during development
 ## Tooling versions
 
 ```json
-"packageManager": "pnpm@11.27.1",
+"packageManager": "pnpm@12.15.0",
 "engines": {
   "node": ">=24",
-  "pnpm": ">=11",
+  "pnpm": ">=12",
   "npm": "please-use-pnpm"
 }
 ```
 
-`packageManager` pins the pnpm version through Corepack; `engines` together with `engine-strict=true` in `.npmrc` prevents installing dependencies on an unsupported Node version — [pnpm and Corepack](../pnpm).
+`packageManager` pins the pnpm version: in this project pnpm switches to it on its own. `engines` together with `engine-strict=true` in `.npmrc` prevents installing dependencies on an unsupported Node version.
