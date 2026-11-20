@@ -1,6 +1,8 @@
 {
   "demoBanner": "This is a template demo page — the edit form works, other sections are placeholders",
-  "role": "Admin",
+  "roles": {
+    "admin": "Admin"
+  },
   "stats": {
     "sessions": "Sessions",
     "activeDays": "Active days",

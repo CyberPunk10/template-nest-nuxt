@@ -6,17 +6,20 @@ A NestJS application. Entry point — `src/main.ts`.
 apps/backend/
 ├── src/
 │   ├── common/
-│   │   └── filters/            global exception filters
+│   │   ├── filters/            global exception filters
+│   │   └── transforms/         DTO transformers
 │   ├── config/
 │   │   └── env.validation.ts   Joi schema for environment variables
 │   ├── modules/
-│   │   └── tasks/              sample module: task CRUD
+│   │   ├── auth/               registration, login, refresh, sessions
+│   │   ├── tasks/              task CRUD
+│   │   └── users/              users
 │   ├── app.controller.ts       /, /health, /dev/config
 │   ├── app.module.ts           root module
 │   ├── app.service.ts
 │   ├── setup-app.ts            shared global setup for main and e2e
 │   └── main.ts                 bootstrap: CORS, Swagger, ValidationPipe
-├── test/                       e2e tests (separate jest config)
+├── test/                       e2e tests: default/ and throttle/, each with its own config
 ├── nest-cli.json
 ├── tsconfig.json               for the IDE and type-check (noEmit)
 └── tsconfig.build.json         for nest build — produces a clean dist/

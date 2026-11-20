@@ -68,6 +68,7 @@
 .VPSidebarItem a[href$='/guide/docker/'] .text::before,
 .VPSidebarItem a[href*='/guide/reverse-proxy'] .text::before,
 .VPSidebarItem a[href$='/guide/testing/'] .text::before,
+.VPSidebarItem a[href$='/guide/auth/'] .text::before,
 .VPSidebarItem a[href*='/guide/pnpm'] .text::before {
   content: '';
   display: inline-block;
@@ -113,6 +114,11 @@
 .VPSidebarItem a[href$='/guide/testing/'] .text::before {
   -webkit-mask-image: url('/dev/docs/icons/nav-flask-conical.svg');
   mask-image: url('/dev/docs/icons/nav-flask-conical.svg');
+}
+
+.VPSidebarItem a[href$='/guide/auth/'] .text::before {
+  -webkit-mask-image: url('/dev/docs/icons/nav-shield-check.svg');
+  mask-image: url('/dev/docs/icons/nav-shield-check.svg');
 }
 
 .VPSidebarItem a[href*='/guide/pnpm'] .text::before {

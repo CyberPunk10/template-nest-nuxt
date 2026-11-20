@@ -8,6 +8,25 @@
 | `PORT`                    | `3100`             | Backend port under `pnpm dev`. Overridden by `BACKEND_INTERNAL_PORT` from the root `.env` in Docker                                                                                                 |
 | `CORS_ORIGIN`             | `http://localhost:3200` | The frontend origin that requests are allowed from. Overridden to `http://localhost` under Docker — [details](../../../env-variables#cors-origin) |
 
+## Authentication
+
+| Variable                     | Value (dev) | Comment                                                                                                    |
+| ---------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------ |
+| `JWT_SECRET`                 | placeholder | Required, at least 32 characters. Signs the access token — **change before production**                      |
+| `JWT_EXPIRES_IN`             | `15m`       | Access token lifetime, format `<number><s\|m\|h\|d>`                                                        |
+| `REFRESH_TOKEN_SECRET`       | placeholder | Required, at least 32 characters. A secret separate from `JWT_SECRET` — **change before production**         |
+| `REFRESH_TOKEN_EXPIRES_DAYS` | `7`         | Refresh token lifetime in days                                                                               |
+| `BCRYPT_ROUNDS`              | `12`        | Password hashing cost, 4–20. Use ≥ 12 in production; dropping to 4 only makes sense in tests, for speed      |
+
+## Other
+
+| Variable         | Value (dev)         | Comment                                                                                                |
+| ---------------- | ------------------- | -------------------------------------------------------------------------------------------------------- |
+| `THROTTLE_TTL`   | `60000`             | Rate limiting window in milliseconds, per IP                                                             |
+| `THROTTLE_LIMIT` | `100`               | Maximum requests per window                                                                              |
+| `ADMIN_EMAIL`    | `admin@example.com` | The admin is created when the application starts. Leave it unset and creation is skipped                 |
+| `ADMIN_PASSWORD` | `password`          | That admin's password. Hashed with `BCRYPT_ROUNDS`; a restart leaves an existing admin alone             |
+
 ## Links to other files
 
 Some of these variables are tied to neighbouring applications:
