@@ -26,14 +26,18 @@ const groups = computed<CommandGroup[]>(() => {
   return [
     {
       label: c.groups.dev,
-      commands: [{ cmd: 'pnpm dev', desc: c.items.pnpmDev }],
+      commands: [
+        { cmd: 'pnpm dev', desc: c.items.pnpmDev },
+        { cmd: 'pnpm db:up', desc: c.items.dockerDev },
+        { cmd: 'pnpm db:migrate', desc: c.items.dbMigrate },
+      ],
     },
     {
       label: c.groups.prod,
       commands: [
         { cmd: 'pnpm build', desc: c.items.pnpmBuild },
         { cmd: 'pnpm docker:up --build', desc: c.items.dockerUp },
-        { cmd: 'docker compose down', desc: c.items.dockerDown },
+        { cmd: 'docker compose --profile app down', desc: c.items.dockerDown },
       ],
     },
     {
@@ -44,6 +48,16 @@ const groups = computed<CommandGroup[]>(() => {
         { cmd: 'pnpm type-check' },
         { cmd: 'pnpm test' },
         { cmd: 'pnpm test:e2e' },
+      ],
+    },
+    {
+      label: c.groups.prisma,
+      aside: true,
+      commands: [
+        {
+          cmd: 'cd apps/backend && pnpm prisma studio',
+          desc: c.items.prismaStudio,
+        },
       ],
     },
   ]

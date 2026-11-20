@@ -32,4 +32,10 @@ export const envValidationSchema = Joi.object({
   REFRESH_TOKEN_EXPIRES_DAYS: Joi.number().integer().min(1).default(7),
 
   BCRYPT_ROUNDS: Joi.number().integer().min(4).max(20).default(12),
+
+  POSTGRES_HOST: Joi.string().required(),
+  POSTGRES_PORT: Joi.number().integer().min(1).max(65535).default(5432),
+  POSTGRES_USER: Joi.string().required(),
+  POSTGRES_PASSWORD: Joi.string().required(),
+  POSTGRES_DB: Joi.string().required(),
 })

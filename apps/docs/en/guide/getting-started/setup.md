@@ -43,7 +43,7 @@ Other options — [pnpm.io/installation](https://pnpm.io/installation). Inside t
 
 ## 3. Docker >= 23 + Docker Compose >= 2.33
 
-Needed only for Docker mode — skip it for `pnpm dev`.
+Needed either way: `pnpm docker:up` runs everything in containers, and `pnpm dev` runs only Postgres — but it still needs a container for it.
 
 ```bash
 docker --version

@@ -5,6 +5,7 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { PrismaModule } from './modules/prisma/prisma.module'
 import { UsersModule } from './modules/users/users.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { TasksModule } from './modules/tasks/tasks.module'
@@ -29,6 +30,7 @@ import { envValidationSchema } from './config/env.validation'
       }),
     }),
     ScheduleModule.forRoot(),
+    PrismaModule,
     UsersModule,
     AuthModule,
     TasksModule,

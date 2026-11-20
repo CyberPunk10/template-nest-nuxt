@@ -19,7 +19,8 @@ apps/backend/
 │   ├── app.service.ts
 │   ├── setup-app.ts            การตั้งค่า global ที่ใช้ร่วมกันระหว่าง main กับ e2e
 │   └── main.ts                 bootstrap: CORS, Swagger, ValidationPipe
-├── test/                       e2e test: default/ กับ throttle/ แต่ละชุดมี config ของตัวเอง
+├── prisma/                     schema ฐานข้อมูล, migration, seed
+├── test/                       e2e test (jest config แยกต่างหาก)
 ├── nest-cli.json
 ├── tsconfig.json               สำหรับ IDE และ type-check (noEmit)
 └── tsconfig.build.json         สำหรับ nest build — ให้ dist/ ที่สะอาด

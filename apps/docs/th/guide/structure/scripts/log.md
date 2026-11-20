@@ -25,8 +25,8 @@ script เรียก `docker compose`, `pnpm install` และ `concurrently`
 escape code จะถูกส่งออกเฉพาะเมื่อ output ไปที่ terminal เท่านั้น ถ้า redirect ลงไฟล์หรือรันใน CI มันจะกลายเป็นขยะแบบ `ESC[35m` จึงมีการตรวจ `process.stdout.isTTY` ส่วนตัวแปร `NO_COLOR` ใช้ปิดสีแบบบังคับ ซึ่งเป็นข้อตกลงที่ใช้กันทั่วไป
 
 ```bash
-pnpm docker:up                 # prefix มีสี
-pnpm docker:up > log.txt       # ไม่มี escape code
-NO_COLOR=1 pnpm docker:up      # แบบเดียวกันแต่บังคับ
+pnpm db:up                 # prefix มีสี
+pnpm db:up > log.txt       # ไม่มี escape code
+NO_COLOR=1 pnpm db:up      # แบบเดียวกันแต่บังคับ
 ```
 

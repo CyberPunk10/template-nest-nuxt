@@ -8,6 +8,18 @@
 | `PORT`                    | `3100`             | Backend port under `pnpm dev`. Overridden by `BACKEND_INTERNAL_PORT` from the root `.env` in Docker                                                                                                 |
 | `CORS_ORIGIN`             | `http://localhost:3200` | The frontend origin that requests are allowed from. Overridden to `http://localhost` under Docker — [details](../../../env-variables#cors-origin) |
 
+## PostgreSQL
+
+| Variable            | Value (dev) | Comment                                                                                                          |
+| ------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------ |
+| `POSTGRES_HOST`     | `localhost` | Required. Overridden to `postgres` inside a container — the service name on the network                            |
+| `POSTGRES_PORT`     | `5432`      | Must match `POSTGRES_PORT` in the root `.env`, which sets the published host port. Always `5432` inside a container |
+| `POSTGRES_USER`     | `postgres`  | Required. Inside a container it comes from the root `.env` — the same place the database container takes it from    |
+| `POSTGRES_PASSWORD` | `postgres`  | Required, same source                                                                                              |
+| `POSTGRES_DB`       | `template`  | Required, same source                                                                                              |
+
+These values are duplicated in the root `.env` on purpose: that one is read by Compose, this one by Nest on the host. [Details](../../../database/configuration#root-env).
+
 ## Authentication
 
 | Variable                     | Value (dev) | Comment                                                                                                    |
