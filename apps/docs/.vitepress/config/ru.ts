@@ -1,8 +1,6 @@
 import type { LocaleEntry } from '../config'
 import locale from '../locales/ru.json'
 
-// Русский язык — корневая локаль, страницы лежат в корне docs.
-// Чтобы убрать язык из сборки: удалить этот файл и папку с его страницами.
 const config: LocaleEntry = {
   // Ключ в locales: 'root' — язык по умолчанию, остальные дают префикс в URL.
   key: 'root',

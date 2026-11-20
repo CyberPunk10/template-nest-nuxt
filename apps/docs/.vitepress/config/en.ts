@@ -1,8 +1,6 @@
 import type { LocaleEntry } from '../config'
 import locale from '../locales/en.json'
 
-// Английская локаль: страницы в en/, ссылки с префиксом /en/.
-// Чтобы убрать язык из сборки: удалить этот файл и папку en/.
 const config: LocaleEntry = {
   // Ключ в locales: 'root' — язык по умолчанию, остальные дают префикс в URL.
   key: 'en',

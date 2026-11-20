@@ -1,8 +1,6 @@
 import type { LocaleEntry } from '../config'
 import locale from '../locales/th.json'
 
-// Тайская локаль: страницы в th/, ссылки с префиксом /th/.
-// Чтобы убрать язык из сборки: удалить этот файл и папку th/.
 const config: LocaleEntry = {
   // Ключ в locales: 'root' — язык по умолчанию, остальные дают префикс в URL.
   key: 'th',
