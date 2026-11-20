@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url'
 import { config as loadEnv } from 'dotenv'
 import { defineConfigWithTheme } from 'vitepress'
 import type { DefaultTheme, LocaleConfig } from 'vitepress'
-import ruLocaleJson from './locales/ru.json'
+import homeLocale from './locales/ru.json'
 import ru from './config/ru'
 import en from './config/en'
 import th from './config/th'
@@ -11,8 +11,9 @@ import th from './config/th'
 // Расширяем тему дефолтной + переводы стартовой страницы в themeConfig.home.
 // VitePress отдаёт их через useData().theme реактивно к локали — вместо vue-i18n.
 // Переводы лежат в locales/*.json (единый источник для витрины и config).
+// Ключи у всех языков одинаковые, поэтому тип берётся из файла любого из них.
 export interface ThemeConfig extends DefaultTheme.Config {
-  home?: typeof ruLocaleJson.home
+  home?: typeof homeLocale.home
   // Адрес кабинета (фронтенда) для кнопки на стартовой странице.
   dashboardUrl?: string
 }
@@ -113,7 +114,8 @@ export default defineConfigWithTheme<ThemeConfig>({
     ],
   },
 
-  // Мультиязычность: root = русский (в корне), en/th — в папках-локалях.
-  // VitePress сам добавляет переключатель языка в шапку и класс lang на <html>.
+  // Языки из LOCALES: язык с key 'root' лежит в корне, остальные — в папках
+  // со своим кодом. Если языков несколько, VitePress сам добавляет
+  // переключатель в шапку; класс lang на <html> ставит всегда.
   locales,
 })
