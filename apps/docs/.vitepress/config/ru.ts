@@ -200,6 +200,7 @@ const config: LocaleEntry = {
         text: 'Для мейнтейнера',
         items: [
           { text: 'Ветки шаблона', link: '/guide/maintainer/' },
+          { text: 'Релизы', link: '/guide/maintainer/release' },
         ],
       },
     ],
