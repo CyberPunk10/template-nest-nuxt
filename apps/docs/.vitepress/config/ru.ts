@@ -8,6 +8,20 @@ const config: LocaleEntry = {
   key: 'root',
   label: 'Русский',
   lang: 'ru',
+  searchTranslations: {
+    button: { buttonText: 'Поиск', buttonAriaLabel: 'Поиск по документации' },
+    modal: {
+      displayDetails: 'Показать подробности',
+      resetButtonTitle: 'Сбросить поиск',
+      backButtonTitle: 'Закрыть поиск',
+      noResultsText: 'Ничего не найдено',
+      footer: {
+        selectText: 'выбрать',
+        navigateText: 'навигация',
+        closeText: 'закрыть',
+      },
+    },
+  },
   themeConfig: {
     outline: { level: 'deep' as const, label: 'На странице' },
     // Переводы стартовой страницы. Кладём в themeConfig — VitePress отдаёт
