@@ -42,12 +42,24 @@ if (!dashboardUrl) {
 // Единственное место, где перечислены локали. Чтобы убрать язык из сборки:
 // удалить его строку здесь, файл config/<код>.ts и папку со страницами.
 // Чтобы добавить — создать config/<код>.ts по образцу и дописать сюда.
-export type LocaleEntry = LocaleConfig<ThemeConfig>[string] & { key: string }
+type SearchTranslations = NonNullable<DefaultTheme.LocalSearchOptions['translations']>
+
+export type LocaleEntry = LocaleConfig<ThemeConfig>[string] & {
+  key: string
+  // Подписи локального поиска. Без них поиск говорит по-английски.
+  searchTranslations?: SearchTranslations
+}
 
 const LOCALES: LocaleEntry[] = [ru, en, th]
 
 const locales: LocaleConfig<ThemeConfig> = Object.fromEntries(
-  LOCALES.map(({ key, ...locale }) => [key, locale]),
+  LOCALES.map(({ key, searchTranslations: _, ...locale }) => [key, locale]),
+)
+
+const searchLocales = Object.fromEntries(
+  LOCALES
+    .filter(({ searchTranslations }) => searchTranslations)
+    .map(({ key, searchTranslations }) => [key, { translations: searchTranslations }]),
 )
 
 export default defineConfigWithTheme<ThemeConfig>({
@@ -77,8 +89,8 @@ export default defineConfigWithTheme<ThemeConfig>({
     dashboardUrl,
 
     // Локальный поиск: индекс собирается при билде и лежит рядом со статикой,
-    // внешние сервисы (Algolia) не нужны. Подписи интерфейса — на каждую
-    // локаль свои, иначе поиск на любом языке будет говорить по-английски.
+    // внешние сервисы (Algolia) не нужны. Подписи интерфейса задаёт каждая
+    // локаль в своём config/<locale>.ts.
     search: {
       provider: 'local',
       // Подробный вывод (excerpt с фрагментом текста под каждым результатом)
@@ -88,40 +100,7 @@ export default defineConfigWithTheme<ThemeConfig>({
       // список, пока пользователь сам не развернёт.
       options: {
         detailedView: true,
-        locales: {
-          root: {
-            translations: {
-              button: { buttonText: 'Поиск', buttonAriaLabel: 'Поиск по документации' },
-              modal: {
-                displayDetails: 'Показать подробности',
-                resetButtonTitle: 'Сбросить поиск',
-                backButtonTitle: 'Закрыть поиск',
-                noResultsText: 'Ничего не найдено',
-                footer: {
-                  selectText: 'выбрать',
-                  navigateText: 'навигация',
-                  closeText: 'закрыть',
-                },
-              },
-            },
-          },
-          th: {
-            translations: {
-              button: { buttonText: 'ค้นหา', buttonAriaLabel: 'ค้นหาในเอกสาร' },
-              modal: {
-                displayDetails: 'แสดงรายละเอียด',
-                resetButtonTitle: 'ล้างการค้นหา',
-                backButtonTitle: 'ปิดการค้นหา',
-                noResultsText: 'ไม่พบผลลัพธ์',
-                footer: {
-                  selectText: 'เลือก',
-                  navigateText: 'เลื่อน',
-                  closeText: 'ปิด',
-                },
-              },
-            },
-          },
-        },
+        locales: searchLocales,
       },
     },
 

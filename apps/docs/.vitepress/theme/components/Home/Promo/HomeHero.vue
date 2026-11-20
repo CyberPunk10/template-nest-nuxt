@@ -1,21 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useData, withBase } from 'vitepress'
+import { useData } from 'vitepress'
 import HomeCallout from './HomeCallout.vue'
 
 // Переводы стартовой страницы из themeConfig.home (реактивно к локали VitePress),
 // без vue-i18n. theme меняется при смене языка — компонент перерисовывается.
-const { theme, lang } = useData()
+const { theme } = useData()
 
 const hero = computed(() => theme.value.home!.hero)
 const promoHero = computed(() => theme.value.home!.promo.hero)
-
-// Ссылка на документацию с учётом текущей локали: ru — в корне (без префикса),
-// en/th — в своих папках. withBase добавит base '/dev/docs/'.
-const docsLink = computed(() => {
-  const prefix = lang.value === 'ru' ? '' : `/${lang.value}`
-  return withBase(`${prefix}/guide/getting-started`)
-})
 
 // Адрес развёрнутого фронтенда задаётся при сборке через DASHBOARD_URL
 // (см. config.ts) — кнопка ведёт туда как на живое демо шаблона.
@@ -36,7 +29,7 @@ const demoLink = computed(() => theme.value.dashboardUrl)
         <div class="hero__actions">
           <a
             class="hero__btn hero__btn--primary"
-            :href="docsLink"
+            href="guide/getting-started"
           >
             <Icon name="lucide:book-open" size="15" />
             {{ hero.docs }}

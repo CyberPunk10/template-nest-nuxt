@@ -8,6 +8,20 @@ const config: LocaleEntry = {
   key: 'th',
   label: 'ไทย',
   lang: 'th',
+  searchTranslations: {
+    button: { buttonText: 'ค้นหา', buttonAriaLabel: 'ค้นหาในเอกสาร' },
+    modal: {
+      displayDetails: 'แสดงรายละเอียด',
+      resetButtonTitle: 'ล้างการค้นหา',
+      backButtonTitle: 'ปิดการค้นหา',
+      noResultsText: 'ไม่พบผลลัพธ์',
+      footer: {
+        selectText: 'เลือก',
+        navigateText: 'เลื่อน',
+        closeText: 'ปิด',
+      },
+    },
+  },
   themeConfig: {
     outline: { level: 'deep' as const, label: 'ในหน้านี้' },
     home: locale.home,
