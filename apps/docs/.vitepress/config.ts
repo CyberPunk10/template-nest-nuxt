@@ -4,6 +4,7 @@ import { config as loadEnv } from 'dotenv'
 import { defineConfigWithTheme } from 'vitepress'
 import type { DefaultTheme, LocaleConfig } from 'vitepress'
 import homeLocale from './locales/ru.json'
+import { readTemplateOrigin, type TemplateOrigin } from './template-origin'
 import ru from './config/ru'
 import en from './config/en'
 import th from './config/th'
@@ -16,6 +17,8 @@ export interface ThemeConfig extends DefaultTheme.Config {
   home?: typeof homeLocale.home
   // Адрес кабинета (фронтенда) для кнопки на стартовой странице.
   dashboardUrl?: string
+  // Откуда проект — для блока на главной; null, если данных нет.
+  templateOrigin?: TemplateOrigin | null
 }
 
 // apps/docs/.env не грузится автоматически (в отличие от Nest ConfigModule
@@ -88,6 +91,10 @@ export default defineConfigWithTheme<ThemeConfig>({
     // Локальные themeConfig его не переопределяют, поэтому он доступен
     // из любой локали через useData().theme.
     dashboardUrl,
+    // Откуда проект — поле templateOrigin корневого package.json.
+    templateOrigin: readTemplateOrigin(
+      resolve(dirname(fileURLToPath(import.meta.url)), '../../../package.json'),
+    ),
 
     // Локальный поиск: индекс собирается при билде и лежит рядом со статикой,
     // внешние сервисы (Algolia) не нужны. Подписи интерфейса задаёт каждая

@@ -2,17 +2,39 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 import HomeCopyCmd from './HomeCopyCmd.vue'
-import { projectMeta } from './project-meta'
+import { creationMethod, metaRows, sameConfigCmd } from './origin-view'
 import { installCmd, repoUrl } from './site-data'
 
 const { theme } = useData()
 const t = computed(() => theme.value.home!.content.origin)
 
-const meta = computed(() => [
-  { label: t.value.meta.variant, value: projectMeta.variant },
-  { label: t.value.meta.version, value: projectMeta.templateVersion },
-  { label: t.value.meta.created, value: projectMeta.createdAt },
-])
+// Поле templateOrigin из корневого package.json (читается в config.ts).
+// Логика — в origin-view.ts, здесь только тексты и разметка.
+const origin = computed(() => theme.value.templateOrigin ?? null)
+const method = computed(() => creationMethod(origin.value))
+const sameCmd = computed(() => sameConfigCmd(origin.value))
+
+// Левая часть — сплошной текст. Проект создан генератором — сказано только
+// о нём. Скопирован напрямую — добавляется абзац о том, как он получен, а
+// генератор предлагается как рекомендуемый способ.
+const intro = computed(() => {
+  if (method.value === 'generator') return t.value.intro.generator
+  if (method.value === 'clone') return t.value.intro.clone
+  return t.value.intro.none
+})
+// Проекту из генератора рекомендовать генератор незачем — только команды.
+const howto = computed(() => method.value === 'generator' ? null : t.value.howto)
+
+const cmds = computed(() => {
+  const list = [{ label: t.value.cmd.latest, cmd: installCmd }]
+  if (sameCmd.value) list.push({ label: t.value.cmd.same, cmd: sameCmd.value })
+  return list
+})
+
+const meta = computed(() => metaRows(origin.value, t.value.meta))
+
+const generatorUrl = 'https://github.com/CyberPunk10/create-nest-nuxt'
+const withGeneratorLink = (text: string) => text.split(/(\{generator\})/)
 
 const originLinks = [
   { id: 'generator', url: 'https://www.npmjs.com/package/create-nest-nuxt' },
@@ -25,11 +47,39 @@ const originLinks = [
   <section class="origin">
     <div class="origin__main">
       <h2 class="origin__title">
-        <Icon name="lucide:rocket" size="18" class="origin__icon" />
+        <Icon name="lucide:git-branch" size="18" class="origin__icon" />
         {{ t.title }}
       </h2>
-      <p class="origin__text">{{ t.text }}</p>
-      <HomeCopyCmd :cmd="installCmd" />
+      <p class="origin__text">
+        <template v-for="(part, i) in withGeneratorLink(intro!)" :key="i">
+          <a
+            v-if="part === '{generator}'"
+            :href="generatorUrl"
+            target="_blank"
+            rel="noopener"
+          >create-nest-nuxt</a>
+          <template v-else>{{ part }}</template>
+        </template>
+      </p>
+      <h2 class="origin__title origin__title--next">
+        <Icon name="lucide:terminal" size="18" class="origin__icon" />
+        {{ t.newTitle }}
+      </h2>
+      <p v-if="howto" class="origin__text">
+        <template v-for="(part, i) in withGeneratorLink(howto!)" :key="i">
+          <a
+            v-if="part === '{generator}'"
+            :href="generatorUrl"
+            target="_blank"
+            rel="noopener"
+          >create-nest-nuxt</a>
+          <template v-else>{{ part }}</template>
+        </template>
+      </p>
+      <div v-for="item in cmds" :key="item.cmd" class="origin__cmd">
+        <span class="origin__cmd-label">{{ item.label }}</span>
+        <HomeCopyCmd :cmd="item.cmd" />
+      </div>
       <ul class="origin__links">
         <li v-for="link in originLinks" :key="link.id">
           <a :href="link.url" target="_blank" rel="noopener">{{ t.links[link.id] }}</a>
@@ -41,7 +91,13 @@ const originLinks = [
       <dl class="origin__meta-list">
         <div v-for="row in meta" :key="row.label" class="origin__meta-row">
           <dt>{{ row.label }}</dt>
-          <dd :class="{ 'origin__meta-empty': !row.value }">{{ row.value ?? t.meta.empty }}</dd>
+          <dd
+            :class="{
+              'origin__meta-empty': !row.value || row.unknown,
+              'origin__meta-prose': row.prose,
+            }"
+          >{{ row.value ?? t.meta.empty }}</dd>
+          <dd v-if="row.hint" class="origin__meta-hint">{{ row.hint }}</dd>
         </div>
       </dl>
     </div>
@@ -73,6 +129,9 @@ const originLinks = [
   font-weight: 700;
   color: var(--home-text-primary);
 }
+.origin__title--next {
+  margin-top: 12px;
+}
 .origin__icon {
   color: var(--home-accent);
   flex-shrink: 0;
@@ -83,19 +142,32 @@ const originLinks = [
   color: var(--home-text-soft);
   line-height: var(--home-leading-relaxed);
 }
+.origin__cmd {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  max-width: 100%;
+}
+.origin__cmd-label {
+  font-size: var(--home-text-xs);
+  color: var(--home-text-muted);
+}
 .origin__links {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 20px;
-  margin: 0;
+  margin: 12px 0 0;
   padding: 0;
   list-style: none;
   font-size: var(--home-text-sm);
 }
+.origin__text a,
 .origin__links a {
   color: var(--home-accent);
   text-decoration: none;
 }
+.origin__text a:hover,
 .origin__links a:hover {
   text-decoration: underline;
 }
@@ -131,6 +203,15 @@ const originLinks = [
   font-family: monospace;
   font-size: var(--home-text-sm);
   color: var(--home-text-primary);
+}
+.origin__meta dd.origin__meta-hint {
+  font-family: inherit;
+  font-size: var(--home-text-xs);
+  color: var(--home-text-muted);
+  line-height: var(--home-leading-relaxed);
+}
+.origin__meta dd.origin__meta-prose {
+  font-family: inherit;
 }
 .origin__meta dd.origin__meta-empty {
   font-family: inherit;
