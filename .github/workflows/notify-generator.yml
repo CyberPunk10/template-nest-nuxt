@@ -1,0 +1,37 @@
+name: Notify generator
+
+# Сообщает генератору create-nest-nuxt, что шаблон изменился: его CI
+# скачивает свежие ветки шаблона и проверяет, что генератор с ними не
+# разошёлся (например, шаблон переименовал строку, которую генератор правит).
+#
+# Срабатывает после успешного CI последней ветки цепочки, postgres-prisma:
+# правка любой ветки доходит до неё через Branch sync, поэтому к этому
+# моменту все три ветки уже в новом состоянии.
+#
+# Вызов делается токеном GENERATOR_DISPATCH_TOKEN (секрет репозитория):
+# встроенный GITHUB_TOKEN не даёт доступа к другому репозиторию. Нужен
+# fine-grained токен только на CyberPunk10/create-nest-nuxt с правом
+# Contents: Read and write — так GitHub требует для repository_dispatch.
+# Этот файл GitHub всегда берёт из main — менять его достаточно там.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [postgres-prisma]
+
+permissions: {}
+
+jobs:
+  dispatch:
+    # Только успешный CI после push в этот репозиторий — как в Branch sync.
+    if: >-
+      github.event.workflow_run.conclusion == 'success'
+      && github.event.workflow_run.event == 'push'
+      && github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch template-updated to create-nest-nuxt
+        env:
+          GH_TOKEN: ${{ secrets.GENERATOR_DISPATCH_TOKEN }}
+        run: gh api repos/CyberPunk10/create-nest-nuxt/dispatches -f event_type=template-updated
