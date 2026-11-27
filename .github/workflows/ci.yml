@@ -1,5 +1,12 @@
 name: CI
 
+# Успешный прогон после push запускает ещё два workflow (workflow_run):
+# - Branch sync (branch-sync.yml) — вливает ветку в следующую по цепочке
+#   main → auth-session → postgres-prisma;
+# - Notify generator (notify-generator.yml) — после ветки postgres-prisma
+#   запускает CI другого репозитория, генератора create-nest-nuxt, чтобы
+#   проверить его на свежем шаблоне.
+
 on:
   # Push — только по веткам-вариантам шаблона. Для остальных веток прогон
   # даёт PR-триггер: иначе на один и тот же код CI запускался бы дважды.
