@@ -1,0 +1,59 @@
+name: Release check
+
+# Сверяет тег релиза шаблона с паспортом проекта (поле templateOrigin в
+# package.json) в коммите под тегом. Тег main@0.2.0 верен, только если в нём
+# variant — main и baseVersion — 0.2.0: иначе проекты, скопированные из этого
+# релиза, получат неверный паспорт.
+#
+# Запретить push тега GitHub не умеет — правила для тегов не поддерживают
+# обязательные проверки. Поэтому проверка срабатывает после push: при
+# расхождении workflow падает (придёт письмо «workflow failed»), а неверный
+# тег нужно сразу удалить. Это безопасно: генератор ещё не переведён на
+# новую версию, по тегу никто не скачивал.
+#
+# Порядок релиза — guide/maintainer/release.md.
+
+on:
+  push:
+    tags: ['main@*', 'auth-session@*', 'postgres-prisma@*']
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      # Полная история — чтобы проверить, что коммит тега входит в свою ветку.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Check templateOrigin against the tag
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          branch="${TAG%@*}"
+          version="${TAG#*@}"
+          variant=$(jq -r '.templateOrigin.variant // empty' package.json)
+          base=$(jq -r '.templateOrigin.baseVersion // empty' package.json)
+          fail=0
+
+          if [ "$variant" != "$branch" ]; then
+            echo "::error::templateOrigin.variant — «$variant», а тег поставлен для ветки «$branch»"
+            fail=1
+          fi
+          if [ "$base" != "$version" ]; then
+            echo "::error::templateOrigin.baseVersion — «$base», а версия тега — «$version». Обновите baseVersion в main, дождитесь Branch sync и поставьте тег заново"
+            fail=1
+          fi
+          if ! git merge-base --is-ancestor HEAD "origin/$branch"; then
+            echo "::error::Коммит тега не входит в ветку $branch"
+            fail=1
+          fi
+
+          if [ "$fail" = 1 ]; then
+            echo "Удалите неверный тег: git push origin :refs/tags/$TAG && git tag -d $TAG"
+            exit 1
+          fi
+          echo "ok: $TAG — variant $variant, baseVersion $base"
