@@ -9,6 +9,11 @@
     "pnpm": ">=12",
     "npm": "please-use-pnpm"
   },
+  "templateOrigin": {
+    "variant": "auth-session",
+    "repository": "CyberPunk10/template-nest-nuxt",
+    "baseVersion": "0.1.1"
+  },
   "description": "",
   "scripts": {
     "env:copy": "node scripts/copy-env-cli.mjs",
