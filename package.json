@@ -10,7 +10,7 @@
     "npm": "please-use-pnpm"
   },
   "templateOrigin": {
-    "variant": "auth-session",
+    "variant": "postgres-prisma",
     "repository": "CyberPunk10/template-nest-nuxt",
     "baseVersion": "0.1.1"
   },
