@@ -6,7 +6,9 @@
     "target": "ESNext",
     "lib": ["ESNext", "DOM"],
     "types": ["vitepress/client", "node"],
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    // Тесты запускает Node без сборки: импорты в них — с расширением .ts.
+    "allowImportingTsExtensions": true
   },
   "include": [".vitepress/**/*.ts", ".vitepress/**/*.vue"],
   "exclude": [".vitepress/dist", ".vitepress/cache"]

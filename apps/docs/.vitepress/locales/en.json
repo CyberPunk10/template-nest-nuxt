@@ -179,19 +179,34 @@
         "more": "Details"
       },
       "origin": {
-        "title": "This project was created with create-nest-nuxt",
-        "text": "When you need another project on the same stack, you won't have to remember where this one came from. A new one takes a single command: the generator asks for the docs language and the template variant.",
+        "title": "Project origin",
+        "intro": {
+          "generator": "This project was created with {generator}.",
+          "clone": "This project was copied from a template branch directly — via git clone, “Use this template” or a GitHub archive. So it contains everything that was in the branch at the time of copying, including the template's service files.",
+          "none": "There is no data on how this project was created."
+        },
+        "newTitle": "Create a new project",
+        "howto": "The recommended way is the {generator} generator: it downloads a tested template release and prepares a clean project from it, without the template's service files.",
+        "cmd": {
+          "latest": "New project, latest version",
+          "same": "New project with the same version and presets as the current project"
+        },
         "links": {
           "generator": "create-nest-nuxt on npm",
           "template": "Template on GitHub",
           "releases": "What's new in the template"
         },
         "meta": {
-          "title": "Project origin",
+          "title": "Where it came from",
+          "method": "Creation method",
+          "methodClone": "copy of a template branch",
           "variant": "Template variant",
           "version": "Template version",
-          "created": "Created",
-          "empty": "filled in by create-nest-nuxt"
+          "basedOn": "Based on version",
+          "basedOnHint": "any commit of the branch after release {version} and before the next release: the project was copied directly, the exact commit is unknown",
+          "created": "Creation date",
+          "createdClone": "unknown",
+          "empty": "no data"
         }
       }
     },
