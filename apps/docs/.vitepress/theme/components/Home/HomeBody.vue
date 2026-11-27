@@ -13,6 +13,7 @@ import HomeOrigin from './HomeOrigin.vue'
 
 <template>
   <div class="home__body">
+    <HomeOrigin />
     <div class="body__row">
       <HomeStart />
       <HomeServices />
@@ -28,7 +29,6 @@ import HomeOrigin from './HomeOrigin.vue'
       <HomeDocsGuide />
     </div>
     <HomeTroubleshoot />
-    <HomeOrigin />
   </div>
 </template>
 

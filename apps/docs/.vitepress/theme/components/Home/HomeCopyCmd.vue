@@ -48,7 +48,8 @@ const copyCmd = inject<(cmd: string) => void>('copyCmd')!
   color: var(--home-text-primary);
   background: none;
   padding: 0;
-  word-break: break-all;
+  /* Переносить по пробелам, внутри слова — только если оно не влезает. */
+  overflow-wrap: anywhere;
   text-align: left;
 }
 .copy-cmd__icon {
