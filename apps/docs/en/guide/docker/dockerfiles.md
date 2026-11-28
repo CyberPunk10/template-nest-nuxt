@@ -29,7 +29,7 @@ Along with the manifests, the backend copies `prisma/schema.prisma` and `prisma.
 
 ## What ends up in the final image
 
-**Backend** additionally runs `pnpm deploy --prod /deploy` — copying only `@repo/backend`'s dependencies out of `node_modules`, without the rest of the monorepo. The runner gets a clean, flat `node_modules`:
+**Backend** additionally runs `pnpm deploy --prod /app/deploy/backend` — copying only `@repo/backend`'s dependencies out of `node_modules`, without the rest of the monorepo. The runner gets a clean, flat `node_modules`:
 
 ```
 /app/
@@ -80,7 +80,7 @@ FROM node:24.22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 USER node
-COPY --from=builder --chown=node:node /deploy/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/deploy/backend/node_modules ./node_modules
 COPY --from=builder --chown=node:node /app/apps/backend/dist ./dist
 ```
 

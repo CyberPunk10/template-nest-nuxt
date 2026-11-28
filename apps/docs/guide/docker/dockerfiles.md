@@ -29,7 +29,7 @@ Backend вместе с манифестами копирует `prisma/schema.p
 
 ## Что попадает в финальный образ
 
-**Backend** дополнительно запускает `pnpm deploy --prod /deploy` — копирует из `node_modules` только зависимости `@repo/backend`, без лишних пакетов монорепо. Runner получает чистый плоский `node_modules`:
+**Backend** дополнительно запускает `pnpm deploy --prod /app/deploy/backend` — копирует из `node_modules` только зависимости `@repo/backend`, без лишних пакетов монорепо. Runner получает чистый плоский `node_modules`:
 
 ```
 /app/
@@ -80,7 +80,7 @@ FROM node:24.22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 USER node
-COPY --from=builder --chown=node:node /deploy/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/deploy/backend/node_modules ./node_modules
 COPY --from=builder --chown=node:node /app/apps/backend/dist ./dist
 ```
 
