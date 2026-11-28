@@ -27,7 +27,7 @@ COPY manifest  →  pnpm install --frozen-lockfile  →  COPY source  →  build
 
 ## อะไรอยู่ใน image สุดท้าย
 
-**Backend** รัน `pnpm deploy --prod /deploy` เพิ่ม — คัดลอกเฉพาะ dependency ของ `@repo/backend` ออกจาก `node_modules` โดยไม่เอา package อื่นของ monorepo มาด้วย runner จึงได้ `node_modules` ที่สะอาดและแบน:
+**Backend** รัน `pnpm deploy --prod /app/deploy/backend` เพิ่ม — คัดลอกเฉพาะ dependency ของ `@repo/backend` ออกจาก `node_modules` โดยไม่เอา package อื่นของ monorepo มาด้วย runner จึงได้ `node_modules` ที่สะอาดและแบน:
 
 ```
 /app/
@@ -78,7 +78,7 @@ FROM node:24.22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 USER node
-COPY --from=builder --chown=node:node /deploy/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/deploy/backend/node_modules ./node_modules
 COPY --from=builder --chown=node:node /app/apps/backend/dist ./dist
 ```
 
