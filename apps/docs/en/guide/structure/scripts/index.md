@@ -14,5 +14,6 @@ scripts/
 ├── ensure-network.mjs  Docker network creation
 ├── log.mjs             prefix for the scripts' own messages
 ├── dev.mjs             runs the three applications in parallel
-└── reinstall.mjs       reinstalls dependencies from scratch
+├── reinstall.mjs       reinstalls dependencies from scratch
+└── versions.test.mjs   test: one Node version in .nvmrc, engines and Dockerfiles
 ```

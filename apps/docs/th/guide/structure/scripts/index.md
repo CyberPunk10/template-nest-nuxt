@@ -14,5 +14,6 @@ scripts/
 ├── ensure-network.mjs  สร้าง Docker network
 ├── log.mjs             prefix สำหรับข้อความของ script เอง
 ├── dev.mjs             รัน 3 application พร้อมกัน
-└── reinstall.mjs       ติดตั้ง dependency ใหม่ตั้งแต่ต้น
+├── reinstall.mjs       ติดตั้ง dependency ใหม่ตั้งแต่ต้น
+└── versions.test.mjs   test: เวอร์ชัน Node เดียวกันใน .nvmrc, engines และ Dockerfile
 ```

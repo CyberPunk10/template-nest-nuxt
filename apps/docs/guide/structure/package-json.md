@@ -11,7 +11,7 @@
 | `predocker:up` | `node scripts/predocker.mjs`    | Запускается автоматически перед `docker:up`                                                |
 | `docker:up`    | `docker compose up`             | Поднимает все три сервиса в Docker                                                         |
 | `build`        | `pnpm -r build`                 | Собирает все workspace-пакеты (запускает `build` в каждом `apps/*`)                        |
-| `test`         | `pnpm -r test`                  | Юнит-тесты по всем воркспейсам (пакеты без `test` пропускаются)                            |
+| `test`         | `node --test scripts/versions.test.mjs && pnpm -r test` | Сверка версий Node ([`versions.test.mjs`](./scripts/versions-test)), затем юнит-тесты по всем воркспейсам (пакеты без `test` пропускаются) |
 | `test:e2e`     | `pnpm -r test:e2e`              | E2E-тесты — поднимают приложение целиком, поэтому вынесены из `test`                       |
 | `lint`         | `pnpm -r lint`                  | Линтер по всем workspace-пакетам                                                           |
 | `type-check`   | `pnpm -r type-check`            | Проверка типов по всем workspace-пакетам                                                   |

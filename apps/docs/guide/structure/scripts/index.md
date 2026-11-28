@@ -14,5 +14,6 @@ scripts/
 ├── ensure-network.mjs  создание Docker-сети
 ├── log.mjs             префикс для сообщений скриптов
 ├── dev.mjs             параллельный запуск трёх приложений
-└── reinstall.mjs       переустановка зависимостей с нуля
+├── reinstall.mjs       переустановка зависимостей с нуля
+└── versions.test.mjs   тест: версия Node одна в .nvmrc, engines и Dockerfile
 ```
