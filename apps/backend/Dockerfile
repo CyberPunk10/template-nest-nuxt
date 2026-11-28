@@ -9,7 +9,11 @@ COPY packages/shared/package.json ./packages/shared/
 RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm --filter @repo/backend build
-RUN pnpm --filter @repo/backend deploy --prod --legacy /deploy
+# Продовые зависимости backend — в отдельную папку, её node_modules уходят в
+# образ. Папка внутри /app на два уровня ниже корня монорепо, как сам backend:
+# deploy запускает и postinstall самого backend, и если тот читает
+# tsconfig.json backend, путь ../../tsconfig.base.json должен находиться.
+RUN pnpm --filter @repo/backend deploy --prod --legacy /app/deploy/backend
 
 # ---- production image ----
 FROM node:24.22-alpine AS runner
@@ -17,7 +21,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3100
 USER node
-COPY --from=builder --chown=node:node /deploy/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/deploy/backend/node_modules ./node_modules
 COPY --from=builder --chown=node:node /app/apps/backend/dist ./dist
 EXPOSE ${PORT}
 HEALTHCHECK --interval=5s --timeout=3s --start-period=60s \
