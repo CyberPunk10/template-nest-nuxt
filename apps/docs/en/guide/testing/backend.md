@@ -141,8 +141,8 @@ process.env.CORS_ORIGIN ??= 'http://localhost:3200'
 
 Currently in the template:
 
-- **`tasks.service.spec.ts`** — in-memory CRUD: `id` and timestamp generation, filtering by owner, partial updates that leave other fields intact, `NotFoundException` for an unknown `id` and `ForbiddenException` for someone else's task
-- **`users.service.spec.ts`** — user CRUD: `NotFoundException` for an unknown `id`, `ConflictException` on a duplicate email — both on create and on update
+- **`tasks.service.spec.ts`** — CRUD through a mocked Prisma client: filtering by owner, partial updates that leave other fields intact, `NotFoundException` for an unknown `id` and `ForbiddenException` for someone else's task
+- **`users.service.spec.ts`** — user CRUD: mapping Prisma codes onto HTTP exceptions — `P2025` → `NotFoundException`, `P2002` → `ConflictException` on a duplicate email
 - **`app.controller.spec.ts`** — `/health` and `/dev/config`, including how `publicUrl` differs between dev and production
 - **`http-exception.filter.spec.ts`** — normalising errors into a single JSON shape, and the fact that the text of an unexpected exception does not leak to the client
 - **`auth.e2e-spec.ts`** — the full cycle: registration, login, refresh with token rotation, logout, reuse detection, access to protected routes

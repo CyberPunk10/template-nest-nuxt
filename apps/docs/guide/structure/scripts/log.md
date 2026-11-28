@@ -33,8 +33,8 @@ log.error(`Switch this terminal: ${command('nvm use')}`)
 Escape-коды пишутся, только когда вывод идёт в терминал. При перенаправлении в файл или в CI они превратились бы в мусор вида `ESC[35m`, поэтому проверяется `process.stdout.isTTY`. Переменная `NO_COLOR` отключает цвет принудительно — это общепринятое соглашение.
 
 ```bash
-pnpm docker:up                 # префикс с цветом
-pnpm docker:up > log.txt       # без escape-кодов
-NO_COLOR=1 pnpm docker:up      # то же самое принудительно
+pnpm db:up                 # префикс с цветом
+pnpm db:up > log.txt       # без escape-кодов
+NO_COLOR=1 pnpm db:up      # то же самое принудительно
 ```
 

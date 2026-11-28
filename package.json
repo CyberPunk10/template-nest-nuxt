@@ -10,7 +10,7 @@
     "npm": "please-use-pnpm"
   },
   "templateOrigin": {
-    "variant": "auth-session",
+    "variant": "postgres-prisma",
     "repository": "CyberPunk10/template-nest-nuxt",
     "baseVersion": "0.1.1"
   },
@@ -20,8 +20,13 @@
     "env:copy:force": "node scripts/copy-env-cli.mjs --force",
     "predev": "node scripts/predev.mjs",
     "dev": "node scripts/dev.mjs",
+    "db:up": "node scripts/db.mjs up",
+    "db:down": "node scripts/db.mjs down",
+    "db:generate": "node scripts/db.mjs generate",
+    "db:migrate": "node scripts/db.mjs migrate",
+    "db:seed": "node scripts/db.mjs seed",
     "predocker:up": "node scripts/predocker.mjs",
-    "docker:up": "docker compose up",
+    "docker:up": "docker compose --profile app up",
     "build": "pnpm -r build",
     "test": "node --test scripts/versions.test.mjs && pnpm -r test",
     "test:e2e": "pnpm -r test:e2e",

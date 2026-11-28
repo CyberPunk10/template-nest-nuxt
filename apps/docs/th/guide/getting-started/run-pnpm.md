@@ -1,6 +1,6 @@
 # รันด้วย pnpm
 
-โหมดหลักสำหรับการพัฒนา: application รันแบบ native แต่ละตัวมี hot reload ของตัวเอง ไม่ต้องใช้ Docker
+โหมดหลักสำหรับการพัฒนา: application รันแบบ native แต่ละตัวมี hot reload ของตัวเอง ใน Docker มีเพียง PostgreSQL ซึ่ง `pnpm dev` เปิดให้เอง
 
 ก่อนรันครั้งแรก — [การเตรียมความพร้อม](./setup)
 
@@ -24,7 +24,7 @@ pnpm dev
 
 คำสั่งเดียวยกทั้งสาม application ขึ้นมา ก่อนเริ่ม [`predev.mjs`](../structure/scripts/predev) จะทำงานก่อน: สร้างไฟล์ `.env` ที่ขาด และจัดการพอร์ตที่ชนกัน แต่ละขั้นตอนจะพิมพ์บรรทัดที่มี ✓ และถ้าการเตรียมการหยุด — จะมีบรรทัดที่มี ✗ พร้อมชื่อขั้นตอน สิ่งที่ต้องตรวจดูได้ใน[ตารางขั้นตอน](../structure/scripts/predev#สิ่งที่แสดงผล)
 
-ถ้าไม่ใช้ `predev.mjs` ก็ทำแบบเดียวกันได้ด้วยมือ: คัดลอก `.env.example` เป็น `.env` ที่ root และในแต่ละ `apps/*` (`pnpm env:copy`) แล้วปล่อยพอร์ตจาก `PORT` ใน `apps/*/.env`
+ถ้าไม่ใช้ `predev.mjs` ก็ทำแบบเดียวกันได้ด้วยมือ: คัดลอก `.env.example` เป็น `.env` ที่ root และในแต่ละ `apps/*` (`pnpm env:copy`) ปล่อยพอร์ตจาก `PORT` ใน `apps/*/.env` ยกฐานข้อมูลขึ้นมา (`pnpm db:up`) generate client ของ Prisma (`pnpm db:generate`) แล้วรัน migration (`pnpm db:migrate`)
 
 | Service  | URL                               | เทคโนโลยี         |
 | -------- | --------------------------------- | ---------------- |

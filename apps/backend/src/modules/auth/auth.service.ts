@@ -4,10 +4,11 @@ import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcrypt'
 import { createHmac, randomUUID } from 'crypto'
 import { Response, Request } from 'express'
-import { SessionsStore } from './sessions.store'
+import { Prisma } from '../../generated/prisma/client'
+import { PrismaService } from '../prisma/prisma.service'
 import { RegisterDto } from './dto/register.dto'
 import { JwtPayload } from './strategies/jwt.strategy'
-import { SafeUser, UsersService } from '../users/users.service'
+import { SafeUser, safeUserSelect } from '../users/users.service'
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -18,8 +19,7 @@ export class AuthService implements OnModuleInit {
   private readonly bcryptRounds: number
 
   constructor(
-    private readonly usersService: UsersService,
-    private readonly sessions: SessionsStore,
+    private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly config: ConfigService,
   ) {
@@ -72,7 +72,10 @@ export class AuthService implements OnModuleInit {
   }
 
   async validateUser(email: string, password: string): Promise<SafeUser | null> {
-    const user = await this.usersService.findByEmail(email.toLowerCase())
+    const user = await this.prisma.user.findUnique({
+      where: { email: email.toLowerCase() },
+      select: { ...safeUserSelect, passwordHash: true },
+    })
     const hash = user?.passwordHash ?? this.dummyHash
     const valid = await bcrypt.compare(password, hash)
     if (!user || !valid) return null
@@ -84,10 +87,18 @@ export class AuthService implements OnModuleInit {
     const email = dto.email.toLowerCase()
     const passwordHash = await bcrypt.hash(dto.password, this.bcryptRounds)
 
-    if (await this.usersService.findByEmail(email)) {
-      throw new ConflictException('Email already in use')
+    let safeUser: SafeUser
+    try {
+      safeUser = await this.prisma.user.create({
+        data: { name: dto.name, email, passwordHash },
+        select: safeUserSelect,
+      })
+    } catch (e: unknown) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
+        throw new ConflictException('Email already in use')
+      }
+      throw e
     }
-    const safeUser = await this.usersService.create({ name: dto.name, email, password: passwordHash })
 
     await this.issueTokens(safeUser, req, res)
     return safeUser
@@ -104,38 +115,66 @@ export class AuthService implements OnModuleInit {
 
     const tokenHash = this.hmac(token)
 
-    // Load session to get familyId; don't trust isUsed/expiresAt until inside claim()
-    const sess = await this.sessions.findByRefreshTokenHash(tokenHash)
+    // Load session to get familyId; don't trust isUsed/expiresAt until inside tx
+    const sess = await this.prisma.session.findUnique({ where: { refreshTokenHash: tokenHash } })
     if (!sess) throw new UnauthorizedException()
 
-    // Generate new token BEFORE the claim — UUID generation doesn't create a race;
+    // Generate new token BEFORE transaction — UUID generation doesn't create a race;
     // the race was in the CHECK, not the generation.
     const newRefreshToken = randomUUID()
     const newRefreshTokenHash = this.hmac(newRefreshToken)
     const expiresInDays = this.refreshExpiresInDays
     const expiresAt = this.getRefreshExpiresAt()
 
-    // Atomic claim: the single gate — only one concurrent request wins.
-    // deleteByFamilyId (family wipe on reuse) runs regardless of the claim outcome.
-    const { count } = await this.sessions.claim(sess.id)
+    // Atomic claim + replacement: updateMany is the single gate — only one concurrent
+    // request wins — and the replacement session is created in the SAME transaction,
+    // so a crash between claim and create can no longer strand the family with no
+    // usable token on either side.
+    // deleteMany (family wipe on reuse) runs OUTSIDE the transaction so it is not rolled back.
+    const now = new Date()
+    let user: SafeUser | null
+    try {
+      user = await this.prisma.$transaction(async (tx) => {
+        const { count } = await tx.session.updateMany({
+          where: { id: sess.id, isUsed: false, expiresAt: { gt: now } },
+          data: { isUsed: true, lastUsedAt: now },
+        })
 
-    if (count === 0) {
+        if (count === 0) return null
+
+        const user = await tx.user.findUniqueOrThrow({
+          where: { id: sess.userId },
+          select: safeUserSelect,
+        })
+
+        await tx.session.create({
+          data: {
+            userId: user.id,
+            familyId: sess.familyId,
+            refreshTokenHash: newRefreshTokenHash,
+            expiresAt,
+            ...this.getSessionMeta(req),
+          },
+        })
+
+        return user
+      })
+    } catch (e: unknown) {
+      // Session outlived its user (e.g. deleted mid-refresh) — treat like any other invalid session.
+      if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
+        this.clearCookies(res)
+        throw new UnauthorizedException()
+      }
+      throw e
+    }
+
+    if (!user) {
       // Either already used (reuse attack) or expired — wipe the entire family
       // to invalidate all tokens in the chain, then deny.
-      await this.sessions.deleteByFamilyId(sess.familyId)
+      await this.prisma.session.deleteMany({ where: { familyId: sess.familyId } })
       this.clearCookies(res)
       throw new UnauthorizedException()
     }
-
-    const user = await this.usersService.findOne(sess.userId)
-
-    await this.sessions.create({
-      userId: user.id,
-      familyId: sess.familyId,
-      refreshTokenHash: newRefreshTokenHash,
-      expiresAt,
-      ...this.getSessionMeta(req),
-    })
 
     const payload: JwtPayload = {
       sub: user.id,
@@ -151,9 +190,9 @@ export class AuthService implements OnModuleInit {
     const token: string | undefined = req.cookies?.['refresh_token']
     if (token) {
       const tokenHash = this.hmac(token)
-      // deleteByRefreshTokenHash — не бросает ошибку если сессия уже удалена
+      // deleteMany вместо delete — не бросает ошибку если сессия уже удалена
       // (истекла, reuse detection, параллельный logout)
-      await this.sessions.deleteByRefreshTokenHash(tokenHash)
+      await this.prisma.session.deleteMany({ where: { refreshTokenHash: tokenHash } })
     }
     this.clearCookies(res)
   }
@@ -171,12 +210,14 @@ export class AuthService implements OnModuleInit {
     const expiresInDays = this.refreshExpiresInDays
     const expiresAt = this.getRefreshExpiresAt()
 
-    await this.sessions.create({
-      userId: user.id,
-      familyId: randomUUID(),
-      refreshTokenHash,
-      expiresAt,
-      ...this.getSessionMeta(req),
+    await this.prisma.session.create({
+      data: {
+        userId: user.id,
+        familyId: randomUUID(),
+        refreshTokenHash,
+        expiresAt,
+        ...this.getSessionMeta(req),
+      },
     })
 
     this.setTokenCookies(res, accessToken, refreshToken, expiresInDays)

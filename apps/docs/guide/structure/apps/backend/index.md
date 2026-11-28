@@ -19,7 +19,8 @@ apps/backend/
 │   ├── app.service.ts
 │   ├── setup-app.ts            общие глобальные настройки для main и e2e
 │   └── main.ts                 bootstrap: CORS, Swagger, ValidationPipe
-├── test/                       e2e-тесты: default/ и throttle/, у каждой свой конфиг
+├── prisma/                     схема БД, миграции, seed
+├── test/                       e2e-тесты (отдельный jest-конфиг)
 ├── nest-cli.json
 ├── tsconfig.json               для IDE и type-check (noEmit)
 └── tsconfig.build.json         для nest build — даёт чистый dist/

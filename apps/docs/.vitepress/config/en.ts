@@ -43,6 +43,7 @@ const config: LocaleEntry = {
                       { text: 'package.json', link: '/en/guide/structure/apps/backend/package-json' },
                       { text: 'tsconfig.json', link: '/en/guide/structure/apps/backend/tsconfig' },
                       { text: 'tsconfig.build.json', link: '/en/guide/structure/apps/backend/tsconfig-build' },
+                      { text: 'prisma', link: '/en/guide/structure/apps/backend/prisma/' },
                     ],
                   },
                   {
@@ -122,6 +123,7 @@ const config: LocaleEntry = {
                   { text: 'check-node.mjs', link: '/en/guide/structure/scripts/check-node' },
                   { text: 'ensure-network.mjs', link: '/en/guide/structure/scripts/ensure-network' },
                   { text: 'log.mjs', link: '/en/guide/structure/scripts/log' },
+                  { text: 'db.mjs', link: '/en/guide/structure/scripts/db' },
                   { text: 'dev.mjs', link: '/en/guide/structure/scripts/dev' },
                   { text: 'reinstall.mjs', link: '/en/guide/structure/scripts/reinstall' },
                   { text: 'versions.test.mjs', link: '/en/guide/structure/scripts/versions-test' },
@@ -160,6 +162,17 @@ const config: LocaleEntry = {
             items: [
               { text: 'Backend', link: '/en/guide/auth/backend' },
               { text: 'Frontend', link: '/en/guide/auth/frontend' },
+            ],
+          },
+          {
+            text: 'Database',
+            link: '/en/guide/database/',
+            collapsed: true,
+            items: [
+              { text: 'Configuration', link: '/en/guide/database/configuration' },
+              { text: 'Prisma: schema and client', link: '/en/guide/database/prisma' },
+              { text: 'Migrations', link: '/en/guide/database/migrations' },
+              { text: 'Prisma errors', link: '/en/guide/database/errors' },
             ],
           },
         ],

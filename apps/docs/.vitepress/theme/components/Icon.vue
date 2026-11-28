@@ -14,6 +14,7 @@ const paths: Record<string, string> = {
   terminal: 'M4 17l6-6-6-6 M12 19h8',
   'arrow-right': 'M5 12h14 M12 5l7 7-7 7',
   'arrow-left': 'M19 12H5 M12 19l-7-7 7-7',
+  database: 'M21 5c0 1.66-4.03 3-9 3S3 6.66 3 5s4.03-3 9-3 9 1.34 9 3z M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5 M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3',
 
   // ── иконки секции «Авторизация» ──
   puzzle:
