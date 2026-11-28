@@ -14,6 +14,14 @@ log.log('Ports checked')           // [predev.mjs] Ports checked
 
 `ok` marks a completed step (✓), `error` — an error (✗). The marks show without colour too — in CI logs and with `NO_COLOR`.
 
+A command in a hint is highlighted by `command()` — in cyan, so it stands out in the message text:
+
+```js
+import { command } from './log.mjs'
+
+log.error(`Switch this terminal: ${command('nvm use')}`)
+```
+
 ## Why
 
 The scripts run `docker compose`, `pnpm install` and `concurrently`, and the output of those commands goes to the same terminal. Without a marker your own lines get lost in the common stream.

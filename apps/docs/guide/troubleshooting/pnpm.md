@@ -15,7 +15,7 @@ Got: 9.15.9
 Или pnpm пытается переключиться на закреплённую версию и падает:
 
 ```
-[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: pnpm@12.15.0
+[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: pnpm@12.x.y
 ```
 
 Или в папке проекта `pnpm --version` показывает не ту версию, что в `packageManager`.

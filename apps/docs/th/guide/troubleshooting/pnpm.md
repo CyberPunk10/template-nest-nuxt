@@ -15,7 +15,7 @@ Got: 9.15.9
 หรือ pnpm พยายามสลับไปใช้เวอร์ชันที่กำหนดไว้แล้วล้มเหลว:
 
 ```
-[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: pnpm@12.15.0
+[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: pnpm@12.x.y
 ```
 
 หรือในโฟลเดอร์โปรเจกต์ `pnpm --version` แสดงเวอร์ชันที่ไม่ตรงกับ `packageManager`

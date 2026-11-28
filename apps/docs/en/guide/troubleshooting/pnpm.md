@@ -15,7 +15,7 @@ Got: 9.15.9
 Or pnpm tries to switch to the pinned version and fails:
 
 ```
-[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: pnpm@12.15.0
+[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: pnpm@12.x.y
 ```
 
 Or inside the project folder `pnpm --version` shows a version other than the one in `packageManager`.

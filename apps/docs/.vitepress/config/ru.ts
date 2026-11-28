@@ -135,6 +135,7 @@ const config: LocaleEntry = {
                   { text: 'copy-env.mjs', link: '/guide/structure/scripts/copy-env' },
                   { text: 'copy-env-cli.mjs', link: '/guide/structure/scripts/copy-env-cli' },
                   { text: 'check-ports.mjs', link: '/guide/structure/scripts/check-ports' },
+                  { text: 'check-node.mjs', link: '/guide/structure/scripts/check-node' },
                   { text: 'ensure-network.mjs', link: '/guide/structure/scripts/ensure-network' },
                   { text: 'log.mjs', link: '/guide/structure/scripts/log' },
                   { text: 'dev.mjs', link: '/guide/structure/scripts/dev' },

@@ -21,3 +21,14 @@ log.error('failed')
     assert.equal(result.stderr, '[demo.mjs] ✗ failed\n')
   })
 })
+
+describe('[log.test.mjs] command', () => {
+  it('вне терминала возвращает команду без цвета', () => {
+    sandbox = createSandbox({
+      'scripts/demo.mjs': `import { command } from './log.mjs'
+console.log(command('nvm use'))
+`,
+    })
+    assert.equal(sandbox.run('demo.mjs').stdout, 'nvm use\n')
+  })
+})

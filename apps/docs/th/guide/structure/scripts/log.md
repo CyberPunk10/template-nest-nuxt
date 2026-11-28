@@ -14,6 +14,14 @@ log.log('Ports checked')           // [predev.mjs] Ports checked
 
 `ok` ทำเครื่องหมายขั้นตอนที่สำเร็จ (✓) ส่วน `error` คือ error (✗) เครื่องหมายเหล่านี้มองเห็นได้แม้ไม่มีสี — ใน log ของ CI และเมื่อตั้ง `NO_COLOR`
 
+คำสั่งในคำแนะนำจะถูกเน้นด้วย `command()` เป็นสีฟ้าอมเขียว เพื่อให้มองเห็นได้ในข้อความ:
+
+```js
+import { command } from './log.mjs'
+
+log.error(`Switch this terminal: ${command('nvm use')}`)
+```
+
 ## ทำไมต้องมี
 
 script เรียก `docker compose`, `pnpm install` และ `concurrently` ซึ่ง output ของคำสั่งเหล่านั้นออกมาที่ terminal เดียวกัน ถ้าไม่มีเครื่องหมายกำกับ บรรทัดของเราเองจะหายไปในกระแสรวมนั้น
