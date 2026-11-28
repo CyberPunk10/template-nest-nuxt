@@ -124,6 +124,7 @@ const config: LocaleEntry = {
                   { text: 'log.mjs', link: '/en/guide/structure/scripts/log' },
                   { text: 'dev.mjs', link: '/en/guide/structure/scripts/dev' },
                   { text: 'reinstall.mjs', link: '/en/guide/structure/scripts/reinstall' },
+                  { text: 'versions.test.mjs', link: '/en/guide/structure/scripts/versions-test' },
                 ],
               },
               { text: '.husky', link: '/en/guide/structure/husky/' },

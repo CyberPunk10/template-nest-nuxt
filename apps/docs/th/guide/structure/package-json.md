@@ -11,7 +11,7 @@ Manifest ที่ root ของ monorepo สคริปต์ในนี้�
 | `predocker:up` | `node scripts/predocker.mjs`    | รันอัตโนมัติก่อน `docker:up`                                               |
 | `docker:up`    | `docker compose up`             | เปิดทั้งสาม service ใน Docker                                            |
 | `build`        | `pnpm -r build`                 | Build workspace package ทั้งหมด (รัน `build` ใน `apps/*` แต่ละตัว)         |
-| `test`         | `pnpm -r test`                  | Unit test ทุก workspace (แพ็กเกจที่ไม่มี `test` จะถูกข้าม)                  |
+| `test`         | `node --test scripts/versions.test.mjs && pnpm -r test` | ตรวจเวอร์ชัน Node ([`versions.test.mjs`](./scripts/versions-test)) แล้วรัน unit test ทุก workspace (แพ็กเกจที่ไม่มี `test` จะถูกข้าม) |
 | `test:e2e`     | `pnpm -r test:e2e`              | E2E test — ต้องรันแอปทั้งตัว จึงแยกออกจาก `test`                            |
 | `lint`         | `pnpm -r lint`                  | รัน linter กับ workspace package ทั้งหมด                                  |
 | `type-check`   | `pnpm -r type-check`            | ตรวจสอบ type ของ workspace package ทั้งหมด                              |

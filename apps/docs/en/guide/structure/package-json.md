@@ -11,7 +11,7 @@ The monorepo's root manifest. Its scripts orchestrate the whole repository: `pnp
 | `predocker:up` | `node scripts/predocker.mjs`    | Runs automatically before `docker:up`                                                     |
 | `docker:up`    | `docker compose up`             | Brings up all three services in Docker                                                    |
 | `build`        | `pnpm -r build`                 | Builds all workspace packages (runs `build` in each `apps/*`)                             |
-| `test`         | `pnpm -r test`                  | Unit tests across workspaces (packages without `test` are skipped)                        |
+| `test`         | `node --test scripts/versions.test.mjs && pnpm -r test` | Node version check ([`versions.test.mjs`](./scripts/versions-test)), then unit tests across workspaces (packages without `test` are skipped) |
 | `test:e2e`     | `pnpm -r test:e2e`              | E2E tests — they boot the whole app, hence kept out of `test`                             |
 | `lint`         | `pnpm -r lint`                  | Runs the linter across all workspace packages                                             |
 | `type-check`   | `pnpm -r type-check`            | Type-checks all workspace packages                                                        |
