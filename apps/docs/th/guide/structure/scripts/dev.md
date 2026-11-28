@@ -19,7 +19,7 @@ concurrently(
 - **Ctrl+C ครั้งเดียว** — `concurrently` จะ intercept signal แล้วหยุด process ลูกทั้งสามพร้อมกันอย่างถูกต้อง `&` เฉยๆ ใน shell ทำแบบนี้ไม่ได้: `Ctrl+C` จะ kill แค่ process ที่อยู่ foreground ส่วน backend/frontend/docs จะยังค้างอยู่ใน background แล้วครองพอร์ตต่อไป
 - **ใช้ได้ข้าม platform** — ทำงานเหมือนกันทั้งใน bash/zsh และใน shell ของ Windows โดยไม่ต้องพึ่ง `&`/`wait` ที่พฤติกรรมต่างกันไปในแต่ละ shell
 
-ถ้า process ใดใน 3 ตัวพัง โดย default `concurrently` จะไม่หยุดตัวอื่น (เปลี่ยนพฤติกรรมนี้ได้ผ่าน `killOthersOn` แต่ที่นี่ไม่ได้ตั้งไว้: การ develop backend ไม่ควรถูกขัดจังหวะแค่เพราะ docs มี build error ชั่วคราว)
+ถ้า process ใดใน 3 ตัวพัง โดย default `concurrently` จะไม่หยุดตัวอื่น (เปลี่ยนพฤติกรรมนี้ได้ผ่าน `killOthersOn` แต่ที่นี่ไม่ได้ตั้งไว้: การ develop backend ไม่ควรถูกขัดจังหวะแค่เพราะ docs มี build error ชั่วคราว) เมื่อทุก process จบแล้วและมีอย่างน้อยหนึ่งตัวจบด้วย error `dev.mjs` จะออกด้วย code 1 โดยไม่มี stack trace ของ Node: สิ่งที่เกิดขึ้นเห็นได้ในผลลัพธ์ของ `concurrently` อยู่แล้ว
 
 ตอนเริ่ม `dev.mjs` จะบันทึก PID ของตัวเองลงใน `node_modules/.cache/dev-session/dev-nest-nuxt.pid` (module `dev-session.mjs`) และลบไฟล์เมื่อออก `pnpm dev` ครั้งถัดไปจะใช้ไฟล์นี้หยุดการรันนี้ทั้งหมดเมื่อพอร์ตชนกัน — ดูที่ [`check-ports.mjs`](./check-ports)
 

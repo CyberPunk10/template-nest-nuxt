@@ -19,7 +19,7 @@ Why `concurrently` specifically, and not three parallel `&` in a shell script:
 - **A single Ctrl+C** — `concurrently` intercepts the signal and cleanly stops all three child processes at once. A bare `&` in a shell doesn't do this: `Ctrl+C` only kills the foreground process, while backend/frontend/docs keep running in the background, holding their ports.
 - **Cross-platform** — works the same in bash/zsh and in Windows shells, without relying on `&`/`wait`, which behave differently across shells.
 
-If one of the three processes crashes, `concurrently` doesn't stop the others by default (this can be changed via `killOthersOn`, but it isn't set here: backend development shouldn't be interrupted just because docs, say, has a temporary build error).
+If one of the three processes crashes, `concurrently` doesn't stop the others by default (this can be changed via `killOthersOn`, but it isn't set here: backend development shouldn't be interrupted just because docs, say, has a temporary build error). When all processes have exited and at least one of them failed, `dev.mjs` exits with code 1 without a Node stack trace: what happened is already in the `concurrently` output.
 
 On start `dev.mjs` writes its PID to `node_modules/.cache/dev-session/dev-nest-nuxt.pid` (the `dev-session.mjs` module) and removes the file on exit. The next `pnpm dev` uses it to stop this run entirely on a port conflict — see [`check-ports.mjs`](./check-ports).
 

@@ -2,7 +2,7 @@
 
 รันอัตโนมัติก่อน `pnpm dev` — ผ่าน npm `pre*` convention
 
-ก่อนเริ่ม จะทำตามลำดับดังนี้:
+ขั้นแรกจะตรวจสอบเวอร์ชัน Node ผ่าน [`check-node.mjs`](./check-node): ถ้าต่ำกว่า `engines.node` ใน `package.json` จะหยุดและแนะนำวิธีสลับเวอร์ชัน จากนั้นจะทำตามลำดับดังนี้:
 
 1. **คัดลอก `.env.example` → `.env`** ทั้งสี่ไฟล์พร้อมกัน (root, `apps/backend`, `apps/frontend`, `apps/docs`) — ผ่าน `copyEnvFiles()` ที่ใช้ร่วมกันจาก [`copy-env.mjs`](./copy-env) ไม่ใช่แค่ "ของตัวเอง": แม้จะรันก่อน develop ในเครื่อง ก็สร้าง `.env` ที่ root ให้ด้วยถ้ายังไม่มี
 2. **ตรวจสอบพอร์ตและแก้ปัญหาชนกัน** — ผ่าน `checkPorts()` ที่ใช้ร่วมกันจาก [`check-ports.mjs`](./check-ports) ถ้าชนกันจะเสนอ dialog: kill process ที่ครองพอร์ตอยู่ หรือยกเลิกการรัน
@@ -16,6 +16,7 @@
 แต่ละขั้นตอนจะพิมพ์ผลลัพธ์หนึ่งบรรทัด:
 
 ```
+[predev.mjs] ✓ node: 24.22.1
 [predev.mjs] ✓ .env: created apps/backend/.env from .env.example
 [predev.mjs] ✓ ports: backend 3100 · frontend 3200 · docs 5173
 ```
@@ -28,6 +29,7 @@
 
 | ขั้นตอน   | สิ่งที่ต้องตรวจ                                 | ทำซ้ำแยก           |
 | ------- | ------------------------------------------ | --------------- |
+| `node`  | เวอร์ชัน Node: `node --version` เทียบกับ `engines.node` | `nvm use`       |
 | `.env`  | มี `.env.example` อยู่ข้าง `.env` ที่ต้องการหรือไม่ | `pnpm env:copy` |
 | `ports` | ค่า `PORT` ใน `.env` ที่ระบุ                   | `pnpm predev`   |
 

@@ -43,7 +43,7 @@
 ## Версии инструментов
 
 ```json
-"packageManager": "pnpm@12.15.0",
+"packageManager": "pnpm@12.23.0",
 "engines": {
   "node": ">=24.22.1",
   "pnpm": ">=12",

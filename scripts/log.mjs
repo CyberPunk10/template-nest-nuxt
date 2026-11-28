@@ -1,7 +1,7 @@
 // Помечает префиксом собственные сообщения скриптов
 
 // Пурпурный не занят concurrently (красный, жёлтый, голубой) — см. dev.mjs
-const COLORS = { prefix: '\x1b[35m', ok: '\x1b[32m', error: '\x1b[31m', reset: '\x1b[0m' }
+const COLORS = { prefix: '\x1b[35m', ok: '\x1b[32m', error: '\x1b[31m', command: '\x1b[36m', reset: '\x1b[0m' }
 
 // Цвет отключаем, когда вывод не в терминал (пайп, файл, CI): там escape-коды
 // превратились бы в мусор вида `ESC[35m`. NO_COLOR — общепринятое соглашение.
@@ -22,4 +22,10 @@ export function createLogger(name) {
     error: (...args) => console.error(paint(prefix, COLORS.error), paint('✗', COLORS.error), ...args),
     /* eslint-enable no-console */
   }
+}
+
+// Выделяет команду в подсказке, чтобы её было видно в тексте сообщения:
+// log.error(`run ${command('nvm use')}`). Вне терминала — как есть.
+export function command(text) {
+  return paint(text, COLORS.command)
 }

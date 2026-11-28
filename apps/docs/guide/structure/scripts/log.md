@@ -14,6 +14,14 @@ log.log('Ports checked')           // [predev.mjs] Ports checked
 
 `ok` отмечает выполненный шаг (✓), `error` — ошибку (✗). Значки видны и без цвета — в логах CI и при `NO_COLOR`.
 
+Команду в подсказке выделяет `command()` — бирюзовым, чтобы её было видно в тексте сообщения:
+
+```js
+import { command } from './log.mjs'
+
+log.error(`Switch this terminal: ${command('nvm use')}`)
+```
+
 ## Зачем
 
 Скрипты запускают `docker compose`, `pnpm install` и `concurrently`, и вывод этих команд идёт в тот же терминал. Без пометки собственные строки в общем потоке теряются.
