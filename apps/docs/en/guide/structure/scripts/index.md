@@ -15,5 +15,6 @@ scripts/
 ├── log.mjs             prefix for the scripts' own messages
 ├── db.mjs              starts/stops the database container
 ├── dev.mjs             runs the three applications in parallel
-└── reinstall.mjs       reinstalls dependencies from scratch
+├── reinstall.mjs       reinstalls dependencies from scratch
+└── versions.test.mjs   test: one Node version in .nvmrc, engines and Dockerfiles
 ```

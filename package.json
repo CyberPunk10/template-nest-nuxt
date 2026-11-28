@@ -28,7 +28,7 @@
     "predocker:up": "node scripts/predocker.mjs",
     "docker:up": "docker compose --profile app up",
     "build": "pnpm -r build",
-    "test": "pnpm -r test",
+    "test": "node --test scripts/versions.test.mjs && pnpm -r test",
     "test:e2e": "pnpm -r test:e2e",
     "lint": "pnpm -r lint",
     "type-check": "pnpm -r type-check",
