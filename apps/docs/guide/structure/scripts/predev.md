@@ -2,7 +2,7 @@
 
 Запускается автоматически перед `pnpm dev` — через npm `pre*`-конвенцию.
 
-Перед запуском выполняет по порядку:
+Сначала проверяет версию Node — через [`check-node.mjs`](./check-node): если она ниже `engines.node` из `package.json`, дальше не идёт и подсказывает, как переключиться. Затем выполняет по порядку:
 
 1. **Копирует `.env.example` → `.env`** для всех четырёх файлов разом (корневой, `apps/backend`, `apps/frontend`, `apps/docs`) — через общую `copyEnvFiles()` из [`copy-env.mjs`](./copy-env).
 2. **Проверяет порты и разрешает конфликты** — через общую `checkPorts()` из [`check-ports.mjs`](./check-ports). При конфликте предлагает диалог: убить занявший процесс или прервать запуск.
@@ -22,6 +22,7 @@
 Каждый шаг пишет строку о результате:
 
 ```
+[predev.mjs] ✓ node: 24.22.1
 [predev.mjs] ✓ .env: created apps/backend/.env from .env.example
 [predev.mjs] ✓ ports: backend 3100 · frontend 3200 · docs 5173
 [predev.mjs] ✓ db: postgres is up
@@ -38,6 +39,7 @@
 
 | Шаг          | Что проверить                                                                   | Повторить отдельно |
 | ------------ | ------------------------------------------------------------------------------- | ------------------ |
+| `node`       | версию Node: `node --version` против `engines.node`                             | `nvm use`          |
 | `.env`       | есть ли `.env.example` рядом с нужным `.env`                                    | `pnpm env:copy`    |
 | `ports`      | значение `PORT` в указанном `.env`                                              | `pnpm predev`      |
 | `db`         | запущен ли Docker и совпадают ли `POSTGRES_*` в корневом `.env` и `apps/backend/.env` | `pnpm db:up`       |

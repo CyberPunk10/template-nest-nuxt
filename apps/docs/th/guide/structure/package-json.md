@@ -48,7 +48,7 @@ Manifest ที่ root ของ monorepo สคริปต์ในนี้�
 ## เวอร์ชันของเครื่องมือ
 
 ```json
-"packageManager": "pnpm@12.15.0",
+"packageManager": "pnpm@12.23.0",
 "engines": {
   "node": ">=24.22.1",
   "pnpm": ">=12",

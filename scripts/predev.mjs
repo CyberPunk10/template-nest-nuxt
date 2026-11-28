@@ -1,3 +1,4 @@
+import { checkNodeVersion } from './check-node.mjs'
 import { BACKEND_ENV, FRONTEND_ENV, DOCS_ENV, copyEnvFiles } from './copy-env.mjs'
 import { checkPorts } from './check-ports.mjs'
 import { createLogger } from './log.mjs'
@@ -11,6 +12,11 @@ const log = createLogger('predev.mjs')
 let step = ''
 
 async function main() {
+  // Шаг 0: версия Node. Без неё pnpm откажется запускать каждое приложение
+  // отдельно, и одна ошибка придёт трижды, поэтому проверяем один раз и заранее.
+  step = 'node'
+  log.ok(`node: ${checkNodeVersion()}`)
+
   // Шаг 1: создать .env из .env.example если отсутствует
   step = '.env'
   const created = copyEnvFiles()
