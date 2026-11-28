@@ -7,7 +7,7 @@ withDefaults(defineProps<{ context?: 'sidebar' | 'header' }>(), {
   context: 'sidebar',
 })
 
-const { user } = useUserMock()
+const { user, isAdmin } = useAuth()
 
 const avatar = computed(() => user.value?.name.charAt(0).toUpperCase() ?? '?')
 
@@ -35,6 +35,7 @@ onClickOutside(menuRef, () => {
       :name="user?.name"
       :email="user?.email"
       :open="menuOpen"
+      :is-admin="isAdmin"
       @click="toggleMenu"
     />
 

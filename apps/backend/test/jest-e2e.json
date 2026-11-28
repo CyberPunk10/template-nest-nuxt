@@ -13,6 +13,7 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "setupFiles": [
-    "<rootDir>/setup-env.ts"
+    "<rootDir>/setup-env.ts",
+    "./setup-e2e.ts"
   ]
 }

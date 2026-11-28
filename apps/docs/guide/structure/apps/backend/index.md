@@ -6,17 +6,20 @@ NestJS-приложение. Точка входа — `src/main.ts`.
 apps/backend/
 ├── src/
 │   ├── common/
-│   │   └── filters/            глобальные фильтры исключений
+│   │   ├── filters/            глобальные фильтры исключений
+│   │   └── transforms/         трансформеры для DTO
 │   ├── config/
 │   │   └── env.validation.ts   Joi-схема переменных окружения
 │   ├── modules/
-│   │   └── tasks/              пример модуля: CRUD задач
+│   │   ├── auth/               регистрация, вход, refresh, сессии
+│   │   ├── tasks/              CRUD задач
+│   │   └── users/              пользователи
 │   ├── app.controller.ts       /, /health, /dev/config
 │   ├── app.module.ts           корневой модуль
 │   ├── app.service.ts
 │   ├── setup-app.ts            общие глобальные настройки для main и e2e
 │   └── main.ts                 bootstrap: CORS, Swagger, ValidationPipe
-├── test/                       e2e-тесты (отдельный jest-конфиг)
+├── test/                       e2e-тесты: default/ и throttle/, у каждой свой конфиг
 ├── nest-cli.json
 ├── tsconfig.json               для IDE и type-check (noEmit)
 └── tsconfig.build.json         для nest build — даёт чистый dist/

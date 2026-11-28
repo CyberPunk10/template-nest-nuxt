@@ -3,6 +3,7 @@ defineProps<{
   avatar: string
   name: string | undefined
   email: string | undefined
+  isAdmin: boolean
 }>()
 
 const { t } = useI18n()
@@ -16,7 +17,7 @@ const { t } = useI18n()
       <div class="hero__meta">
         <h1 class="hero__name">{{ name }}</h1>
         <p class="hero__email">{{ email }}</p>
-        <span class="hero__role">{{ t('profile.role') }}</span>
+        <span v-if="isAdmin" class="hero__role">{{ t('profile.roles.admin') }}</span>
       </div>
     </div>
   </div>
